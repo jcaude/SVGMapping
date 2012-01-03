@@ -8,16 +8,13 @@
 
     ## 0 - builtin SVG Cairo
     gr.cap <- capabilities()
-    if(gr.cap["cairo"]) return("builtin")
+    if(gr.cap["cairo"])
+      return("builtin")
     
     ## 1 - Find CairoDevice in the search-path
     loaded = search()
     if(length(grep("package:cairoDevice", loaded)) == 1)
       return("cairoDevice")
-  
-    ## 2 - CairoDevice package available
-    ret=require("cairoDevice", quietly=TRUE)
-    if(ret) return("cairoDevice")
   
     ## eop
     return(NULL)
