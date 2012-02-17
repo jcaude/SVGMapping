@@ -120,9 +120,10 @@ setTextSVG <- function(svg, searchAttributeValue, text, searchAttribute="inkscap
 }
 
 addLinkSVG <- function(node, url) {
-  a <- newXMLNode("a", attrs=list("xlink:href"=url, target="_blank"), .children=list(node), namespaceDefinitions=c(xlink="http://www.w3.org/1999/xlink"))
-  a <- addSibling(node, a)[[1]]
-  removeNodes(node)
+  a <- newXMLNode("a", attrs=list("xlink:href"=url, target="_blank"),
+                  namespaceDefinitions=c(xlink="http://www.w3.org/1999/xlink"))
+  replaceNodes(oldNode=node,newNode=a)
+  addChildren(a,node)
   new.node <- xmlChildren(a)[[1]]
   return(new.node)
 }

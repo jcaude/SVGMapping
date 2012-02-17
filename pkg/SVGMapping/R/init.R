@@ -31,7 +31,7 @@
   ## init. check CAIRO support
   cairo <- .checkCairo()
   if(is.null(cairo))
-    warning("No SVG Cairo engine.. ('devSVGMapping' won't work)")
+    warning("No SVG Cairo engine available.. (pseudo-device disabled)")
   .set(".cairo", cairo)
 
 }
