@@ -353,10 +353,9 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
         # ok means we can use this element as a circle to put a pie chart in it
         if (ok) {
           # Add a <g> element to group the original shape with the pie parts
-          new.group.node <- newXMLNode("g", .children=list(node))
-          new.group.node <- addSibling(node, new.group.node)[[1]]
-          removeNodes(node)
-          node <- xmlChildren(new.group.node)[[1]]
+          new.group.node <- newXMLNode("g")
+          replaceNodes(oldNode=node, newNode=new.group.node)
+          addChildren(new.group.node, node)
           if ("transform" %in% names(attrs) && grepl("^matrix\\([^\\(]+\\)$", attrs[["transform"]])) {
             appliedTransform = TRUE
             # We are going to apply the transform matrix manually
@@ -490,10 +489,9 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
       gene <- xmlGetAttr(node, geneAttribute)
       if (gene %in% rownames(numData)) {
         # Add a <g> element to group the original shape with the pie parts
-        new.group.node <- newXMLNode("g", .children=list(node))
-        new.group.node <- addSibling(node, new.group.node)[[1]]
-        removeNodes(node)
-        node <- xmlChildren(new.group.node)[[1]]
+        new.group.node <- newXMLNode("g", )
+        replaceNodes(oldNode=node, newNode=new.group.node)
+        addChildren(new.group.node,node)
         
         geneValue <- getGeneValues(gene)
         if (geneValue > 1) geneValue <- 1
