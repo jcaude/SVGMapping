@@ -489,7 +489,7 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
       gene <- xmlGetAttr(node, geneAttribute)
       if (gene %in% rownames(numData)) {
         # Add a <g> element to group the original shape with the pie parts
-        new.group.node <- newXMLNode("g", )
+        new.group.node <- newXMLNode("g")
         replaceNodes(oldNode=node, newNode=new.group.node)
         addChildren(new.group.node,node)
         
