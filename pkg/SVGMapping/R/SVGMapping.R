@@ -488,16 +488,19 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
     for (node in nodes) {
       gene <- xmlGetAttr(node, geneAttribute)
       if (gene %in% rownames(numData)) {
-        # Add a <g> element to group the original shape with the pie parts
+
+        ## Add a <g> element to group the original shape
         new.group.node <- newXMLNode("g")
         replaceNodes(oldNode=node, newNode=new.group.node)
         addChildren(new.group.node,node)
-        
+
+        ## Init.
         geneValue <- getGeneValues(gene)
         if (geneValue > 1) geneValue <- 1
         if (geneValue < 0) geneValue <- 0
+
+        ## Create the alpha-gradient
         gradient.id <- paste(getAttributeSVG(node, "id"), "-gradient", sep="")
-        mask.id <- paste(getAttributeSVG(node, "id"), "-mask", sep="")
         gradient.children <- list()
         gradient.children[[1]] <- newXMLNode("stop",
                                              attrs=list(offset=0,
@@ -536,24 +539,29 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
                                .children=gradient.children)
         addChildren(defs, kids=list(gradient))
         
-        # make mask
-        masknode <- newXMLNode("mask", .children=list(node))
-        addSibling(node, masknode, after=FALSE)
-        setAttributeSVG(masknode, "id", mask.id)
-        node.copy.in.mask <- xmlChildren(masknode)[[1]]
+        ## Create the alpha-mask and put it in the defs
+        mask.id <- paste(getAttributeSVG(node, "id"), "-mask", sep="")
+        mask.node <- newXMLNode("mask")
+        addChildren(mask.node,xmlClone(node))
+        setAttributeSVG(mask.node, "id", mask.id)
+        node.copy.in.mask <- xmlChildren(mask.node)[[1]]
         setStyleSVG(node.copy.in.mask, "fill", paste("url(#", gradient.id, ")", sep=""))
-        removeAttributes(node.copy.in.mask, "id")
+        id <- getAttributeSVG(node.copy.in.mask, "id")
+        setAttributeSVG(node.copy.in.mask,"id", paste(id,"-mask_shape",sep=""))
+        addChildren(defs, mask.node)
         
-        # make a copy of the node and put it above, so that the stroke is not masked
-        node.copy <- addSibling(node, xmlClone(node), after=FALSE)[[1]]
+        ## make a copy of the node and put it above, so that the stroke is not masked
+        node.copy <- xmlClone(node)
+        addChildren(new.group.node, node.copy)
         setStyleSVG(node.copy, "fill-opacity", 0)
-        removeAttributes(node.copy, "id")
+        id <- getAttributeSVG(node.copy, "id")
+        setAttributeSVG(node.copy, "id", paste(id,"-stroke.only",sep="")) 
         
-        # mask only the original node
+        ## mask only the original node and remove its stroke
         setAttributeSVG(node, "mask", paste("url(#", mask.id, ")", sep=""))
-        # remove its stroke
         setStyleSVG(node, "stroke-opacity", 0)
-        
+
+        ## Add Javascript animations (opt)
         if (animations) {
           addJavaScriptCallBack(node, "onmouseover", "animatePartialFill(evt)")
           addJavaScriptCallBack(node, "onmouseout", "stopAnimation()")
