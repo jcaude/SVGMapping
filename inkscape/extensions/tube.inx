@@ -1,0 +1,17 @@
+<inkscape-extension>
+  <_name>Test Tube</_name>
+  <id>org.ibitecs.dsv.cea.test_tube</id>
+  <dependency type="executable" location="extensions">tube.py</dependency>
+  <dependency type="executable" location="extensions">inkex.py</dependency>
+  <param name="label" type="string"  _gui-text="Test Tube label">tube</param>
+  <param name="fillcolor" type="int" min="0" max="255" _gui-text="Filling color Tint (0-255)">100</param>
+ <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+       <submenu _name="Gauges"/>
+    </effects-menu>
+  </effect>
+  <script>
+    <command reldir="extensions" interpreter="python">tube.py</command>
+  </script>
+</inkscape-extension>

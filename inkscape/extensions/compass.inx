@@ -1,0 +1,16 @@
+<inkscape-extension>
+  <_name>Compass</_name>
+  <id>org.ibitecs.dsv.cea.compass</id>
+  <dependency type="executable" location="extensions">compass.py</dependency>
+  <dependency type="executable" location="extensions">inkex.py</dependency>
+  <param name="label" type="string"  _gui-text="Compass label">compass</param>
+ <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+       <submenu _name="Gauges"/>
+    </effects-menu>
+  </effect>
+  <script>
+    <command reldir="extensions" interpreter="python">compass.py</command>
+  </script>
+</inkscape-extension>

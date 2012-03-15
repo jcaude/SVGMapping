@@ -16,7 +16,7 @@ class ErlenmeyerEffect(inkex.Effect):
         # Define options
         self.OptionParser.add_option('-l', '--label', action='store',
                                      type='string', dest='label',
-                                     default='thermometer',
+                                     default='erlen',
                                      help='Shape Label?')
         self.OptionParser.add_option('-v', '--volume', action='store',
                                      type='int', dest='volume',
