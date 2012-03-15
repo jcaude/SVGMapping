@@ -552,7 +552,7 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
         
         ## make a copy of the node and put it above, so that the stroke is not masked
         node.copy <- xmlClone(node)
-        addChildren(new.group.node, node.copy)
+        addChildren(new.group.node, node.copy, at=0)
         setStyleSVG(node.copy, "fill-opacity", 0)
         id <- getAttributeSVG(node.copy, "id")
         setAttributeSVG(node.copy, "id", paste(id,"-stroke.only",sep="")) 
