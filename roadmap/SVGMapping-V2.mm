@@ -26,11 +26,14 @@
 <node CREATED="1331831435925" ID="ID_552081248" MODIFIED="1331887980147" TEXT="show()">
 <icon BUILTIN="messagebox_warning"/>
 </node>
-<node CREATED="1331831438557" ID="ID_1012395414" MODIFIED="1331887980147" TEXT="GS:svg">
+<node CREATED="1331831438557" ID="ID_1012395414" MODIFIED="1332161973558" TEXT="GS:SVG">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1331831442637" ID="ID_1255210517" MODIFIED="1331887980147" TEXT="GS:file">
+<node CREATED="1331831442637" ID="ID_1255210517" MODIFIED="1332161981903" TEXT="GS:dest.file">
 <icon BUILTIN="button_ok"/>
+<node CREATED="1332161986837" ID="ID_257003873" MODIFIED="1332162000684" TEXT="Do we really need this ??">
+<icon BUILTIN="help"/>
+</node>
 </node>
 <node CREATED="1331887589498" ID="ID_31794591" MODIFIED="1331887980147" TEXT="GS:js.tooltip">
 <icon BUILTIN="button_ok"/>
@@ -38,51 +41,54 @@
 <node CREATED="1331887594890" ID="ID_613885471" MODIFIED="1331887980148" TEXT="GS:js.animation">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1331831452645" ID="ID_396561508" MODIFIED="1331887980148" TEXT="load()">
+<node CREATED="1331831452645" ID="ID_396561508" MODIFIED="1332162028068" TEXT="read.SVG()">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1331831455094" ID="ID_686792012" MODIFIED="1331887980148" TEXT="save()">
+<node CREATED="1331831455094" ID="ID_686792012" MODIFIED="1332162034945" TEXT="write.SVG()">
 <icon BUILTIN="messagebox_warning"/>
 </node>
 <node CREATED="1331831458190" ID="ID_981099262" MODIFIED="1331887980148" TEXT="show()"/>
-<node CREATED="1331887798372" ID="ID_634377338" MODIFIED="1331887980148" TEXT="merge()">
+<node CREATED="1331887798372" ID="ID_634377338" MODIFIED="1332162046639" TEXT="merge() or c()">
 <node CREATED="1331887811396" ID="ID_129254836" MODIFIED="1331887980148" TEXT="refactor-ids">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node CREATED="1331887687246" ID="ID_938087100" MODIFIED="1331908528030" TEXT="SVG@svg Getter/Setter">
+<node CREATED="1331887687246" ID="ID_938087100" MODIFIED="1332175280141" TEXT="SVG@svg Getter/Setter">
 <icon BUILTIN="messagebox_warning"/>
-<node CREATED="1331887702287" ID="ID_1476091146" MODIFIED="1331887980148" TEXT="Nodes">
-<node CREATED="1331908431507" ID="ID_953345625" MODIFIED="1331913548191">
+<node CREATED="1331887702287" ID="ID_1476091146" MODIFIED="1332175334266" TEXT="Nodes">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1332175309747" ID="ID_463326610" MODIFIED="1332175313682" TEXT="Getter">
+<node CREATED="1331908431507" ID="ID_953345625" MODIFIED="1332162250671">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      <font color="#0000ff">Functionalities</font>&#160;Priority 1
+      <font color="#0000ff">Functionalities</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-1"/>
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1331913583452" ID="ID_1024240727" MODIFIED="1331913624482" STYLE="fork">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <font color="#0000ff">Functionalities</font>&#160;Priority 2
-    </p>
-  </body>
-</html>
-</richcontent>
-<edge COLOR="#808080" STYLE="bezier" WIDTH="thin"/>
+<node COLOR="#0000ff" CREATED="1332162178373" ID="ID_334171346" MODIFIED="1332162261612" TEXT="Functionalities">
 <icon BUILTIN="full-2"/>
+<icon BUILTIN="button_ok"/>
 </node>
+<node COLOR="#0000ff" CREATED="1332162196760" ID="ID_469397920" MODIFIED="1332175237536" TEXT="Functionalities">
+<icon BUILTIN="full-3"/>
+<icon BUILTIN="button_ok"/>
+</node>
+<node COLOR="#0000ff" CREATED="1332162198224" ID="ID_1614915309" MODIFIED="1332176833169" TEXT="Functionalities">
+<icon BUILTIN="full-4"/>
+<icon BUILTIN="button_ok"/>
+</node>
+<node COLOR="#0000ff" CREATED="1332162202175" ID="ID_1112650057" MODIFIED="1332162258800" TEXT="Functionalities">
+<icon BUILTIN="full-5"/>
+</node>
+</node>
+<node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1332175316042" TEXT="Setter"/>
 </node>
 <node CREATED="1331887705448" ID="ID_958901197" MODIFIED="1331887980148" TEXT="Attributes">
 <node CREATED="1331887712800" ID="ID_1686442579" MODIFIED="1331887980148" TEXT="Style"/>
@@ -141,8 +147,7 @@
       <font size="2"><i>eg.</i>&#160;SVG[&quot;xpath:://rect&quot;]&#160;&#160;will retrieve all rectangular shapes</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node CREATED="1331891864424" ID="ID_853232374" MODIFIED="1331911552761" TEXT="id::value">
@@ -202,22 +207,26 @@
       <font size="2">SVG[&quot;value&quot;] -&gt; SVG[&quot;default.search.attname::value&quot;].</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
-<node CREATED="1331911515011" ID="ID_262240219" MODIFIED="1331911529068" TEXT="Vector node attribute"/>
+<node CREATED="1331911515011" ID="ID_262240219" MODIFIED="1332162105443" TEXT="Vector node attribute">
+<icon BUILTIN="full-5"/>
+</node>
 </node>
 <node CREATED="1331891848414" ID="ID_1158698242" MODIFIED="1331891905326" TEXT="attribute">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1331891881928" ID="ID_565961918" MODIFIED="1331913650187" TEXT="defined">
-<node CREATED="1331891892817" ID="ID_1210952558" MODIFIED="1331913685553" TEXT="atomic">
+<node CREATED="1331891892817" ID="ID_1210952558" MODIFIED="1332161959966" TEXT="atomic">
 <arrowlink DESTINATION="ID_1577375993" ENDARROW="Default" ENDINCLINATION="86;0;" ID="Arrow_ID_1338851848" STARTARROW="None" STARTINCLINATION="86;0;"/>
 <arrowlink DESTINATION="ID_1853661306" ENDARROW="Default" ENDINCLINATION="117;0;" ID="Arrow_ID_552117156" STARTARROW="None" STARTINCLINATION="117;0;"/>
 <icon BUILTIN="full-2"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1331891895001" ID="ID_1552625047" MODIFIED="1331913697834" TEXT="vector">
+<node CREATED="1331891895001" ID="ID_1552625047" MODIFIED="1332176754138" TEXT="vector">
 <arrowlink DESTINATION="ID_1326839201" ENDARROW="Default" ENDINCLINATION="94;0;" ID="Arrow_ID_1612881361" STARTARROW="None" STARTINCLINATION="94;0;"/>
+<icon BUILTIN="full-4"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node CREATED="1331891890073" ID="ID_870805591" MODIFIED="1331911555922" TEXT="undefined">
@@ -230,14 +239,35 @@
 </node>
 <node CREATED="1331892350942" ID="ID_1254239507" MODIFIED="1331892387684" TEXT="return values">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1331892356766" ID="ID_1577375993" MODIFIED="1331913670416" TEXT="atomic">
+<node CREATED="1331892356766" ID="ID_1577375993" MODIFIED="1332161962660" TEXT="atomic">
 <icon BUILTIN="full-2"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1331892366902" ID="ID_1853661306" MODIFIED="1331913685553" TEXT="vector"/>
-<node CREATED="1331892369191" ID="ID_1326839201" MODIFIED="1331913697834" TEXT="data.frame"/>
+<node CREATED="1331892366902" ID="ID_1853661306" MODIFIED="1332175232726" TEXT="vector">
+<icon BUILTIN="full-3"/>
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1331892369191" ID="ID_1326839201" MODIFIED="1332176828971" TEXT="array">
+<icon BUILTIN="full-4"/>
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1331892374639" ID="ID_1930514821" MODIFIED="1331911811749" TEXT="xmlNodeSet">
 <icon BUILTIN="full-1"/>
 <icon BUILTIN="button_ok"/>
+<node CREATED="1332144906865" ID="ID_823757242" MODIFIED="1332144994502">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font size="2" color="#666666">'node' values are easily retrieve using xmlValue() or sapply(node.list, xmlValue). </font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="12"/>
+</node>
 </node>
 </node>
 </node>

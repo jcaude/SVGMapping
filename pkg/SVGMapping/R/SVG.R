@@ -1,5 +1,7 @@
 ## S V G
 ## --------------------------------------------------
+library(methods)
+
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 svgNS <- "http://www.w3.org/2000/svg"
@@ -18,18 +20,18 @@ setClass("SVG",
                         .js_animation="logical")
          )
 
-setGenericVerif(name="svg", function(object) {standardGeneric("svg")})
-setGenericVerif(name="svg<-", function(.Object,svg) {standardGeneric("svg<-")})
-setGenericVerif(name="file", function(object) {standardGeneric("file")})
-setGenericVerif(name="file<-", function(.Object,file) {standardGeneric("file<-")})
+setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
+setGenericVerif(name="SVG<-", function(.Object,svg) {standardGeneric("SVG<-")})
+setGenericVerif(name="dest.file", function(object) {standardGeneric("dest.file")})
+setGenericVerif(name="dest.file<-", function(.Object,file) {standardGeneric("dest.file<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
 setGenericVerif(name="defaultSearchAttr<-", function(.Object,attr.name) {standardGeneric("defaultSearchAttr<-")})
 setGenericVerif(name="jsTooltip", function(object) {standardGeneric("jsTooltip")})
 setGenericVerif(name="jsTooltip<-", function(.Object,flag) {standardGeneric("jsTooltip<-")})
 setGenericVerif(name="jsAnimation", function(object) {standardGeneric("jsAnimation")})
 setGenericVerif(name="jsAnimation<-", function(.Object,flag) {standardGeneric("jsAnimation<-")})
-setGenericVerif(name="load", function(object,file) {standardGeneric("load")})
-setGenericVerif(name="save", function(object) {standardGeneric("save")})
+setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
+setGenericVerif(name="write.SVG", function(object) {standardGeneric("write.SVG")})
 
 setMethod(f="initialize", signature="SVG",
           definition=function(.Object,...)
@@ -78,30 +80,56 @@ setMethod(f="[", signature="SVG",
             else {
               xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
             }
-            node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
-
-            ## -- Check for empty node selection
-            if(length(node.set) == 0)
-              return(list())
 
             ## -- Attribute selection
             if(missing(j)) {
+              node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
+              ## -- Check for empty node selection
+              if(length(node.set) == 0) return(list())               
               return(node.set)
             }
             else {
-              cat("Not yet implemented..")
+              if(is.character(j)) {     # atomic case
+                return(xpathSApply(x@svg, xpath,
+                                   function(x) {
+                                     attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
+                                     if(j %in% names(attrs))
+                                       return(attrs[[j]])
+                                     else
+                                       return(NA)
+                                   },
+                                   namespaces=.completeNamespaces(x@svg)
+                                   )
+                       )
+              }
+              else if (is.vector(j)) {  # vectory case -- very loosy testing here..
+                j <- if(is.list(j)) unlist(j) else j
+                return(t(xpathSApply(x@svg, xpath,
+                                   function(x) {
+                                     attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
+                                     jok <- j[j %in% names(attrs)]
+                                     jno <- j[!j %in% jok]
+                                     res <- vector()
+                                     res[jno] <- NA
+                                     res[jok] <- attrs[jok]
+                                     res
+                                   },
+                                   namespaces=.completeNamespaces(x@svg)
+                                   )
+                       ))
+              }
             }
           }
           )
 
-setMethod(f="svg", signature="SVG",
+setMethod(f="SVG", signature="SVG",
           definition=function(object)
           {
             return(object@svg)
           }
           )
           
-setReplaceMethod(f="svg", signature="SVG",
+setReplaceMethod(f="SVG", signature="SVG",
                  definition=function(.Object,svg)
                  {
                    ## check
@@ -114,14 +142,14 @@ setReplaceMethod(f="svg", signature="SVG",
                  }
                  )
 
-setMethod(f="file", signature="SVG",
+setMethod(f="dest.file", signature="SVG",
           definition=function(object)
           {
             return(object@file)
           }
           )
 
-setReplaceMethod(f="file", signature="SVG",
+setReplaceMethod(f="dest.file", signature="SVG",
                  definition=function(.Object,file)
                  {
                    ## check
@@ -194,7 +222,7 @@ setReplaceMethod(f="jsAnimation", signature="SVG",
                  }
                  )
 
-setMethod(f="load", signature="SVG",
+setMethod(f="read.SVG", signature="SVG",
           definition=function(object, file)
           {
             ## init.
@@ -211,7 +239,7 @@ setMethod(f="load", signature="SVG",
           }
           )
 
-setMethod(f="save", signature="SVG",
+setMethod(f="write.SVG", signature="SVG",
           definition=function(object)
           {
             ## - Check
@@ -265,7 +293,7 @@ SVG.factory <- function(file) {
   ## build a new SVG
   svg <- new("SVG")
   if(!missing(file))
-    load(svg,file)
+    read.SVG(svg,file=file)
 
   ## eop
   return(svg)
