@@ -21,10 +21,10 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1331831427508" ID="ID_411838553" MODIFIED="1331887980147" TEXT="methods">
+<node CREATED="1331831427508" ID="ID_411838553" MODIFIED="1332235407313" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1331831435925" ID="ID_552081248" MODIFIED="1331887980147" TEXT="show()">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1331831435925" ID="ID_552081248" MODIFIED="1332255390011" TEXT="show()">
+<icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1331831438557" ID="ID_1012395414" MODIFIED="1332161973558" TEXT="GS:SVG">
 <icon BUILTIN="button_ok"/>
@@ -47,7 +47,7 @@
 <node CREATED="1331831455094" ID="ID_686792012" MODIFIED="1332162034945" TEXT="write.SVG()">
 <icon BUILTIN="messagebox_warning"/>
 </node>
-<node CREATED="1331831458190" ID="ID_981099262" MODIFIED="1331887980148" TEXT="show()"/>
+<node CREATED="1332255349910" ID="ID_1342461840" MODIFIED="1332255353541" TEXT="show.SVG()"/>
 <node CREATED="1331887798372" ID="ID_634377338" MODIFIED="1332162046639" TEXT="merge() or c()">
 <node CREATED="1331887811396" ID="ID_129254836" MODIFIED="1331887980148" TEXT="refactor-ids">
 <font NAME="SansSerif" SIZE="12"/>
@@ -80,19 +80,88 @@
 <icon BUILTIN="full-3"/>
 <icon BUILTIN="button_ok"/>
 </node>
-<node COLOR="#0000ff" CREATED="1332162198224" ID="ID_1614915309" MODIFIED="1332176833169" TEXT="Functionalities">
+<node COLOR="#0000ff" CREATED="1332162198224" ID="ID_1614915309" MODIFIED="1332253695593" TEXT="Functionalities">
 <icon BUILTIN="full-4"/>
 <icon BUILTIN="button_ok"/>
+<node CREATED="1332238296156" ID="ID_1015181998" MODIFIED="1332253686036" TEXT="Implement attname:style case">
+<icon BUILTIN="button_ok"/>
 </node>
-<node COLOR="#0000ff" CREATED="1332162202175" ID="ID_1112650057" MODIFIED="1332162258800" TEXT="Functionalities">
+</node>
+<node COLOR="#0000ff" CREATED="1332162202175" ID="ID_1112650057" MODIFIED="1332238354928" TEXT="Functionalities">
+<arrowlink DESTINATION="ID_1015181998" ENDARROW="Default" ENDINCLINATION="205;0;" ID="Arrow_ID_1201063662" STARTARROW="None" STARTINCLINATION="205;0;"/>
 <icon BUILTIN="full-5"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node COLOR="#0000ff" CREATED="1332224865255" ID="ID_673757544" MODIFIED="1332224894947" TEXT="Functionalities">
+<node COLOR="#0000ff" CREATED="1332224865255" ID="ID_673757544" MODIFIED="1332254059263" TEXT="Functionalities">
 <icon BUILTIN="full-6"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1332175316042" TEXT="Setter"/>
+<node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1332175316042" TEXT="Setter">
+<node CREATED="1332255479644" ID="ID_1031201094" MODIFIED="1332255491712">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#0000ff">Functionalities</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="full-1"/>
 </node>
+<node CREATED="1332255485587" ID="ID_1419487887" MODIFIED="1332255495176">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#0000ff"><span style="color: #0000ff">Functionalities</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="full-2"/>
+</node>
+<node CREATED="1332255486986" ID="ID_317497543" MODIFIED="1332255498270">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#0000ff"><span style="color: #0000ff">Functionalities</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="full-3"/>
+</node>
+<node CREATED="1332255487554" ID="ID_289607402" MODIFIED="1332255501106">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#0000ff"><span style="color: #0000ff">Functionalities</span></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="full-4"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node CREATED="1332235389616" ID="ID_1753147494" MODIFIED="1332235415511" TEXT="factory">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1332235408912" ID="ID_756596104" MODIFIED="1332235419988" TEXT="file">
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 </node>
@@ -128,8 +197,11 @@
 <node CREATED="1331821649827" ID="ID_793707003" MODIFIED="1331892404669" TEXT="Getters/Setters">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
-<node CREATED="1331891832495" ID="ID_1307633891" MODIFIED="1331891843796" TEXT="SVG[node,attribute]">
+<node CREATED="1331891832495" ID="ID_1307633891" MODIFIED="1332255236402" TEXT="SVG[node,attribute]">
+<font NAME="Monaco" SIZE="12"/>
 <node CREATED="1331891845671" ID="ID_1100659769" MODIFIED="1331911830361" TEXT="node">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1332254139806" ID="ID_1804153849" MODIFIED="1332254162327" TEXT="atomic">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1331891856743" ID="ID_1075624363" MODIFIED="1331911550065" TEXT="xpath::value">
 <icon BUILTIN="full-1"/>
@@ -210,8 +282,11 @@
 </html></richcontent>
 </node>
 </node>
-<node CREATED="1331911515011" ID="ID_262240219" MODIFIED="1332224846505" TEXT="Vector node attribute">
+</node>
+<node CREATED="1331911515011" ID="ID_262240219" MODIFIED="1332255205239" TEXT="vector">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="full-6"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node CREATED="1331891848414" ID="ID_1158698242" MODIFIED="1331891905326" TEXT="attribute">
@@ -228,8 +303,9 @@
 <icon BUILTIN="full-4"/>
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1332224813593" ID="ID_1753684049" MODIFIED="1332224839688" TEXT="attname::item">
+<node CREATED="1332224813593" ID="ID_1753684049" MODIFIED="1332235269672" TEXT="attname::item">
 <icon BUILTIN="full-5"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node CREATED="1331891890073" ID="ID_870805591" MODIFIED="1331911555922" TEXT="undefined">
@@ -273,7 +349,62 @@
 </node>
 </node>
 </node>
-<node CREATED="1331892093658" ID="ID_1783879152" MODIFIED="1331892102992" TEXT="SVG[node,attribute] &lt;- value"/>
+<node CREATED="1331892093658" ID="ID_1783879152" MODIFIED="1332255226718" TEXT="SVG[node,attribute] &lt;- value">
+<font NAME="Monaco" SIZE="12"/>
+<node CREATED="1332254071651" ID="ID_443315218" MODIFIED="1332254084435" TEXT="node">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1332255166278" ID="ID_724202170" MODIFIED="1332255403591" TEXT="atomic">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="full-1"/>
+<node CREATED="1332255173132" ID="ID_251707876" MODIFIED="1332255173132">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      same as the getter
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node CREATED="1332255174470" ID="ID_899003510" MODIFIED="1332255451661" TEXT="vector">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="full-4"/>
+</node>
+</node>
+<node CREATED="1332254075747" ID="ID_785806763" MODIFIED="1332254085819" TEXT="attribute">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1332255021951" ID="ID_1956589580" MODIFIED="1332255026214" TEXT="defined">
+<node CREATED="1332255043528" ID="ID_1702971901" MODIFIED="1332255408326" TEXT="atomic">
+<icon BUILTIN="full-1"/>
+</node>
+<node CREATED="1332255047504" ID="ID_777502403" MODIFIED="1332255443168" TEXT="vector">
+<icon BUILTIN="full-3"/>
+</node>
+<node CREATED="1332255095658" ID="ID_545056088" MODIFIED="1332255446385" TEXT="attname::item">
+<icon BUILTIN="full-2"/>
+</node>
+</node>
+<node CREATED="1332255027223" ID="ID_777000923" MODIFIED="1332255035207" TEXT="undefined = error">
+<icon BUILTIN="stop-sign"/>
+</node>
+</node>
+<node CREATED="1332254079059" ID="ID_1706709260" MODIFIED="1332254087227" TEXT="value">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1332255058800" ID="ID_1739580416" MODIFIED="1332255417934" TEXT="same dim. as (node selection, attribute size)">
+<icon BUILTIN="full-1"/>
+</node>
+<node CREATED="1332255126812" ID="ID_1014539277" MODIFIED="1332255425134" TEXT="update value">
+<icon BUILTIN="full-1"/>
+</node>
+<node CREATED="1332255141396" ID="ID_1553233700" MODIFIED="1332255423255" TEXT="insert new attribue">
+<icon BUILTIN="full-1"/>
+</node>
+</node>
+</node>
 </node>
 </node>
 <node CREATED="1331821079345" FOLDED="true" ID="ID_1708593696" MODIFIED="1331905593909" TEXT="Mapping">

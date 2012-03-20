@@ -57,70 +57,134 @@ setMethod(f="show", signature="SVG",
 setMethod(f="[", signature="SVG",
           definition=function(x,i,j,drop)
           {
-            ## !!!!!!  'i' and 'j' CAN BE VECTORS !!!!!!!!
-            ## -------------------------------------------
+            ## Locals
+            ## ----------------
+            .get_item <- function(x,item) {
+              items <- strsplit(x,";")
+              if(max(grepl(":",items[[1]]) == FALSE) > 1) return(NA) 
+              items.values <- sub(".*:", "", items[[1]])
+              items.names <- sub(":.*", "", items[[1]])
+              items <- items.values
+              names(items) <- items.names
+              if(item %in% items.names)
+                return(items[[item]])
+              else
+                return(NA)
+            }
             
-            ## - Check
-            if(!is.character(i))
-              stop("'i' should be a valid node selector")
-            
-            ## -- Node selection
-            if(grepl("^xpath::",i)) {
-              xpath <- sub("^xpath::","",i)
-            }
-            else if(grepl("^id::",i)) {
-              value <- sub("^id::","",i)
-              xpath <- paste("//*[@id='",value,"']",sep="")
-            }
-            else if(grepl("::",i)) {
-              attname <- sub("::.*","",i)
-              value <- sub(".*::","",i)
-              xpath <- paste("//*[@",attname,"='",value,"']",sep="")
-            }
-            else {
-              xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
+            .sub_attribute <- function(x,attname, item) {
+              attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
+              if(attname %in% names(attrs)) {
+                if(is.na(item))
+                  return(attrs[[attname]])
+                else
+                  return(.get_item(attrs[[attname]],item))
+              }
+              else
+                return(NA)
             }
 
-            ## -- Attribute selection
-            if(missing(j)) {
-              node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
-              ## -- Check for empty node selection
-              if(length(node.set) == 0) return(list())               
-              return(node.set)
-            }
-            else {
-              if(is.character(j)) {     # atomic case
-                return(xpathSApply(x@svg, xpath,
-                                   function(x) {
-                                     attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
-                                     if(j %in% names(attrs))
-                                       return(attrs[[j]])
-                                     else
-                                       return(NA)
-                                   },
-                                   namespaces=.completeNamespaces(x@svg)
-                                   )
-                       )
+            .sub_vector_attribute <- function(x) {
+              ## - init.
+              attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
+              j.sub <- j[grepl("::",j)]
+              j.nosub <- j[!grepl("::",j)]
+              js.names <- sub("::.*","",j.sub)
+              js.items <- sub(".*::","",j.sub)
+              res <- vector()
+
+              ## - no.sub
+              jok <- j.nosub[j.nosub %in% names(attrs)]
+              jno <- j.nosub[!j.nosub %in% jok]
+              if(length(jno) > 0) res[jno] <- NA
+              if(length(jok) > 0) res[jok] <- attrs[jok]
+
+              ## - sub
+              check <- js.names %in% names(attrs)
+              jok <- js.items[check]
+              names(jok) <- js.names[check]
+              if(length(j.sub[!check]) > 0) res[j.sub[!check]] <- NA    # keep original selector
+              jok.res <- vector()
+              if(length(jok) > 0) {
+                for(i in 1:length(jok)) {
+                  attname <- names(jok)[i]
+                  item <- jok[i]
+                  jok.res[i] <- .get_item(attrs[[attname]],item)
+                }
+                res[j.sub[check]] <- jok.res
               }
-              else if (is.vector(j)) {  # vectory case -- very loosy testing here..
+
+              ## eop
+              res
+            }
+
+            .atomic_getter <- function(x,i,j) {
+              
+              ## - Check
+              if(!is.character(i))
+                stop("'i' should be a valid node selector")
+            
+              ## -- Xpath init.
+              if(grepl("^xpath::",i)) {
+                xpath <- sub("^xpath::","",i)
+              }
+              else if(grepl("^id::",i)) {
+                value <- sub("^id::","",i)
+                xpath <- paste("//*[@id='",value,"']",sep="")
+              }
+              else if(grepl("::",i)) {
+                attname <- sub("::.*","",i)
+                value <- sub(".*::","",i)
+                xpath <- paste("//*[@",attname,"='",value,"']",sep="")
+              }
+              else {
+                xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
+              }
+
+              ## -- Nodes only selection
+              if(missing(j)) {
+                node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))               
+                if(length(node.set) == 0) return(list())               
+                return(node.set)
+              }
+              
+              ## -- Nodes and Attributes selection
+              else {
+                if(is.character(j) && (length(j) == 1)) {     # atomic case
+                  
+                  ## init.
+                  item <- NA
+                  if(grepl("::",j)) {
+                    attname <- sub("::.*","",j)
+                    item <- sub(".*::","",j)
+                  }
+                  else
+                    attname <- j
+
+                  ## extraction
+                  return(xpathSApply(x@svg, xpath, .sub_attribute,                                     
+                                     attname, item,
+                                     namespaces=.completeNamespaces(x@svg) ) )
+              }
+              else {  # vectory case -- very loosy testing here..
                 j <- if(is.list(j)) unlist(j) else j
-                return(t(xpathSApply(x@svg, xpath,
-                                   function(x) {
-                                     attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
-                                     jok <- j[j %in% names(attrs)]
-                                     jno <- j[!j %in% jok]
-                                     res <- vector()
-                                     res[jno] <- NA
-                                     res[jok] <- attrs[jok]
-                                     res
-                                   },
-                                   namespaces=.completeNamespaces(x@svg)
-                                   )
-                       ))
+                return(xpathSApply(x@svg, xpath, .sub_vector_attribute,
+                                     namespaces=.completeNamespaces(x@svg) ) )
+              }
               }
             }
+
+            ## GETTER
+            if(length(i) > 1)
+              return(sapply(i,
+                            function(node.sel,x,j) {
+                              return(.atomic_getter(x, node.sel, j))
+                            },
+                            x, j))
+            else
+              return(.atomic_getter(x,i,j))
           }
-          )
+        )
 
 setMethod(f="SVG", signature="SVG",
           definition=function(object)
