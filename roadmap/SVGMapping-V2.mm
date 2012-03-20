@@ -93,9 +93,6 @@
 </node>
 <node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1332175316042" TEXT="Setter"/>
 </node>
-<node CREATED="1331887705448" ID="ID_958901197" MODIFIED="1331887980148" TEXT="Attributes">
-<node CREATED="1331887712800" ID="ID_1686442579" MODIFIED="1331887980148" TEXT="Style"/>
-</node>
 </node>
 </node>
 </node>
@@ -270,8 +267,7 @@
       <font size="2" color="#666666">'node' values are easily retrieve using xmlValue() or sapply(node.list, xmlValue). </font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
