@@ -87,6 +87,9 @@
 <node COLOR="#0000ff" CREATED="1332162202175" ID="ID_1112650057" MODIFIED="1332162258800" TEXT="Functionalities">
 <icon BUILTIN="full-5"/>
 </node>
+<node COLOR="#0000ff" CREATED="1332224865255" ID="ID_673757544" MODIFIED="1332224894947" TEXT="Functionalities">
+<icon BUILTIN="full-6"/>
+</node>
 </node>
 <node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1332175316042" TEXT="Setter"/>
 </node>
@@ -210,8 +213,8 @@
 </html></richcontent>
 </node>
 </node>
-<node CREATED="1331911515011" ID="ID_262240219" MODIFIED="1332162105443" TEXT="Vector node attribute">
-<icon BUILTIN="full-5"/>
+<node CREATED="1331911515011" ID="ID_262240219" MODIFIED="1332224846505" TEXT="Vector node attribute">
+<icon BUILTIN="full-6"/>
 </node>
 </node>
 <node CREATED="1331891848414" ID="ID_1158698242" MODIFIED="1331891905326" TEXT="attribute">
@@ -227,6 +230,9 @@
 <arrowlink DESTINATION="ID_1326839201" ENDARROW="Default" ENDINCLINATION="94;0;" ID="Arrow_ID_1612881361" STARTARROW="None" STARTINCLINATION="94;0;"/>
 <icon BUILTIN="full-4"/>
 <icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1332224813593" ID="ID_1753684049" MODIFIED="1332224839688" TEXT="attname::item">
+<icon BUILTIN="full-5"/>
 </node>
 </node>
 <node CREATED="1331891890073" ID="ID_870805591" MODIFIED="1331911555922" TEXT="undefined">
