@@ -22,7 +22,6 @@ export("addLinkByLabelSVG")
 
 exportClasses("SVG")
 exportMethods("SVG", "SVG<-")
-exportMethods("dest.file", "dest.file<-")
 exportMethods("defaultSearchAttr", "defaultSearchAttr<-")
 exportMethods("read.SVG", "write.SVG")
 export("SVG.factory")

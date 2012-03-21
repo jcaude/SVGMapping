@@ -13,8 +13,7 @@ svgNS <- "http://www.w3.org/2000/svg"
 }
 
 setClass("SVG",
-         representation(file="character",                     
-                        svg="ANY",
+         representation(svg="ANY",
                         .default_search_attr="character",
                         .js_tooltip="logical",
                         .js_animation="logical")
@@ -22,22 +21,20 @@ setClass("SVG",
 
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
 setGenericVerif(name="SVG<-", function(.Object,svg) {standardGeneric("SVG<-")})
-setGenericVerif(name="dest.file", function(object) {standardGeneric("dest.file")})
-setGenericVerif(name="dest.file<-", function(.Object,file) {standardGeneric("dest.file<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
 setGenericVerif(name="defaultSearchAttr<-", function(.Object,attr.name) {standardGeneric("defaultSearchAttr<-")})
 setGenericVerif(name="jsTooltip", function(object) {standardGeneric("jsTooltip")})
 setGenericVerif(name="jsTooltip<-", function(.Object,flag) {standardGeneric("jsTooltip<-")})
 setGenericVerif(name="jsAnimation", function(object) {standardGeneric("jsAnimation")})
 setGenericVerif(name="jsAnimation<-", function(.Object,flag) {standardGeneric("jsAnimation<-")})
+setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
-setGenericVerif(name="write.SVG", function(object) {standardGeneric("write.SVG")})
+setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
 
 setMethod(f="initialize", signature="SVG",
           definition=function(.Object,...)
           {
             ## init. args
-            .Object@file <- character(0)
             .Object@.default_search_attr <- "id"
             .Object@.js_tooltip <- FALSE
             .Object@.js_animation <- FALSE
@@ -342,26 +339,6 @@ setReplaceMethod(f="SVG", signature="SVG",
                  }
                  )
 
-setMethod(f="dest.file", signature="SVG",
-          definition=function(object)
-          {
-            return(object@file)
-          }
-          )
-
-setReplaceMethod(f="dest.file", signature="SVG",
-                 definition=function(.Object,file)
-                 {
-                   ## check
-                   if(!is.character(file))
-                     stop("'file' must be a string")
-
-                   ## eop
-                   .Object@file <- file
-                   return(.Object)
-                 }
-                 )
-
 setMethod(f="defaultSearchAttr", signature="SVG",
           definition=function(object)
           {
@@ -422,6 +399,29 @@ setReplaceMethod(f="jsAnimation", signature="SVG",
                  }
                  )
 
+setMethod(f="addScript", signature="SVG",
+          definition=function(object,script,id)
+          {
+            ## Build script node
+            cdata <- newXMLCDataNode(paste("\n", script, "\n", sep=""))
+            script.attrs <- list(type="text/ecmascript")
+            if (!missing(id)) script.attrs[["id"]] <- id
+            scriptnode <- newXMLNode("script", attrs=script.attrs, .children=list(cdata))
+  
+            ## Update/Insert script
+            updated <- FALSE
+            if (!mising(id)) {
+              search.node <- object[paste("id::",id,sep="")]
+              if(length(search.node) > 0) {
+                replaceNodes(search.node[[1]], scriptnode)
+                updated <- TRUE
+              }
+            }
+            if(!updated)
+              addChildren(xmlRoot(svg), kids=list(scriptnode))            
+          }
+          )
+
 setMethod(f="read.SVG", signature="SVG",
           definition=function(object, file)
           {
@@ -433,14 +433,13 @@ setMethod(f="read.SVG", signature="SVG",
                                        useInternalNodes=TRUE,
                                        addAttributeNamespaces=TRUE,
                                        fullNamespaceInfo=FALSE)
-            object@file <- file
             assign(nameObject,object,envir=parent.frame())
             return(invisible(object))
           }
           )
 
 setMethod(f="write.SVG", signature="SVG",
-          definition=function(object)
+          definition=function(object,file)
           {
             ## - Check
             if(length(file)==0)
@@ -448,12 +447,11 @@ setMethod(f="write.SVG", signature="SVG",
 
             ## - Add Javascript
             if(object@.js_tooltip || object@.js_animation) {
-              #### THIS IS THE CODE SECTION TO REFACTOR !!!!!!!!!!!!!!!!!
-              ## add js init. 
-              root <- xmlRoot(svg)
-              setAttributeSVG(root, "onload", "init(evt)")
-              #### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-              ## get js script
+
+              ## init.
+              object["xpath::/svg:svg","onload"] <- "init(evt)"
+              
+              ## get js script (init,tooltip, animation)
               con <- file(system.file("extdata/script.js", package="SVGMapping"), "rb")
               script.lines <- readLines(con)
               close(con)
@@ -470,10 +468,7 @@ setMethod(f="write.SVG", signature="SVG",
                 close(con)
                 script <- paste(script,script.lines, collapse="\n")
               }
-              #### THIS IS THE CODE SECTION TO REFACTOR !!!!!!!!!!!!!!!!!
-              ## add js to svg
-              addScriptSVG(svg, script, id="SVGMapping-script")
-              #### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!              
+              addScriptSVG(object, script, id="SVGMapping-script")
             }
 
             ## - Produce source XML
