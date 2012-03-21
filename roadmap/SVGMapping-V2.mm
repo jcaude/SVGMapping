@@ -98,7 +98,7 @@
 </node>
 </node>
 <node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1332175316042" TEXT="Setter">
-<node CREATED="1332255479644" ID="ID_1031201094" MODIFIED="1332255491712">
+<node CREATED="1332255479644" ID="ID_1031201094" MODIFIED="1332325152070">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -108,11 +108,11 @@
       <font color="#0000ff">Functionalities</font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1332255485587" ID="ID_1419487887" MODIFIED="1332255495176">
+<node CREATED="1332255485587" ID="ID_1419487887" MODIFIED="1332325163680">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -122,9 +122,9 @@
       <font color="#0000ff"><span style="color: #0000ff">Functionalities</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-2"/>
+<icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1332255486986" ID="ID_317497543" MODIFIED="1332255498270">
 <richcontent TYPE="NODE"><html>
@@ -136,8 +136,7 @@
       <font color="#0000ff"><span style="color: #0000ff">Functionalities</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-3"/>
 </node>
 <node CREATED="1332255487554" ID="ID_289607402" MODIFIED="1332255501106">
@@ -150,8 +149,7 @@
       <font color="#0000ff"><span style="color: #0000ff">Functionalities</span></font>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-4"/>
 </node>
 </node>
@@ -353,9 +351,10 @@
 <font NAME="Monaco" SIZE="12"/>
 <node CREATED="1332254071651" ID="ID_443315218" MODIFIED="1332254084435" TEXT="node">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1332255166278" ID="ID_724202170" MODIFIED="1332255403591" TEXT="atomic">
+<node CREATED="1332255166278" ID="ID_724202170" MODIFIED="1332324744514" TEXT="atomic">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
 <node CREATED="1332255173132" ID="ID_251707876" MODIFIED="1332255173132">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -366,8 +365,7 @@
       same as the getter
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node CREATED="1332255174470" ID="ID_899003510" MODIFIED="1332255451661" TEXT="vector">
@@ -378,14 +376,16 @@
 <node CREATED="1332254075747" ID="ID_785806763" MODIFIED="1332254085819" TEXT="attribute">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1332255021951" ID="ID_1956589580" MODIFIED="1332255026214" TEXT="defined">
-<node CREATED="1332255043528" ID="ID_1702971901" MODIFIED="1332255408326" TEXT="atomic">
+<node CREATED="1332255043528" ID="ID_1702971901" MODIFIED="1332324748551" TEXT="atomic">
 <icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1332255047504" ID="ID_777502403" MODIFIED="1332255443168" TEXT="vector">
 <icon BUILTIN="full-3"/>
 </node>
-<node CREATED="1332255095658" ID="ID_545056088" MODIFIED="1332255446385" TEXT="attname::item">
+<node CREATED="1332255095658" ID="ID_545056088" MODIFIED="1332325159312" TEXT="attname::item">
 <icon BUILTIN="full-2"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node CREATED="1332255027223" ID="ID_777000923" MODIFIED="1332255035207" TEXT="undefined = error">
@@ -394,14 +394,21 @@
 </node>
 <node CREATED="1332254079059" ID="ID_1706709260" MODIFIED="1332254087227" TEXT="value">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1332255058800" ID="ID_1739580416" MODIFIED="1332255417934" TEXT="same dim. as (node selection, attribute size)">
+<node CREATED="1332255058800" ID="ID_1739580416" MODIFIED="1332325141999" TEXT="same dim. as (node selection, attribute size)">
 <icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1332255126812" ID="ID_1014539277" MODIFIED="1332255425134" TEXT="update value">
+<node CREATED="1332324767554" ID="ID_1391200939" MODIFIED="1332325142989" TEXT="length=1, repeat value">
 <icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1332255141396" ID="ID_1553233700" MODIFIED="1332255423255" TEXT="insert new attribue">
+<node CREATED="1332255126812" ID="ID_1014539277" MODIFIED="1332325143932" TEXT="update value">
 <icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1332255141396" ID="ID_1553233700" MODIFIED="1332325144742" TEXT="insert new attribue">
+<icon BUILTIN="full-1"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 </node>

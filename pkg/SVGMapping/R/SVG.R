@@ -221,36 +221,77 @@ setReplaceMethod(f="[", signature="SVG",
                      else
                        attrs[[attname]] <- value
                      ## fix for libxml2 rel. < 2.6.3x
-                     if(is.null(xmlParent(node))) removeAttributes(node) 
-                     xmlAttrs(node, suppressNamespaceWarning=TRUE) <- attrs
+                     if(is.null(xmlParent(x))) removeAttributes(x) 
+                     xmlAttrs(x, suppressNamespaceWarning=TRUE) <- attrs
                      return(x)
                    }
 
-                   .atomic_setter <- function(x,i,j,value) { 
+                   .atomic_setter <- function(i,x,j,value) {
+                     
+                     ## - XPath init.
+                     if(grepl("^xpath::",i)) {
+                       xpath <- sub("^xpath::","",i)
+                     }
+                     else if(grepl("^id::",i)) {
+                       value <- sub("^id::","",i)
+                       xpath <- paste("//*[@id='",value,"']",sep="")
+                     }
+                     else if(grepl("::",i)) {
+                       attname <- sub("::.*","",i)
+                       value <- sub(".*::","",i)
+                       xpath <- paste("//*[@",attname,"='",value,"']",sep="")
+                     }
+                     else {
+                       xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
+                     }
+
+                     ## - Attribute selection
+                     if(is.character(j) && (length(j) == 1)) {  # atomic case
+
+                       ## init.
+                       item <- NA
+                       if(grepl("::",j)) {
+                         attname <- sub("::.*","",j)
+                         item <- sub(".*::","",j)
+                       }
+                       else
+                         attname <- j
+                       node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
+                       
+                       ## check
+                       if(length(node.set) == 0) return(invisible())                       
+                       if((length(value) != length(node.set)) && (length(value) != 1))
+                         stop("'value' and 'i' have different length")
+                       if(length(value) == 1) value <- replicate(length(node.set),value)
+                     
+                       ## loop over nodes
+                       for(i in 1:length(node.set)) {
+                         node <- node.set[[i]]
+                         .sub_attribute(node,attname, item, value[[i]])
+                       }
+                     }
+                     else {  # vector case
+                     }
                    }
 
+                   ## -- SETTER
+                   
                    ## - Check
                    if(missing(j)) stop("Missing attribute specification 'j'")
-                   if(!is.character(i)) stop("'i' should be a valid node selector")
+                   if(!is.character(i)) stop("'i' should be a valid node selector")               
 
-                   ## - XPath init.
-                    if(grepl("^xpath::",i)) {
-                      xpath <- sub("^xpath::","",i)
-                    }
-                    else if(grepl("^id::",i)) {
-                      value <- sub("^id::","",i)
-                      xpath <- paste("//*[@id='",value,"']",sep="")
-                    }
-                    else if(grepl("::",i)) {
-                      attname <- sub("::.*","",i)
-                      value <- sub(".*::","",i)
-                      xpath <- paste("//*[@",attname,"='",value,"']",sep="")
-                    }
-                    else {
-                      xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
-                    }
+                   ## - Set
+                   if(is.list(i) || (length(i) > 1)) {
+#                     res <- lapply(i, .atomic_getter, x, j)
+#                     names(res) <- i
+#                     return(res)
+                   }
+                   else {
+                     .atomic_setter(i,x,j,value)
+                   }
 
-                   ## - 
+                   ## - eop
+                   return(x)
                  }
                  )
 
