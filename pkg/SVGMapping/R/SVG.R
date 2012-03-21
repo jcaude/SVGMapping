@@ -226,7 +226,31 @@ setReplaceMethod(f="[", signature="SVG",
                      return(x)
                    }
 
-                   .atomic_setter <- function(i,x,j,value) {
+                   .atomic_setter <- function(x,xpath,j,value) {
+                     ## init.
+                     item <- NA
+                     if(grepl("::",j)) {
+                       attname <- sub("::.*","",j)
+                       item <- sub(".*::","",j)
+                     }
+                     else
+                       attname <- j
+                     node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
+                       
+                     ## check
+                     if(length(node.set) == 0) return(invisible())                       
+                     if((length(value) != length(node.set)) && (length(value) != 1))
+                       stop("'value' and 'nodes(i)' have different length")
+                     if(length(value) == 1) value <- replicate(length(node.set),value)
+                     
+                     ## loop over nodes
+                     for(i in 1:length(node.set)) {
+                       node <- node.set[[i]]
+                       .sub_attribute(node,attname, item, value[[i]])
+                     }                     
+                   }
+
+                   .setter <- function(i,x,j,value) {
                      
                      ## - XPath init.
                      if(grepl("^xpath::",i)) {
@@ -247,30 +271,23 @@ setReplaceMethod(f="[", signature="SVG",
 
                      ## - Attribute selection
                      if(is.character(j) && (length(j) == 1)) {  # atomic case
-
-                       ## init.
-                       item <- NA
-                       if(grepl("::",j)) {
-                         attname <- sub("::.*","",j)
-                         item <- sub(".*::","",j)
-                       }
-                       else
-                         attname <- j
-                       node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
-                       
-                       ## check
-                       if(length(node.set) == 0) return(invisible())                       
-                       if((length(value) != length(node.set)) && (length(value) != 1))
-                         stop("'value' and 'i' have different length")
-                       if(length(value) == 1) value <- replicate(length(node.set),value)
-                     
-                       ## loop over nodes
-                       for(i in 1:length(node.set)) {
-                         node <- node.set[[i]]
-                         .sub_attribute(node,attname, item, value[[i]])
-                       }
+                       .atomic_setter(x,xpath,j,value)
                      }
                      else {  # vector case
+
+                       ## init. & check
+                       j <- if(is.list(j)) unlist(j) else j
+                       if(!is.list(value) && (length(value)==length(j)))
+                         value <- as.list(value)
+                       if(!is.list(value) || (length(value) != length(j)))
+                         stop("'value' must be a 'list()' having the same length than 'j'")
+
+                       ## loop over 'j'
+                       for(att.id in 1:length(j)) {
+                         att <- j[att.id]
+                         v <- value[[att.id]]
+                         .atomic_setter(x,xpath,att,v)
+                       }                       
                      }
                    }
 
@@ -282,12 +299,22 @@ setReplaceMethod(f="[", signature="SVG",
 
                    ## - Set
                    if(is.list(i) || (length(i) > 1)) {
-#                     res <- lapply(i, .atomic_getter, x, j)
-#                     names(res) <- i
-#                     return(res)
+
+                     ## init.
+                     if(!is.list(value) && length(value) == length(j))
+                       value <- replicate(length(i),value,simplify=FALSE)
+                     if(!is.list(value) || (length(value) != length(i)))
+                       stop("'value' must be a 'list()' having the same length than 'i'")
+
+                     ## proceed..
+                     for(idx in 1:length(i)) {
+                       node <- i[[idx]]
+                       v <- value[[idx]]
+                       .setter(node,x,j,v)
+                     }
                    }
                    else {
-                     .atomic_setter(i,x,j,value)
+                     .setter(i,x,j,value)
                    }
 
                    ## - eop
