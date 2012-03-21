@@ -59,6 +59,8 @@ setMethod(f="[", signature="SVG",
           {
             ## Locals
             ## ----------------
+            .row_attnames <- NULL
+            
             .get_item <- function(x,item) {
               items <- strsplit(x,";")
               if(max(grepl(":",items[[1]]) == FALSE) > 1) return(NA) 
@@ -84,7 +86,7 @@ setMethod(f="[", signature="SVG",
                 return(NA)
             }
 
-            .sub_vector_attribute <- function(x) {
+            .sub_vector_attribute <- function(x,j) {
               ## - init.
               attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
               j.sub <- j[grepl("::",j)]
@@ -101,29 +103,26 @@ setMethod(f="[", signature="SVG",
 
               ## - sub
               check <- js.names %in% names(attrs)
-              jok <- js.items[check]
-              names(jok) <- js.names[check]
+              jcheck <- js.items[check]
+              names(jcheck) <- js.names[check]
               if(length(j.sub[!check]) > 0) res[j.sub[!check]] <- NA    # keep original selector
               jok.res <- vector()
-              if(length(jok) > 0) {
-                for(i in 1:length(jok)) {
-                  attname <- names(jok)[i]
-                  item <- jok[i]
+              if(length(jcheck) > 0) {
+                for(i in 1:length(jcheck)) {
+                  attname <- names(jcheck)[i]
+                  item <- jcheck[i]
                   jok.res[i] <- .get_item(attrs[[attname]],item)
                 }
                 res[j.sub[check]] <- jok.res
               }
 
               ## eop
-              res
+              .attnames <<- c(jno,jok,j.sub[!check],j.sub[check])
+              return(res)
             }
 
-            .atomic_getter <- function(x,i,j) {
+            .atomic_getter <- function(i,x,j) {
               
-              ## - Check
-              if(!is.character(i))
-                stop("'i' should be a valid node selector")
-            
               ## -- Xpath init.
               if(grepl("^xpath::",i)) {
                 xpath <- sub("^xpath::","",i)
@@ -168,23 +167,92 @@ setMethod(f="[", signature="SVG",
               }
               else {  # vectory case -- very loosy testing here..
                 j <- if(is.list(j)) unlist(j) else j
-                return(xpathSApply(x@svg, xpath, .sub_vector_attribute,
-                                     namespaces=.completeNamespaces(x@svg) ) )
+                .row_attnames <- NULL
+                res <- xpathSApply(x@svg, xpath,
+                                   function(x,j) {
+                                     res <- .sub_vector_attribute(x,j)
+                                     .row_attnames <<- .attnames
+                                     return(res)
+                                   }, j,
+                                   namespaces=.completeNamespaces(x@svg) )
+                rownames(res) <- .row_attnames
+                return(res)
               }
               }
             }
 
-            ## GETTER
-            if(length(i) > 1)
-              return(sapply(i,
-                            function(node.sel,x,j) {
-                              return(.atomic_getter(x, node.sel, j))
-                            },
-                            x, j))
+            ## -- GETTER
+
+            ## - Check
+            if(!(is.character(i) || is.list(i)))
+              stop("'i' should be a valid node selector")
+            
+            if(is.list(i) || (length(i) > 1)) {
+              res <- lapply(i, .atomic_getter, x, j)
+              names(res) <- i
+              return(res)
+            }
             else
-              return(.atomic_getter(x,i,j))
+              return(.atomic_getter(i,x,j))
           }
         )
+
+setReplaceMethod(f="[", signature="SVG",
+                 definition=function(x,i,j,value)
+                 {
+                   ## Locals
+                   ## ----------------
+                   .set_item <- function(x,item,value) {
+                     items <- strsplit(x,";")
+                     if(max(grepl(":",items[[1]]) == FALSE) > 1) return(x)  
+                     items.values <- sub(".*:", "", items[[1]])
+                     items.names <- sub(":.*", "", items[[1]])
+                     items <- items.values
+                     names(items) <- items.names
+                     items[[item]] <- value
+                     x <- paste(names(items), items,sep=":",collapse=";")
+                     return(x)
+                   }
+            
+                   .sub_attribute <- function(x,attname, item, value) {
+                     attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
+                     if(attname %in% names(attrs) && !is.na(item)) 
+                       attrs[[attname]] <- .set_item(attrs[[attname]],item,value)
+                     else
+                       attrs[[attname]] <- value
+                     ## fix for libxml2 rel. < 2.6.3x
+                     if(is.null(xmlParent(node))) removeAttributes(node) 
+                     xmlAttrs(node, suppressNamespaceWarning=TRUE) <- attrs
+                     return(x)
+                   }
+
+                   .atomic_setter <- function(x,i,j,value) { 
+                   }
+
+                   ## - Check
+                   if(missing(j)) stop("Missing attribute specification 'j'")
+                   if(!is.character(i)) stop("'i' should be a valid node selector")
+
+                   ## - XPath init.
+                    if(grepl("^xpath::",i)) {
+                      xpath <- sub("^xpath::","",i)
+                    }
+                    else if(grepl("^id::",i)) {
+                      value <- sub("^id::","",i)
+                      xpath <- paste("//*[@id='",value,"']",sep="")
+                    }
+                    else if(grepl("::",i)) {
+                      attname <- sub("::.*","",i)
+                      value <- sub(".*::","",i)
+                      xpath <- paste("//*[@",attname,"='",value,"']",sep="")
+                    }
+                    else {
+                      xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
+                    }
+
+                   ## - 
+                 }
+                 )
 
 setMethod(f="SVG", signature="SVG",
           definition=function(object)
