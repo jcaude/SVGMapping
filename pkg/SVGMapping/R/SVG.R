@@ -47,7 +47,22 @@ setMethod(f="initialize", signature="SVG",
 setMethod(f="show", signature="SVG",
           definition=function(object)
           {
-            cat("SVGMapping::SVG object\n")
+            ## init.
+            browser <- getOption("browser")
+            path <- tempfile()
+            svg.path <- paste(path, ".svg", sep="")            
+            html.path <- paste(path, ".html", sep="")
+
+            ## save temp & write HTML page
+            write.SVG(object, svg.path)
+            con <- file(system.file("extdata/show-template.html", package="SVGMapping"), "rb")
+            html.template <- paste(readLines(con),collapse="\n")
+            close(con)
+            html <- sprintf(html.template,basename(svg.path))
+            con <- file(html.path, "w")
+            cat(html, file=con)
+            close(con)
+            browseURL(paste("file:///", html.path, sep=""), browser=browser)
           }
           )
 
