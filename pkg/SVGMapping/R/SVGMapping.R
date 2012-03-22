@@ -24,14 +24,6 @@
 
 load("inst/extdata/microarrayColors.rda")
 
-svgNS <- "http://www.w3.org/2000/svg"
-
-completeNamespaces <- function(svgdata) {
-  NS <- xmlNamespaceDefinitions(svgdata, simplify=TRUE)
-  NS[["svg"]] <- svgNS
-  return(NS)
-}
-
 computeExprColors <- function(X, col=microarrayColors, NA.color="#999999", a=-2, b=2) {
   satval <- 2
   n <- length(col)
@@ -42,61 +34,6 @@ computeExprColors <- function(X, col=microarrayColors, NA.color="#999999", a=-2,
   X <- col[X]
   X[is.na(X)] <- NA.color
   return(X)
-}
-
-loadSVG <- function(file) {
-  svg <- xmlTreeParse(file, useInternalNodes=TRUE, addAttributeNamespaces=TRUE, fullNamespaceInfo=FALSE)
-  return(svg)
-}
-
-setAttributeSVG <- function(node, attname, attval) {
-  ## Namespace prefix is important to not replace the value of an attribute X by the value of something:X when both are present
-  attrs <- xmlAttrs(node, addNamespacePrefix=TRUE)
-  attrs[[attname]] <- attval
-  ## fix for libxml2 rel. < 2.6.3x
-  if(is.null(xmlParent(node))) removeAttributes(node) 
-  xmlAttrs(node, suppressNamespaceWarning=TRUE) <- attrs
-  return(invisible())
-}
-
-getAttributeSVG <- function(node, attname) {
-  attrs <- xmlAttrs(node, addNamespacePrefix=TRUE)
-  if (attname %in% names(attrs)) {
-    return(attrs[[attname]])
-  } else {
-    return(NULL)
-  }
-}
-
-setStyleSVG <- function(node, style.parameter, style.value) {
-  style <- xmlGetAttr(node, "style", default="")
-  style.params <- strsplit(style, ";", fixed=TRUE)[[1]]
-  k <- grep(paste("^", style.parameter, ":", sep=""), style.params)
-  if (length(k) == 0) {
-    style.params <- c(style.params, paste(style.parameter, ":", style.value, sep=""))
-  } else {
-    style.params[k] <- paste(style.parameter, ":", style.value, sep="")
-  }
-  style <- paste(style.params, collapse=";")
-  setAttributeSVG(node, "style", style)
-  return(invisible())
-}
-
-getStyleSVG <- function(node, style.parameter) {
-  style <- xmlGetAttr(node, "style", default="")
-  style.params <- strsplit(style, ";", fixed=TRUE)[[1]]
-  k <- grep(paste("^", style.parameter, ":", sep=""), style.params)
-  if (length(k) == 0) {
-    return(NULL)
-  } else {
-    return(strsplit(style.params[k], ":", fixed=TRUE)[[1]][[2]])
-  }
-}
-
-getLabelsSVG <- function(svg, what="*", geneAttribute="inkscape:label") {
-  labels <- xpathSApply(svg, paste("//", what, "[@", geneAttribute, "]", sep=""), xmlGetAttr, geneAttribute)
-  labels <- unique(labels)
-  return(labels)
 }
 
 setTextSVG <- function(svg, searchAttributeValue, text, searchAttribute="inkscape:label") {
@@ -630,50 +567,6 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
   return(invisible())
 }
 
-saveSVG <- function(svg, file="", add.script=TRUE) {
-  if (add.script) {
-    ## Add instruction to initialize script when SVG file is loaded
-    root <- xmlRoot(svg)
-    setAttributeSVG(root, "onload", "init(evt)")
-    ## Add the JavaScript script
-    con <- file(system.file("extdata/script.js", package="SVGMapping"), "rb")
-    script.lines <- readLines(con)
-    close(con)
-    script <- paste(script.lines, collapse="\n")
-    addScriptSVG(svg, script, id="SVGMapping-script")
-  }
-  
-  ## Produce source XML
-  xml <- saveXML(svg, indent=FALSE)
-  xml <- gsub("\n</text>","</text>", xml)
-  xml <- gsub("\n<tspan","<tspan", xml)
-  
-  ## Write/output the SVG
-  cat(xml, file=file)
-}
-
-addScriptSVG <- function(svg, script, id=NULL) {
-  cdata <- newXMLCDataNode(paste("\n", script, "\n", sep=""))
-  script.attrs <- list(type="text/ecmascript")
-  if (!is.null(id)) {
-    script.attrs[["id"]] <- id
-  }
-  scriptnode <- newXMLNode("script", attrs=script.attrs, .children=list(cdata))
-  
-  # Replace a script node if it has the same id
-  replaced <- FALSE
-  if (!is.null(id)) {
-    with.same.id <- getNodeSet(svg, paste("//svg:script[@id=\"", id, "\"]", sep=""), namespaces=completeNamespaces(svg))
-    if (length(with.same.id) > 0) {
-      replaceNodes(with.same.id[[1]], scriptnode)
-      replaced <- TRUE
-    } 
-  }
-  if (!replaced) {
-    addChildren(xmlRoot(svg), kids=list(scriptnode))
-  }
-}
-
 addDefinesSVG <- function(svg, nodes) {
   defs <- getNodeSet(svg, "//svg:defs", namespaces=completeNamespaces(svg))
   if (length(defs) == 0) {
@@ -683,26 +576,4 @@ addDefinesSVG <- function(svg, nodes) {
     defs <- defs[[1]]
   }
   addChildren(defs, nodes)
-}
-
-showSVG <- function(svg, browser=getOption("browser"), add.script=TRUE) {
-  path <- tempfile()
-  svgpath <- paste(path, ".svg", sep="")
-  saveSVG(svg, svgpath, add.script=add.script)
-  htmlpath <- paste(path, ".html", sep="")
-  con <- file(htmlpath, "w")
-  html <- paste('<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-<object data="', basename(svgpath), '" width="100%" height="100%">
-Failed to load SVG image. Does your browser support SVG?
-</object>
-</body>
-</html>
-', sep="")
-  cat(html, file=con)
-  close(con)
-  browseURL(paste("file:///", htmlpath, sep=""), browser=browser)
 }
