@@ -19,14 +19,15 @@ setClass("SVG",
                         .js_animation="logical")
          )
 
+setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary")})
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
-setGenericVerif(name="SVG<-", function(.Object,svg) {standardGeneric("SVG<-")})
+setGenericVerif(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
-setGenericVerif(name="defaultSearchAttr<-", function(.Object,attr.name) {standardGeneric("defaultSearchAttr<-")})
+setGenericVerif(name="defaultSearchAttr<-", function(.Object,value) {standardGeneric("defaultSearchAttr<-")})
 setGenericVerif(name="jsTooltip", function(object) {standardGeneric("jsTooltip")})
-setGenericVerif(name="jsTooltip<-", function(.Object,flag) {standardGeneric("jsTooltip<-")})
+setGenericVerif(name="jsTooltip<-", function(.Object,value) {standardGeneric("jsTooltip<-")})
 setGenericVerif(name="jsAnimation", function(object) {standardGeneric("jsAnimation")})
-setGenericVerif(name="jsAnimation<-", function(.Object,flag) {standardGeneric("jsAnimation<-")})
+setGenericVerif(name="jsAnimation<-", function(.Object,value) {standardGeneric("jsAnimation<-")})
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
@@ -41,6 +42,32 @@ setMethod(f="initialize", signature="SVG",
             
             ## eop
             return(.Object)
+          }
+          )
+
+setMethod(f="summary", signature="SVG",
+          definition=function(object, ...)
+          {
+            ## init.
+            svg.stats <- summary(object@svg)
+            svg.stats$jsTooltip <- jsTooltip(object)
+            svg.stats$jsAnimation <- jsAnimation(object)
+
+            ## return stats
+            return(svg.stats)
+          }
+          )
+
+setMethod(f="print", signature="SVG",
+          definition=function(x,...)
+          {
+            ## init.
+            svg.stats <- summary(x)
+
+            ## display stats
+            cat("SVG Object  :", svg.stats$numNodes, "nodes\n")
+            cat("- javascript: tooltips (", if(jsTooltip(x)) "enable" else "disable",
+                ") animations (", if(jsAnimation(x)) "enable" else "disable", ")\n", sep="")
           }
           )
 
@@ -342,14 +369,14 @@ setMethod(f="SVG", signature="SVG",
           )
           
 setReplaceMethod(f="SVG", signature="SVG",
-                 definition=function(.Object,svg)
+                 definition=function(.Object,value)
                  {
                    ## check
-                   if(!is(svg,"XMLInternalDocument"))
+                   if(!is(value,"XMLInternalDocument"))
                      stop("'svg' must be a valid XML document (XMLInternalDocument class)")
 
                    ## eop
-                   .Object@svg <- svg
+                   .Object@svg <- value
                    return(.Object)
                  }
                  )
@@ -362,14 +389,14 @@ setMethod(f="defaultSearchAttr", signature="SVG",
           )
 
 setReplaceMethod(f="defaultSearchAttr", signature="SVG",
-                 definition=function(.Object, attr.name)
+                 definition=function(.Object, value)
                  {
                    ## check
-                   if(!is.character(attr.name))
+                   if(!is.character(value))
                      stop("'attr.name' must be a valid character string")
 
                    ## eop
-                   .Object@.default_search_attr <- attr.name
+                   .Object@.default_search_attr <- value
                    return(.Object)
                  }
                  )
@@ -382,14 +409,14 @@ setMethod(f="jsTooltip", signature="SVG",
           )
 
 setReplaceMethod(f="jsTooltip", signature="SVG",
-                 definition=function(.Object, flag)
+                 definition=function(.Object, value)
                  {
                    ## check
-                   if(!is.logical(floag))
+                   if(!is.logical(value))
                      stop("'flag' must be a boolean")
 
                    ## eop
-                   .Object@.js_tooltip <- flag
+                   .Object@.js_tooltip <- value
                    return(.Object)
                  }
                  )
@@ -402,14 +429,14 @@ setMethod(f="jsAnimation", signature="SVG",
           )
 
 setReplaceMethod(f="jsAnimation", signature="SVG",
-                 definition=function(.Object, flag)
+                 definition=function(.Object, value)
                  {
                    ## check
-                   if(!is.logical(floag))
+                   if(!is.logical(value))
                      stop("'flag' must be a boolean")
 
                    ## eop
-                   .Object@.js_animation <- flag
+                   .Object@.js_animation <- value
                    return(.Object)
                  }
                  )
@@ -462,6 +489,7 @@ setMethod(f="write.SVG", signature="SVG",
 
             ## - Add Javascript
             if(object@.js_tooltip || object@.js_animation) {
+
 
               ## init.
               object["xpath::/svg:svg","onload"] <- "init(evt)"
