@@ -30,11 +30,13 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 
 MAPPING.Identity <- function(x,p) { return(x) }
 MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
+MAPPING.RangeLinear <- function(x,p) {return(min(p$max, max(p$min,p$a*x+p$b))) } 
 MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 MAPPING.Sigmoid <- function(x,p) { return(1/(1+exp(-p$r*x))) }
 
 setClass("Mapping",
          representation(data.source="ANY",
+                        data.col.id="ANY",
                         fn="ANY",
                         fn.parameters="list",
                         animation="logical",
@@ -44,25 +46,25 @@ setClass("Mapping",
 
 setGenericVerif(name="dataSource", function(object) { standardGeneric("dataSource") })
 setGenericVerif(name="dataSource<-", function(.Object,value) { standardGeneric("dataSource<-") })
+setGenericVerif(name="dataColumnID", function(object) { standardGeneric("dataColumnID") })
+setGenericVerif(name="dataColumnID<-", function(.Object,value) { standardGeneric("dataColumnID<-") })
 setGenericVerif(name="getFunction", function(object) { standardGeneric("getFunction") })
 setGenericVerif(name="getFunctionParams", function(object) { standardGeneric("getFunctionParams") })
 setGenericVerif(name="fnIdentity", function(.Object) { standardGeneric("fnIdentity") })
 setGenericVerif(name="fnLinear", function(.Object,a,b) { standardGeneric("fnLinear") })
+setGenericVerif(name="fnRangeLinear", function(.Object,a,b,min,max) { standardGeneric("fnRangeLinear") })
 setGenericVerif(name="fnLogistic", function(.Object,K,a,r) { standardGeneric("fnLogistic") })
 setGenericVerif(name="fnSigmoid", function(.Object,r) { standardGeneric("fnSigmoid") })
 setGenericVerif(name="fnUser", function(.Object,fn,fn.params) { standardGeneric("fnUser") })
 
 
 setMethod(f="initialize", signature="Mapping",
-          definition=function(.Object,value)
+          definition=function(.Object,...)
           {
-            ## check.
-            if(!is(value,"SVG")) stop("'value' must be an SVG object")
-
             ## init.
-            .Object@svg <- value
             .Object@data.source <- NULL
-            .Object@fn <- MAPPING.Identity
+            .Object@data.col.id <- 1
+            .Object@fn <- NULL
             .Object@fn.parameters <- list()
             .Object@animation <- FALSE
 
@@ -84,6 +86,23 @@ setReplaceMethod(f="dataSource", signature="Mapping",
                    ## !!!!! CHECKING ??
                    ## eop
                    .Object@data.source <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="dataColumnID", signature="Mapping",
+          definition=function(object)
+          {
+            return(object@data.col.id)
+          }
+          )
+          
+setReplaceMethod(f="dataColumnID", signature="Mapping",
+                 definition=function(.Object,value)
+                 {
+                   ## !!!!! CHECKING ??
+                   ## eop
+                   .Object@data.col.id <- value
                    return(.Object)
                  }
                  )
@@ -132,6 +151,29 @@ setMethod(f="fnLinear", signature="Mapping",
             ## update
             .Object@fn <- MAPPING.Linear
             .Object@fn.parameters <- list(a=a,b=b)
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+          }
+          )
+
+setMethod(f="fnRangeLinear", signature="Mapping",
+          definition=function(.Object,a,b,min,max)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+            a <- if(missing(a)) 1 else a
+            b <- if(missing(b)) 0 else b
+            min <- if(missing(min)) -Inf else min
+            max <- if(missing(max)) Inf else max
+
+            ## check
+            if(!is.numeric(a) || !is.numeric(b) || !is.numeric(min) || !is.numeric(max))
+              stop("Range linear [min,(a*x+b),max] parameters 'a','b','min' and 'max' must be numeric") 
+
+            ## update
+            .Object@fn <- MAPPING.Linear
+            .Object@fn.parameters <- list(a=a,b=b,min=min,max=max)
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
