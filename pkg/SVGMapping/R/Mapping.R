@@ -33,8 +33,8 @@ MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 
 setClass("Mapping",
          representation(data.source="ANY",
-                        map.fn="ANY",
-                        map.fn.parameters="list",
+                        fn="ANY",
+                        fn.parameters="list",
                         animation="logical",
                         "VIRTUAL"
                         )
@@ -44,6 +44,9 @@ setGenericVerif(name="dataSource", function(object) { standardGeneric("dataSourc
 setGenericVerif(name="dataSource<-", function(.Object,value) { standardGeneric("dataSource<-") })
 setGenericVerif(name="mapFunction", function(object) { standardGeneric("mapFunction") })
 setGenericVerif(name="mapFunction<-", function(.Object,value) { standardGeneric("mapFunction<-") })
+setGenericVerif(name="fnParameters", function(object) { standardGeneric("fnParameters") })
+setGenericVerif(name="fnParameters<-", function(.Object,value) { standardGeneric("fnParameters<-") })
+
 
 setMethod(f="initialize", signature="Mapping",
           definition=function(.Object,value)
@@ -54,7 +57,8 @@ setMethod(f="initialize", signature="Mapping",
             ## init.
             .Object@svg <- value
             .Object@data.source <- NULL
-            .Object@map.fn <- NULL
+            .Object@fn <- NULL
+            .Object@fn.parameters <- NULL
             .Object@animation <- FALSE
 
             ## eop
@@ -82,7 +86,7 @@ setReplaceMethod(f="dataSource", signature="Mapping",
 setMethod(f="mapFunction", signature="Mapping",
           definition=function(object)
           {
-            return(object@map.fn)
+            return(object@fn)
           }
           )
           
@@ -91,7 +95,27 @@ setReplaceMethod(f="mapFunction", signature="Mapping",
                  {
                    ## !!!!! CHECKING ??
                    ## eop
-                   .Object@map.fn <- value
+                   .Object@fn <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="fnParameters", signature="Mapping",
+          definition=function(object)
+          {
+            return(object@fn.parameters)
+          }
+          )
+          
+setReplaceMethod(f="fnParameters", signature="Mapping",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.list(value))
+                     stop("'value' must be a list of parameters")
+                   
+                   ## eop
+                   .Object@fn.parameters <- value
                    return(.Object)
                  }
                  )
