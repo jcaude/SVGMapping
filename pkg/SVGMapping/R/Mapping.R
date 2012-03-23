@@ -28,7 +28,8 @@ library(methods)
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
-MAPPING.Linear <- function(x,p) { return(x) }
+MAPPING.Identity <- function(x,p) { return(x) }
+MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
 MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 
 setClass("Mapping",
