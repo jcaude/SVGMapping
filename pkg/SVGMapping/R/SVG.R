@@ -55,6 +55,7 @@ setGenericVerif(name="jsAnimation<-", function(.Object,value) {standardGeneric("
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
+setGenericVerif(name="mapping", function(object,op) {standardGeneric("mapping")})
 
 setMethod(f="initialize", signature="SVG",
           definition=function(.Object,...)
@@ -251,7 +252,10 @@ setMethod(f="[", signature="SVG",
               stop("'i' should be a valid node selector")
             
             if(is.list(i) || (length(i) > 1)) {
-              res <- lapply(i, .atomic_getter, x, j)
+              if(missing(j))
+                res <- lapply(i, .atomic_getter, x)
+              else
+                res <- lapply(i, .atomic_getter, x, j)
               names(res) <- i
               return(res)
             }
@@ -366,8 +370,8 @@ setReplaceMethod(f="[", signature="SVG",
                      ## init.
                      if(!is.list(value) && length(value) == length(j))
                        value <- replicate(length(i),value,simplify=FALSE)
-                     if(!is.list(value) || (length(value) != length(i)))
-                       stop("'value' must be a 'list()' having the same length than 'i'")
+                     if(!is.list(value) && (length(value) != length(i)))
+                       stop("'value' must be a 'list' or a 'vector' having the same length than 'svg[i]'")
 
                      ## proceed..
                      for(idx in 1:length(i)) {
@@ -545,6 +549,14 @@ setMethod(f="write.SVG", signature="SVG",
   
             ## Write/output the SVG
             cat(xml, file=file)
+          }
+          )
+
+setMethod(f="mapping", signature="SVG",
+          definition=function(object,op)
+          {
+            ## apply mapping on the current svg
+            exec(op,svg)
           }
           )
 

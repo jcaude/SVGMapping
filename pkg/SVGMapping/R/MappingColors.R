@@ -28,43 +28,174 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("MappingColors",
-         representation(colors="list",
-                        range="list"                        
+         representation(target.attribute="character",
+                        map.colors="vector",
+                        colrange.min="numeric",
+                        colrange.max="numeric"
                         ),
          contains="Mapping"
          )
 
+setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
+setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
+setGenericVerif(name="mapColors", function(object) { standardGeneric("mapColors") })
+setGenericVerif(name="mapColors<-", function(.Object,value) { standardGeneric("mapColors<-") })
+setGenericVerif(name="colrange.min", function(object) { standardGeneric("colrange.min") })
+setGenericVerif(name="colrange.min<-", function(.Object,value) { standardGeneric("colrange.min<-") })
+setGenericVerif(name="colrange.max", function(object) { standardGeneric("colrange.max") })
+setGenericVerif(name="colrange.max<-", function(.Object,value) { standardGeneric("colrange.max<-") })
+setGenericVerif(name="colrange", function(object) { standardGeneric("colrange") })
+setGenericVerif(name="colrange<-", function(.Object,value) { standardGeneric("colrange<-") })
+setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
+
 setMethod(f="initialize", signature="MappingColors",
           definition=function(.Object,...)
-          {
-            ## -- internals
-            .list.arg <- function(name) {
-              if(sum(grepl(paste("^",name,"$",sep=""), args.names)) > 0) {
-                v <- args[[grep(paste("^",name,"$",sep=""),args.names)]]
-                v <- if(is.list(v)) v else list()
-                return(v)
-              }
-              else {
-                return(list())
-              }
-            }
-
+          {            
             ## super
             .Object <- callNextMethod()
 
-            ## init.
-            args = list(...)
-            args.names = names(args)
-
-            ## init. args
-            if(!is.null(args.names)) {
-              .Object@colors <- .list.arg("colors")
-              .Object@range <- .list.arg("range")
-            }
+            ## detault init.
+            .Object@map.colors <- vector()
+            .Object@colrange.min <- 0
+            .Object@colrange.max <- 1
+            .Object@target.attribute <- character()
 
             ## eop
             return(.Object)
           }
           )
 
+setMethod(f="targetAttribute", signature="MappingColors",
+          definition=function(object)
+          {
+            return(object@target.attribute)
+          }
+          )
 
+setReplaceMethod(f="targetAttribute", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.character(value))
+                     stop("Target attribute 'value' must be a string")
+
+                   ## init.
+                   .Object@target.attribute <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="mapColors", signature="MappingColors",
+          definition=function(object)
+          {
+            return(object@map.colors)
+          }
+          )
+
+setReplaceMethod(f="mapColors", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.vector(value))
+                     stop("Colors 'value' must be a vector")
+
+                   ## init.
+                   .Object@map.colors <- unlist(value)
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="colrange.min", signature="MappingColors",
+          definition=function(object)
+          {
+            return(object@colrange.min)
+          }
+          )
+
+setReplaceMethod(f="colrange.min", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.numeric(value))
+                     stop("Minimum Color Range 'value' must be numeric")
+
+                   ## init.
+                   .Object@colrange.min <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="colrange.max", signature="MappingColors",
+          definition=function(object)
+          {
+            return(object@colrange.max)
+          }
+          )
+
+setReplaceMethod(f="colrange.max", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.numeric(value))
+                     stop("Maximum Color Range 'value' must be numeric")
+
+                   ## init.
+                   .Object@colrange.max <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="colrange", signature="MappingColors",
+          definition=function(object)
+          {
+            return(c(object@colrange.min,object@colrange.max))
+          }
+          )
+
+setReplaceMethod(f="colrange", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.vector(value) && (length(value) != 2))
+                     stop("Colors Range 'value' must be a vector such as: c(min,max)")
+
+                   ## init.
+                   value <- unlist(value)
+                   .Object@colrange.min <- value[[1]]
+                   .Object@colrange.max <- value[[2]]
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="exec", signature="MappingColors",
+          definition=function(.Object, svg)
+          {
+            ## local
+            .v2col <- function(v,colors,s,l,m) {
+              v <- (v-m)*s+1
+              v <- if(v < 1) 1 else v
+              v <- if(v > l) l else v
+              return(colors[as.integer(round(v))])
+            }
+            
+            ## call super
+            callNextMethod()
+            
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))          
+
+            ## transform fn(values) -> colors
+            l <- length(.Object@map.colors)
+            s <- (l-1) / (.Object@colrange.max-.Object@colrange.min)
+            .Object@.values <- sapply(.Object@.values,
+                                      .v2col,
+                                      .Object@map.colors, s, l, .Object@colrange.min)
+
+            ## map colors on the template attribute
+            svg[.Object@targets,.Object@target.attribute] <- .Object@.values
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
+          }
+          )

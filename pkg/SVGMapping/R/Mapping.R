@@ -28,6 +28,7 @@ library(methods)
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
+MAPPING.Random <- function(x,p) { return(runif(1,min=p$min, max=p$max)) }
 MAPPING.Identity <- function(x,p) { return(x) }
 MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
 MAPPING.RangeLinear <- function(x,p) {return(min(p$max, max(p$min,p$a*x+p$b))) } 
@@ -35,74 +36,76 @@ MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 MAPPING.Sigmoid <- function(x,p) { return(1/(1+exp(-p$r*x))) }
 
 setClass("Mapping",
-         representation(data.source="ANY",
-                        data.col.id="ANY",
+         representation(targets="ANY",
+                        values="ANY",
                         fn="ANY",
                         fn.parameters="list",
                         animation="logical",
+                        .values="ANY",
                         "VIRTUAL"
                         )
          )
 
-setGenericVerif(name="dataSource", function(object) { standardGeneric("dataSource") })
-setGenericVerif(name="dataSource<-", function(.Object,value) { standardGeneric("dataSource<-") })
-setGenericVerif(name="dataColumnID", function(object) { standardGeneric("dataColumnID") })
-setGenericVerif(name="dataColumnID<-", function(.Object,value) { standardGeneric("dataColumnID<-") })
+setGenericVerif(name="targets", function(object) { standardGeneric("targets") })
+setGenericVerif(name="targets<-", function(.Object,value) { standardGeneric("targets<-") })
+setGenericVerif(name="values", function(object) { standardGeneric("values") })
+setGenericVerif(name="values<-", function(.Object,value) { standardGeneric("values<-") })
 setGenericVerif(name="getFunction", function(object) { standardGeneric("getFunction") })
 setGenericVerif(name="getFunctionParams", function(object) { standardGeneric("getFunctionParams") })
+setGenericVerif(name="fnRandom", function(.Object,min,max) { standardGeneric("fnRandom") })
 setGenericVerif(name="fnIdentity", function(.Object) { standardGeneric("fnIdentity") })
 setGenericVerif(name="fnLinear", function(.Object,a,b) { standardGeneric("fnLinear") })
 setGenericVerif(name="fnRangeLinear", function(.Object,a,b,min,max) { standardGeneric("fnRangeLinear") })
 setGenericVerif(name="fnLogistic", function(.Object,K,a,r) { standardGeneric("fnLogistic") })
 setGenericVerif(name="fnSigmoid", function(.Object,r) { standardGeneric("fnSigmoid") })
 setGenericVerif(name="fnUser", function(.Object,fn,fn.params) { standardGeneric("fnUser") })
-
+setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="Mapping",
           definition=function(.Object,...)
           {
-            ## init.
-            .Object@data.source <- NULL
-            .Object@data.col.id <- 1
+            ## default init.
+            .Object@targets <- NULL
+            .Object@values <- NULL
             .Object@fn <- NULL
             .Object@fn.parameters <- list()
-            .Object@animation <- FALSE
-
+            .Object@animation <- logical()
+            
             ## eop
             return(.Object)
           }
           )
 
-setMethod(f="dataSource", signature="Mapping",
+setMethod(f="targets", signature="Mapping",
           definition=function(object)
           {
-            return(object@data.source)
+            return(object@targets)
           }
           )
           
-setReplaceMethod(f="dataSource", signature="Mapping",
+setReplaceMethod(f="targets", signature="Mapping",
                  definition=function(.Object,value)
                  {
                    ## !!!!! CHECKING ??
                    ## eop
-                   .Object@data.source <- value
+                   .Object@targets <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="dataColumnID", signature="Mapping",
+setMethod(f="values", signature="Mapping",
           definition=function(object)
           {
-            return(object@data.col.id)
+            return(object@values)
           }
           )
           
-setReplaceMethod(f="dataColumnID", signature="Mapping",
+setReplaceMethod(f="values", signature="Mapping",
                  definition=function(.Object,value)
                  {
                    ## !!!!! CHECKING ??
                    ## eop
-                   .Object@data.col.id <- value
+                   .Object@values <- value
                    return(.Object)
                  }
                  )
@@ -118,6 +121,27 @@ setMethod(f="getFunctionParams", signature="Mapping",
           definition=function(object)
           {
             return(object@fn.parameters)
+          }
+          )
+
+setMethod(f="fnRandom", signature="Mapping",
+          definition=function(.Object,min,max)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+            min <- if(missing(min)) 0 else min
+            max <- if(missing(max)) 1 else max            
+
+            ## check
+            if(!is.numeric(min) || !is.numeric(max))
+              stop("Random generator, parameters 'min' and 'max' must be numeric") 
+            
+            ## update
+            .Object@fn <- MAPPING.Random
+            .Object@fn.parameters <- list(min=min, max=max)
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
           }
           )
 
@@ -240,5 +264,20 @@ setMethod(f="fnUser", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+          }
+          )
+
+setMethod(f="exec", signature="Mapping",
+          definition=function(.Object,svg)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))          
+
+            ## apply function to values and update object.
+            .Object@.values <- sapply(.Object@values, .Object@fn, .Object@fn.parameters)
+
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
