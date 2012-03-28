@@ -103,7 +103,9 @@ setMethod(f="values", signature="Mapping",
 setReplaceMethod(f="values", signature="Mapping",
                  definition=function(.Object,value)
                  {
-                   ## !!!!! CHECKING ??
+                   ## transform
+                   if(is.list(value)) value <- data.frame(value)
+                   
                    ## eop
                    .Object@values <- value
                    return(.Object)
@@ -274,7 +276,9 @@ setMethod(f="exec", signature="Mapping",
             namedOjbect <- deparse(substitute(.Object))          
 
             ## apply function to values and update object.
-            .Object@.values <- sapply(.Object@values, .Object@fn, .Object@fn.parameters)
+            .Object@.values <- sapply(.Object@values,
+                                      function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                      )
 
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())

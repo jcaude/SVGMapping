@@ -40,12 +40,12 @@ setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targ
 setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
 setGenericVerif(name="mapColors", function(object) { standardGeneric("mapColors") })
 setGenericVerif(name="mapColors<-", function(.Object,value) { standardGeneric("mapColors<-") })
-setGenericVerif(name="colrange.min", function(object) { standardGeneric("colrange.min") })
-setGenericVerif(name="colrange.min<-", function(.Object,value) { standardGeneric("colrange.min<-") })
-setGenericVerif(name="colrange.max", function(object) { standardGeneric("colrange.max") })
-setGenericVerif(name="colrange.max<-", function(.Object,value) { standardGeneric("colrange.max<-") })
-setGenericVerif(name="colrange", function(object) { standardGeneric("colrange") })
-setGenericVerif(name="colrange<-", function(.Object,value) { standardGeneric("colrange<-") })
+setGenericVerif(name="colRange.min", function(object) { standardGeneric("colRange.min") })
+setGenericVerif(name="colRange.min<-", function(.Object,value) { standardGeneric("colRange.min<-") })
+setGenericVerif(name="colRange.max", function(object) { standardGeneric("colRange.max") })
+setGenericVerif(name="colRange.max<-", function(.Object,value) { standardGeneric("colRange.max<-") })
+setGenericVerif(name="colRange", function(object) { standardGeneric("colRange") })
+setGenericVerif(name="colRange<-", function(.Object,value) { standardGeneric("colRange<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingColors",
@@ -105,14 +105,14 @@ setReplaceMethod(f="mapColors", signature="MappingColors",
                  }
                  )
 
-setMethod(f="colrange.min", signature="MappingColors",
+setMethod(f="colRange.min", signature="MappingColors",
           definition=function(object)
           {
             return(object@colrange.min)
           }
           )
 
-setReplaceMethod(f="colrange.min", signature="MappingColors",
+setReplaceMethod(f="colRange.min", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -125,14 +125,14 @@ setReplaceMethod(f="colrange.min", signature="MappingColors",
                  }
                  )
 
-setMethod(f="colrange.max", signature="MappingColors",
+setMethod(f="colRange.max", signature="MappingColors",
           definition=function(object)
           {
             return(object@colrange.max)
           }
           )
 
-setReplaceMethod(f="colrange.max", signature="MappingColors",
+setReplaceMethod(f="colRange.max", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -145,14 +145,14 @@ setReplaceMethod(f="colrange.max", signature="MappingColors",
                  }
                  )
 
-setMethod(f="colrange", signature="MappingColors",
+setMethod(f="colRange", signature="MappingColors",
           definition=function(object)
           {
             return(c(object@colrange.min,object@colrange.max))
           }
           )
 
-setReplaceMethod(f="colrange", signature="MappingColors",
+setReplaceMethod(f="colRange", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -203,7 +203,64 @@ setMethod(f="exec", signature="MappingColors",
 ## F A C T O R Y
 ##--------------
 
-MappingColors.factory <- function() {
+MappingColors.factory <- function(data,targets=rownames(data),
+                                  colors=microarrayColors,colors.range=c(-2,2),
+                                  attribute="style::fill",
+                                  fn="Identity", fn.parameters=list()) {
+  ## init.
+  mapC <- new("MappingColors")
 
-  
+  ## fill mapping structure
+  values(mapC) <- data
+  targets(mapC) <- targets
+  mapColors(mapC) <- colors
+  colRange(mapC) <- colors.range
+  targetAttribute(mapC) <- attribute
+
+  ## select transform function
+  if(missing(fn)) {
+    fnIdentity(mapC)
+  }
+  else {
+    ## check
+    if(!(is.character(fn) || is.function(fn))) {
+      stop("Invalid 'fn' argument, must be 'character' or 'function'")
+    }
+    if(!missing(fn.parameters) && !is.list(fn.parameters)) {
+      stop("Invalid 'fn.parameter' argument, must be a list")
+    }
+
+    ## fill
+    if(is.function(fn)) {
+      fnUser(mapc,fn,fn.parameters)
+    }
+    else {
+      fn <- tolower(fn)
+      if(fn=="random") {
+        if(missing(fn.parameters)) fn.parameters <- list(min=0,max=1)
+        fnRandom(mapC,fn.parameters$min, fn.parameters$max)
+      }
+      else if(fn=="identity") fnIdentity(mapC)
+      else if(fn=="Linear") {
+        if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0)
+        fnLinear(mapC, fn.parameters$a, fn.parameters$b)
+      }
+      else if(fn=="RangeLinear") {
+        if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0,min=0,max=1)
+        fnRangeLinear(mapC,
+                      fn.parameters$a, fn.parameters$b,
+                      fn.parameters$min, fn.parameters$max)
+      }
+      else if(fn=="Logistic") {
+        if(missing(fn.parameters)) fn.parameters <- list(K=1,a=1,r=1)
+        fnLogistic(mapC, fn.parameters$K, fn.parameters$a, fn.parameters$r)
+      }
+      else if(fn=="Sigmoid") {
+        if(missing(fn.parameters)) fn.parameters <- list(r=1)
+        fnLogistic(mapC, fn.parameters$r)
+      }
+      else 
+        stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
+    }
+  }
 }
