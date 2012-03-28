@@ -39,3 +39,12 @@ exportMethods("colRange.min", "colRange.min<-")
 exportMethods("colRange.max", "colRange.max<-")
 exportMethods("colRange", "colRange<-")
 export("MappingColors.factory")
+
+exportClasses("LinearGradient")
+exportMethods("coords", "coords<-")
+exportMethods("stops", "stops<-")
+exportMethods("toSVG")
+export("LinearGradient.factory")
+
+exportClasses("GradientStop")
+export("GradientStop.factory")

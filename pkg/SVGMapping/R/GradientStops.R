@@ -53,21 +53,22 @@ setMethod(f="initialize", signature="GradientStop",
             ## get args
             args = list(...)
             args.names = names(args)
+            if(!is.null(args.names)) arg.names <- list()
             
             ## default init.
-            if(!is.null(args.names)) {
-              .Object@offset <- .arg("offset","0")
-              .Object@stop.color <- .arg("stop.color","white")
-              .Object@stop.opacity <- .arg("stop.opacity",1.0)
-            }
-            else {
-              .Object@offset <- "0"
-              .Object@stop.color <- "white"
-              .Object@stop.opacity <- 1.0
-            }
+            .Object@offset <- .arg("offset","0")
+            .Object@stop.color <- .arg("stop.color","white")
+            .Object@stop.opacity <- .arg("stop.opacity",1.0)
             
             ## eop
             return(.Object)
+          }
+          )
+
+setMethod(f="show", signature="GradientStop",
+          definition=function(object)
+          {
+            cat(paste("  [",object@offset," - ",object@stop.color, " - ", object@stop.opacity,"]\n",sep=""))
           }
           )
 
@@ -75,9 +76,11 @@ setMethod(f="toSVG", signature="GradientStop",
           definition=function(object)
           {
             ## SVG rendering
-            svg <- paste("<stop offset=\"", object@offset,
-                         "\ stop-color=\"", object@stop.color,
-                         "\" stop-opacity=\"", object@stop.opacity, "\"/>",sep="")
+            svg <- newXMLNode("stop",
+                              attrs=list(offset=object@offset,
+                                "stop-color"=object@stop.color,
+                                "stop-opacity"=object@stop.opacity)
+                              )
             return(svg)
           }
           )

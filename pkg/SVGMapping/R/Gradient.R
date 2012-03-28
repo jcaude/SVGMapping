@@ -55,13 +55,29 @@ setGenericVerif(name="toSVG", function(object) { standardGeneric("toSVG") })
 setMethod(f="initialize", signature="Gradient",
           definition=function(.Object,...)
           {
+            ## - locals
+            .arg <- function(name,default.value) {
+              if(sum(grepl(paste("^",name,"$",sep=""), args.names)) > 0) {
+                v <- args[[grep(paste("^",name,"$",sep=""),args.names)]]
+                return(v)
+              }
+              else {
+                return(default.value)
+              }
+            }
+
+            ## get args
+            args = list(...)
+            args.names = names(args)
+            if(is.null(args.names)) args.names <- list()
+            
             ## default init.
-            .Object@id <- character(0)
-            .Object@units <- "objectBoundingBox"
-            .Object@transform <- character(0)
-            .Object@spread.method <- "pad"
-            .Object@xlink.href <- character(0)
-            .Object@stops <- list()
+            .Object@id <- .arg("id",character(0))
+            .Object@units <- .arg("units","objectBoundingBox")
+            .Object@transform <- .arg("transform",character(0))
+            .Object@spread.method <- .arg("spread.method","pad")
+            .Object@xlink.href <- .arg("xlink.href",character(0))
+            .Object@stops <- .arg("stops",list())
 
             ## eop
             return(.Object)
@@ -176,16 +192,16 @@ setReplaceMethod(f="stops", signature="Gradient",
 setMethod(f="toSVG", signature="Gradient",
           definition=function(object)
           {
-            ## core.attributes
-            svg <- paste("id=\"",object@id,"\"",sep="")
+            ## return a list of core attributes
+            attr <- list(id=object@id)
             if(object@units != "objectBoundingBox")
-              svg <- paste(svg," gradientUnits=\"",object@units,"\"",sep="")
+              attr <- c(attr, gradientUnits=object@units)
             if(length(object@transform) > 0)
-              svg <- paste(svg, " transform=\"", object@transform,"\"",sep="")
+              attr <- c(attr, transform=object@transform)
             if(object@spread.method != "pad")
-              svg <- paste(svg, " spreadMethod=\"", object@spread.method,"\"",sep="")
+              attr <- c(attr, spreadMethod=object@spread.method)
             if(length(object@xlink.href) > 0)
-              svg <- paste(svg, " xlink:href=\"", object@xlink.href,"\"",sep="")
-            return(svg)
+              attr <- c(attr, "xlink:href"=object@xlink.href)
+            return(attr)
           }
           )
