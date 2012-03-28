@@ -199,3 +199,11 @@ setMethod(f="exec", signature="MappingColors",
             return(invisible(.Object))
           }
           )
+
+## F A C T O R Y
+##--------------
+
+MappingColors.factory <- function() {
+
+  
+}
