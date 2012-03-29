@@ -124,9 +124,7 @@ setMethod(f="show", signature="LinearGradient",
                                )
             definitions(svg) <- object
             uid <- id(object)
-            cat("Get UID=",uid,"\n")
             svg["id::rect-gradient","style::fill"] <- paste("url(#",uid,")",sep="")
-            assign("svg",svg,envir=globalenv())
             show(svg)
           }
           )
