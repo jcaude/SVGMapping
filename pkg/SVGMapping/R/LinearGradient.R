@@ -118,10 +118,16 @@ setReplaceMethod(f="coords", signature="LinearGradient",
 setMethod(f="show", signature="LinearGradient",
           definition=function(object)
           {
-            cat("Linear Gradient:")
-            callNextMethod(object)
-            cat("\n")
-            sapply(object@stops,show)
+            ## forge an svg, apply linear gradient and just show it!
+            svg <- SVG.factory(system.file("extdata/linear-gradient-sample.svg",
+                                           package="SVGMapping")
+                               )
+            definitions(svg) <- object
+            uid <- id(object)
+            cat("Get UID=",uid,"\n")
+            svg["id::rect-gradient","style::fill"] <- paste("url(#",uid,")",sep="")
+            assign("svg",svg,envir=globalenv())
+            show(svg)
           }
           )
 
