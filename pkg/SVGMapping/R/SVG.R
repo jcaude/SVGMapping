@@ -64,7 +64,10 @@ setMethod(f="initialize", signature="SVG",
           definition=function(.Object,...)
           {
             ## init. args
-            .Object@svg <- NULL
+            .Object@svg <- xmlTreeParse(system.file("extdata/blank.svg", package="SVGMapping"),
+                                        useInternalNodes=TRUE,
+                                        addAttributeNamespaces=TRUE,
+                                        fullNamespaceInfo=FALSE)
             .Object@.default_search_attr <- "id"
             .Object@.js_tooltip <- FALSE
             .Object@.js_animation <- FALSE
@@ -328,13 +331,13 @@ setReplaceMethod(f="[", signature="SVG",
                        xpath <- sub("^xpath::","",i)
                      }
                      else if(grepl("^id::",i)) {
-                       value <- sub("^id::","",i)
-                       xpath <- paste("//*[@id='",value,"']",sep="")
+                       attvalue <- sub("^id::","",i)
+                       xpath <- paste("//*[@id='",attvalue,"']",sep="")
                      }
                      else if(grepl("::",i)) {
                        attname <- sub("::.*","",i)
-                       value <- sub(".*::","",i)
-                       xpath <- paste("//*[@",attname,"='",value,"']",sep="")
+                       attvalue <- sub(".*::","",i)
+                       xpath <- paste("//*[@",attname,"='",attvalue,"']",sep="")
                      }
                      else {
                        xpath <- paste("//*[@",x@.default_search_attr,"='",i,"']",sep="")
