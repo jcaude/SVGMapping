@@ -46,6 +46,9 @@ setClass("SVG",
 setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary")})
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
 setGenericVerif(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
+setGenericVerif(name="uid", function(object,prefix) {standardGeneric("uid")})
+setGenericVerif(name="definitions", function(object) { standardGeneric("definitions")})
+setGenericVerif(name="definitions<-", function(.Object,value) { standardGeneric("definitions<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
 setGenericVerif(name="defaultSearchAttr<-", function(.Object,value) {standardGeneric("defaultSearchAttr<-")})
 setGenericVerif(name="jsTooltip", function(object) {standardGeneric("jsTooltip")})
@@ -405,6 +408,79 @@ setReplaceMethod(f="SVG", signature="SVG",
 
                    ## eop
                    .Object@svg <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="uid", signature="SVG",
+          definition=function(object,prefix)
+          {
+            ## check
+            if(missing(prefix)) prefix <- ""
+
+            ## create random uid
+            repeat {
+              test.id <- paste(prefix,trunc(runif(n=1,min=1,max=999999)),sep="")
+              chck=object[paste("id::",test.id,sep="")]
+              if(length(chck) == 0) break
+            }
+
+            ## eop
+            return(test.id)
+          }
+          )
+
+setMethod(f="definitions", signature="SVG",
+          definition=function(object)
+          {
+            return(object["xpath:://svg:defs"])
+          }
+          )
+
+setReplaceMethod(f="definitions", signature="SVG",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.object(value) &&
+                      !(is(value,"XMLInternalNode") || is(value,"Gradient")))
+                     stop("'value' must be a valid 'XMLInternalNode' or 'Gradient' object")
+
+                   ## create defs if necessary
+                   if(length(definitions(.Object)) == 0) {
+                     defs.id <- uid(.Object,"defs")
+                     defs <- newXMLNode("defs",attrs=list(id=defs.id))
+                     addChildren(xmlRoot(.Object@svg, defs))
+                   }
+
+                   ## init. (gradient)
+                   if(is(value,"Gradient")) {
+                     nameValue <- deparse(substitute(value))
+                     uid <- uid(.Object,"gradient")
+                     id(value) <- uid
+                     assign(nameValue,value,envir=parent.frame())
+                     value <- SVG(value)
+                   }
+                   
+                   ## init.
+                   value.attrs <- xmlAttrs(value)
+                   if(!"id" %in% names(value.attrs))
+                     stop("'id' attribute missing in value")
+                   value.id <- value.attrs[["id"]]
+                   if(length(value.id)==0)
+                     stop("'if' shouldn't be an empty string")
+                   chck <- .Object[paste("xpath:://svg:defs/*[@id='",value.id,"']",sep="")]
+                   
+                   ## case 1 - update
+                   if(length(chck) > 0) 
+                     replaceNodes(chck[[1]], value)
+
+                   ## case 2 - insert
+                   else {
+                     defs <- definitions(.Object)
+                     addChildren(defs[[1]], value)
+                   }                     
+                   
+                   ## eop
                    return(.Object)
                  }
                  )

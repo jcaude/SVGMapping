@@ -41,7 +41,7 @@ setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
 setGenericVerif(name="stops", function(object) { standardGeneric("stops") })
 setGenericVerif(name="stops<-", function(.Object,value) { standardGeneric("stops<-") })
-setGenericVerif(name="toSVG", function(object) { standardGeneric("toSVG") })
+setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
 
 setMethod(f="initialize", signature="LinearGradient",
           definition=function(.Object,...)
@@ -118,7 +118,9 @@ setReplaceMethod(f="coords", signature="LinearGradient",
 setMethod(f="show", signature="LinearGradient",
           definition=function(object)
           {
-            cat("Linear Gradient:\n")
+            cat("Linear Gradient:")
+            callNextMethod(object)
+            cat("\n")
             sapply(object@stops,show)
           }
           )
@@ -155,7 +157,7 @@ setReplaceMethod(f="stops", signature="LinearGradient",
                  }
                  )
 
-setMethod(f="toSVG", signature="LinearGradient",
+setMethod(f="SVG", signature="LinearGradient",
           definition=function(object)
           {
             ## init.
@@ -172,7 +174,7 @@ setMethod(f="toSVG", signature="LinearGradient",
             xmlAttrs(gradient) <- attr
 
             ## add stop elements
-            svg.stops <- sapply(object@stops, toSVG)
+            svg.stops <- sapply(object@stops, SVG)
             addChildren(gradient,kids=svg.stops)
 
             ## eop

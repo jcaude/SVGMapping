@@ -50,7 +50,7 @@ setGenericVerif(name="xlinkHref", function(object) { standardGeneric("xlinkHref"
 setGenericVerif(name="xlinkHref<-", function(.Object, value) { standardGeneric("xlinkHref<-") })
 setGenericVerif(name="stops", function(object) { standardGeneric("stops") })
 setGenericVerif(name="stops<-", function(.Object, value) { standardGeneric("stops<-") })
-setGenericVerif(name="toSVG", function(object) { standardGeneric("toSVG") })
+setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
 
 setMethod(f="initialize", signature="Gradient",
           definition=function(.Object,...)
@@ -83,7 +83,40 @@ setMethod(f="initialize", signature="Gradient",
             return(.Object)
           }
           )
-         
+
+setMethod(f="show", signature="Gradient",
+          definition=function(object)
+          {
+            s <- character(0)
+            if(length(object@id) > 0) s <- paste(s," id=",object@id,sep="")
+            if(object@units != "objectBoundingBox") s <- paste(s," units=",object@units,sep="")
+            if(length(object@transform) > 0) s <- paste(s," transform=",object@transform,sep="")
+            if(object@spread.method != "pad") s <- paste(s," spread.method=",object@spread.method,sep="")
+            if(length(object@xlink.href) > 0) s <- paste(s," xlink.href=",object@xlink.href,sep="")
+            cat(s)
+          }
+          )
+
+setMethod(f="id", signature="Gradient",
+          definition=function(object)
+          {
+            return(object@id)
+          }
+          )
+
+setReplaceMethod(f="id", signature="Gradient",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.character(value))
+                     stop("'value' must be a character string")
+                     
+                   ## eop
+                   .Object@id <- as.character(value)
+                   return(.Object)
+                 }
+                 )
+
 setMethod(f="units", signature="Gradient",
           definition=function(object)
           {
@@ -189,7 +222,7 @@ setReplaceMethod(f="stops", signature="Gradient",
                  }
                  )
 
-setMethod(f="toSVG", signature="Gradient",
+setMethod(f="SVG", signature="Gradient",
           definition=function(object)
           {
             ## return a list of core attributes
