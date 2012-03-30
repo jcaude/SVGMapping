@@ -84,19 +84,6 @@ setMethod(f="initialize", signature="Gradient",
           }
           )
 
-setMethod(f="show", signature="Gradient",
-          definition=function(object)
-          {
-            s <- character(0)
-            if(length(object@id) > 0) s <- paste(s," id=",object@id,sep="")
-            if(object@units != "objectBoundingBox") s <- paste(s," units=",object@units,sep="")
-            if(length(object@transform) > 0) s <- paste(s," transform=",object@transform,sep="")
-            if(object@spread.method != "pad") s <- paste(s," spread.method=",object@spread.method,sep="")
-            if(length(object@xlink.href) > 0) s <- paste(s," xlink.href=",object@xlink.href,sep="")
-            cat(s)
-          }
-          )
-
 setMethod(f="id", signature="Gradient",
           definition=function(object)
           {

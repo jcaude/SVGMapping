@@ -157,7 +157,7 @@ LinearGradient.factory <- function(...,coords,spread.method,units,transform) {
   
   ## init. linear gradient
   args <- list("LinearGradient")
-  if(!missing(coords)) args <- c(args, coords=coords)
+  if(!missing(coords)) args <- c(args, coords=list(coords))
   if(!missing(spread.method)) args <- c(args, spread.method=spread.method)
   if(!missing(units)) args <- c(args,units=units)
   if(!missing(transform)) args <- c(args, transform)
