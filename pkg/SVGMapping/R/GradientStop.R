@@ -65,13 +65,6 @@ setMethod(f="initialize", signature="GradientStop",
           }
           )
 
-setMethod(f="show", signature="GradientStop",
-          definition=function(object)
-          {
-            cat(paste("  [",object@offset," - ",object@stop.color, " - ", object@stop.opacity,"]\n",sep=""))
-          }
-          )
-
 setMethod(f="SVG", signature="GradientStop",
           definition=function(object)
           {
