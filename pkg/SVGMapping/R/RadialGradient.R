@@ -22,16 +22,17 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ## SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-## L I N E A R   G R A D I E N T
+## R A D I A L   G R A D I E N T
 ## --------------------------------------------------
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
-setClass("LinearGradient",
-         representation(x1="character",
-                        y1="character",
-                        x2="character",
-                        y2="character"
+setClass("RadialGradient",
+         representation(cx="character",
+                        cy="character",
+                        r="character",
+                        fx="character",
+                        fy="character"
                         ),
          contains="Gradient"
          )
@@ -40,7 +41,7 @@ setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
 setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
 
-setMethod(f="initialize", signature="LinearGradient",
+setMethod(f="initialize", signature="RadialGradient",
           definition=function(.Object,...)
           {
             ## - locals
@@ -68,75 +69,82 @@ setMethod(f="initialize", signature="LinearGradient",
             if(sum(grepl("^coords$", args.names)) > 0) {
               coords <- args[["coords"]]
               if( is.list(coords) &&
-                 (length(names(coords) %in% list("x1","y1","x2","y2"))==4) )
+                 (length(names(coords) %in% list("cx","cy","r","fx","fy"))==5) )
                 flag <- TRUE
             }
-            .Object@x1 <- if(flag) coords[["x1"]] else .arg("x1", "0%")
-            .Object@y1 <- if(flag) coords[["y1"]] else .arg("y1", "0%")
-            .Object@x2 <- if(flag) coords[["x2"]] else .arg("x2", "100%")
-            .Object@y2 <- if(flag) coords[["y2"]] else .arg("y2", "0%")
-            
+            .Object@cx <- if(flag) coords[["cx"]] else .arg("cx","50%")
+            .Object@cy <- if(flag) coords[["cy"]] else .arg("cy","50%")
+            .Object@r <- if(flag) coords[["r"]] else .arg("r","50%")
+            .Object@fx <- if(flag) coords[["fx"]] else .arg("fx",.Object@cx)
+            .Object@fy <- if(flag) coords[["fy"]] else .arg("fy",.Object@cy)
+
             ## eop
             return(.Object)
           }
           )
 
-setMethod(f="show", signature="LinearGradient",
+setMethod(f="show", signature="RadialGradient",
           definition=function(object)
           {
             ## forge an svg, apply linear gradient and just show it!
-            svg <- SVG.factory(system.file("extdata/linear-gradient-sample.svg",
+            svg <- SVG.factory(system.file("extdata/radial-gradient-sample.svg",
                                            package="SVGMapping")
                                )
             definitions(svg) <- object
-            svg["id::rect-gradient","style::fill"] <- URL(object)
+##            svg["id::rect-gradient","style::fill"] <- URL(object)
             show(svg)
           }
           )
 
-setMethod(f="coords", signature="LinearGradient",
+setMethod(f="coords", signature="RadialGradient",
           definition=function(object)
           {
-            return(list(x1=object@x1,y1=object@y1,x2=object@x2,y2=objecty2))
+            return(list(cx=object@cx,
+                        cy=object@cy,
+                        r=object@r,
+                        fx=object@fx,
+                        fy=object@fy))
           }
           )
 
-setReplaceMethod(f="coords", signature="LinearGradient",
+setReplaceMethod(f="coords", signature="RadialGradient",
                  definition=function(.Object,value)
                  {
                    ## check
                    if(!is.list(value))
                      stop("'value' must be a 'list()'")
-                   check <- names(value) %in% list("x1","y1","x2","y2")
-                   if(length(check[check == TRUE]) != 4)
-                     stop("'value' must at least contains 'x1,y1,x2,y2'")
+                   check <- names(value) %in% list("cx","cy","r","fx","fy")
+                   if(length(check[check == TRUE]) != 5)
+                     stop("'value' must at least contains 'cx,cy,r,fx,fy'")
 
                    ## assign & eop
-                   .Object@x1 = value[["x1"]]
-                   .Object@y1 = value[["y1"]]
-                   .Object@x2 = value[["x2"]]
-                   .Object@y2 = value[["y2"]]
+                   .Object@cx <- value[["cx"]]
+                   .Object@cy <- value[["cy"]]
+                   .Object@r <- value[["r"]]
+                   .Object@fx <- value[["fx"]]
+                   .Object@fy <- value[["fy"]]
                    return(.Object)
-                 }
+                 }                 
                  )
 
-setMethod(f="SVG", signature="LinearGradient",
+setMethod(f="SVG", signature="RadialGradient",
           definition=function(object)
           {
             ## init.
-            gradient <- newXMLNode("linearGradient")
-            
+            gradient <- newXMLNode("RadialGradient")
+
             ## core.attributes
             attr <- callNextMethod(object)
-            
+
             ## attributes
-            if(object@x1 != "0%") attr <- c(attr, x1=object@x1)
-            if(object@y1 != "0%") attr <- c(attr, y1=object@y1)
-            if(object@x2 != "100%") attr <- c(attr, x2=object@x2)
-            if(object@y2 != "0%") attr <- c(attr, y2=object@y2)
+            if(object@cx != "50%") attr <- c(attr, cx=object@cx)
+            if(object@cy != "50%") attr <- c(attr, cy=object@cy)
+            if(object@r != "50%") attr <- c(attr, r=object@r)
+            if(object@fx != object@cx) attr <- c(attr, fx=object@fx)
+            if(object@fy != object@cy) attr <- c(attr, fy=object@fy)
             xmlAttrs(gradient) <- attr
 
-            ## add stop elements
+            ## add stop items
             svg.stops <- sapply(object@stops, SVG)
             addChildren(gradient,kids=svg.stops)
 
@@ -147,19 +155,19 @@ setMethod(f="SVG", signature="LinearGradient",
 
 ## F A C T O R Y
 ##----------------------------------------
-LinearGradient.factory <- function(...,coords,spread.method,units,transform) {
-  
-  ## init. linear gradient
-  args <- list("LinearGradient")
+RadialGradient.factory <- function(...,coords,spread.method,units,transform) {
+
+  ## init. radial gradient
+  args <- list("RadialGradient")
   if(!missing(coords)) args <- c(args, coords=list(coords))
   if(!missing(spread.method)) args <- c(args, spread.method=spread.method)
   if(!missing(units)) args <- c(args,units=units)
   if(!missing(transform)) args <- c(args, transform)
-  linear.gradient = do.call(new, args)
+  gradient = do.call(new, args)
 
   ## add stops
-  stops(linear.gradient) <- list(...)
+  stops(gradient) <- list(...)
   
   ## eop
-  return(linear.gradient)
+  return(gradient)
 }

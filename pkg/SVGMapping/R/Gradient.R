@@ -51,6 +51,7 @@ setGenericVerif(name="xlinkHref<-", function(.Object, value) { standardGeneric("
 setGenericVerif(name="stops", function(object) { standardGeneric("stops") })
 setGenericVerif(name="stops<-", function(.Object, value) { standardGeneric("stops<-") })
 setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
+setGenericVerif(name="URL", function(object) { standardGeneric("URL") })
 
 setMethod(f="initialize", signature="Gradient",
           definition=function(.Object,...)
@@ -235,5 +236,15 @@ setMethod(f="SVG", signature="Gradient",
             if(length(object@xlink.href) > 0)
               attr <- c(attr, "xlink:href"=object@xlink.href)
             return(attr)
+          }
+          )
+
+setMethod(f="URL", signature="Gradient",
+          definition=function(object)
+          {
+            if(length(object@id) == 0)
+              return(object@id)
+            else
+              return(paste("url(#",object@id,")",sep=""))
           }
           )

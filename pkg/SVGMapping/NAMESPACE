@@ -42,6 +42,9 @@ exportMethods("colRange.max", "colRange.max<-")
 exportMethods("colRange", "colRange<-")
 export("MappingColors.factory")
 
+exportClasses("GradientStop")
+export("GradientStop.factory")
+
 exportClasses("Gradient")
 exportMethods("id", "id<-")
 exportMethods("units", "units<-")
@@ -49,11 +52,13 @@ exportMethods("transform", "transform<-")
 exportMethods("spreadMethod", "spreadMethod<-")
 exportMethods("xlinkHref", "xlinkHref<-")
 exportMethods("stops", "stops<-")
+exportMethods("URL")
 exportMethods("SVG")
 
 exportClasses("LinearGradient")
 exportMethods("coords", "coords<-")
 export("LinearGradient.factory")
 
-exportClasses("GradientStop")
-export("GradientStop.factory")
+exportClasses("RadialGradient")
+export("RadialGradient.factory")
+
