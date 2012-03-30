@@ -50,7 +50,7 @@ setGenericVerif(name="xlinkHref", function(object) { standardGeneric("xlinkHref"
 setGenericVerif(name="xlinkHref<-", function(.Object, value) { standardGeneric("xlinkHref<-") })
 setGenericVerif(name="stops", function(object) { standardGeneric("stops") })
 setGenericVerif(name="stops<-", function(.Object, value) { standardGeneric("stops<-") })
-setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
+setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 setGenericVerif(name="URL", function(object) { standardGeneric("URL") })
 
 setMethod(f="initialize", signature="Gradient",
@@ -222,7 +222,7 @@ setReplaceMethod(f="stops", signature="Gradient",
                  }
                  )
 
-setMethod(f="SVG", signature="Gradient",
+setMethod(f=".xml", signature="Gradient",
           definition=function(object)
           {
             ## return a list of core attributes

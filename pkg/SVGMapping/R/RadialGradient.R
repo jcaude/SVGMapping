@@ -39,7 +39,7 @@ setClass("RadialGradient",
 
 setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
-setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
+setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
 setMethod(f="initialize", signature="RadialGradient",
           definition=function(.Object,...)
@@ -91,8 +91,9 @@ setMethod(f="show", signature="RadialGradient",
                                            package="SVGMapping")
                                )
             definitions(svg) <- object
-##            svg["id::rect-gradient","style::fill"] <- URL(object)
+            svg["id::circle-gradient","style::fill"] <- URL(object)
             show(svg)
+            write.SVG(svg,file="~/Sources/R/Snippets/debug.svg")
           }
           )
 
@@ -127,11 +128,11 @@ setReplaceMethod(f="coords", signature="RadialGradient",
                  }                 
                  )
 
-setMethod(f="SVG", signature="RadialGradient",
+setMethod(f=".xml", signature="RadialGradient",
           definition=function(object)
           {
             ## init.
-            gradient <- newXMLNode("RadialGradient")
+            gradient <- newXMLNode("radialGradient")
 
             ## core.attributes
             attr <- callNextMethod(object)
@@ -145,7 +146,7 @@ setMethod(f="SVG", signature="RadialGradient",
             xmlAttrs(gradient) <- attr
 
             ## add stop items
-            svg.stops <- sapply(object@stops, SVG)
+            svg.stops <- sapply(object@stops, .xml)
             addChildren(gradient,kids=svg.stops)
 
             ## eop

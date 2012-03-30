@@ -53,7 +53,6 @@ exportMethods("spreadMethod", "spreadMethod<-")
 exportMethods("xlinkHref", "xlinkHref<-")
 exportMethods("stops", "stops<-")
 exportMethods("URL")
-exportMethods("SVG")
 
 exportClasses("LinearGradient")
 exportMethods("coords", "coords<-")

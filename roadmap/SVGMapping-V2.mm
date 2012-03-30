@@ -306,21 +306,25 @@
 </node>
 </node>
 </node>
-<node CREATED="1333001335590" ID="ID_412349928" MODIFIED="1333101152865" TEXT="RadialGradient">
+<node CREATED="1333001335590" ID="ID_412349928" MODIFIED="1333111870520" TEXT="RadialGradient">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <node CREATED="1333110137554" ID="ID_172990964" MODIFIED="1333110257248" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333110196004" ID="ID_768130968" MODIFIED="1333110213045" TEXT="cx,cy,r,fx,fy"/>
+<node CREATED="1333110196004" ID="ID_768130968" MODIFIED="1333111839296" TEXT="cx,cy,r,fx,fy">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 <node CREATED="1333110141162" ID="ID_1043186245" MODIFIED="1333110256640" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333110215134" ID="ID_1873605415" MODIFIED="1333110226302" TEXT="GS:coords"/>
+<node CREATED="1333110215134" ID="ID_1873605415" MODIFIED="1333111839296" TEXT="GS:coords">
+<icon BUILTIN="button_ok"/>
+</node>
 <node CREATED="1333110229621" ID="ID_11793243" MODIFIED="1333110231262" TEXT="show()"/>
 </node>
 <node CREATED="1333110142666" ID="ID_78620164" MODIFIED="1333110255912" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333110233343" ID="ID_1495029736" MODIFIED="1333110252903">
+<node CREATED="1333110233343" ID="ID_1495029736" MODIFIED="1333111845077">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -335,7 +339,15 @@
   </body>
 </html>
 </richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
+</node>
+</node>
+<node CREATED="1333111872372" ID="ID_1561496693" MODIFIED="1333111887108" TEXT="Mask">
+<font BOLD="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="idea"/>
+<node CREATED="1333111897437" ID="ID_1495986562" MODIFIED="1333111923075" TEXT="maybe not inherited from Gradient..">
+<icon BUILTIN="yes"/>
 </node>
 </node>
 </node>

@@ -34,7 +34,7 @@ setClass("GradientStop",
                         )
          )
 
-setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
+setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
 setMethod(f="initialize", signature="GradientStop",
           definition=function(.Object,...)
@@ -65,7 +65,7 @@ setMethod(f="initialize", signature="GradientStop",
           }
           )
 
-setMethod(f="SVG", signature="GradientStop",
+setMethod(f=".xml", signature="GradientStop",
           definition=function(object)
           {
             ## SVG rendering

@@ -462,7 +462,7 @@ setReplaceMethod(f="definitions", signature="SVG",
                      uid <- uid(.Object,"gradient")
                      id(value) <- uid
                      assign(nameValue,value,envir=parent.frame())
-                     value <- SVG(value)
+                     value <- .xml(value)
                    }
                    
                    ## init.
