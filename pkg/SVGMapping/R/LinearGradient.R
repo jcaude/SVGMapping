@@ -68,10 +68,10 @@ setMethod(f="initialize", signature="LinearGradient",
               if( is.list(coords) &&
                  (length(names(coords) %in% list("x1","y1","x2","y2"))==4) )
                 flag <- TRUE
-              .Object@x1 <- if(flag) value[["x1"]] else "0%"
-              .Object@y1 <- if(flag) value[["y1"]] else "0%"
-              .Object@x2 <- if(flag) value[["x2"]] else "100%"
-              .Object@y2 <- if(flag) value[["y2"]] else "0%"
+              .Object@x1 <- if(flag) coords[["x1"]] else "0%"
+              .Object@y1 <- if(flag) coords[["y1"]] else "0%"
+              .Object@x2 <- if(flag) coords[["x2"]] else "100%"
+              .Object@y2 <- if(flag) coords[["y2"]] else "0%"
             }
             else {
               .Object@x1 <-.arg("x1", "0%")
@@ -79,7 +79,6 @@ setMethod(f="initialize", signature="LinearGradient",
               .Object@x2 <- .arg("x2", "100%")
               .Object@y2 <- .arg("y2", "0%")
             }
-            .Object@stops <- list()
             
             ## eop
             return(.Object)
