@@ -212,12 +212,24 @@ setMethod(f="stops", signature="Gradient",
 setReplaceMethod(f="stops", signature="Gradient",
                  definition=function(.Object, value)
                  {
-                   ## check
-                   if(!is.list(stops))
-                     stop("'value' must be a list of 'GradientStop' objects")
+                   ## case 1 - list()
+                   if(is.list(value)) {
+                     if(length(value) > 0) {
+                       check <- sapply(value,function(x) {return(is.object(x) && is(x,"GradientStop"))})
+                       value <- value[check]
+                       .Object@stops <- value
+                     }
+                   }
 
-                   ## assign & eop
-                   .Object@stops <- value
+                   ## case 2 - object
+                   else if(is.object(value) && is(value, "GradientStop")) 
+                     .Object@stops <- c(.Object@stops, value)
+
+                   ## error
+                   else 
+                     stop("'value' must be either a list of GradientStop or a GradientStop")
+                   
+                   ## eop
                    return(.Object)
                  }
                  )

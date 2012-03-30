@@ -737,6 +737,8 @@ SVG.factory <- function(file,dims,landscape) {
     }
 
     if(is.list(dims) && (length(dims) == 2)) {
+      w <- dims[[1]]
+      h <- dims[[2]]
       
     }
     else 

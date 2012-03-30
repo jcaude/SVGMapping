@@ -31,16 +31,13 @@ setClass("LinearGradient",
          representation(x1="character",
                         y1="character",
                         x2="character",
-                        y2="character",
-                        stops="list"
+                        y2="character"
                         ),
          contains="Gradient"
          )
 
 setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
-setGenericVerif(name="stops", function(object) { standardGeneric("stops") })
-setGenericVerif(name="stops<-", function(.Object,value) { standardGeneric("stops<-") })
 setGenericVerif(name="SVG", function(object) { standardGeneric("SVG") })
 
 setMethod(f="initialize", signature="LinearGradient",
@@ -128,38 +125,6 @@ setMethod(f="show", signature="LinearGradient",
             show(svg)
           }
           )
-
-setMethod(f="stops", signature="LinearGradient",
-          definition=function(object)
-          {
-            return(object@stops)
-          }
-          )
-
-setReplaceMethod(f="stops", signature="LinearGradient",
-                 definition=function(.Object,value)
-                 {
-                   ## case 1 - list()
-                   if(is.list(value)) {
-                     if(length(value) > 0) {
-                       check <- sapply(value,function(x) {return(is.object(x) && is(x,"GradientStop"))})
-                       value <- value[check]
-                       .Object@stops <- value
-                     }
-                   }
-
-                   ## case 2 - object
-                   else if(is.object(value) && is(value, "GradientStop")) 
-                     .Object@stops <- c(.Object@stops, value)
-
-                   ## error
-                   else 
-                     stop("'value' must be either a list of GradientStop or a GradientStop")
-                   
-                   ## eop
-                   return(.Object)
-                 }
-                 )
 
 setMethod(f="SVG", signature="LinearGradient",
           definition=function(object)
