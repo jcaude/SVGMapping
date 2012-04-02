@@ -31,7 +31,8 @@ setClass("MappingColors",
          representation(target.attribute="character",
                         map.colors="vector",
                         colrange.min="numeric",
-                        colrange.max="numeric"
+                        colrange.max="numeric",
+                        fill.angle="numeric"
                         ),
          contains="Mapping"
          )
@@ -46,6 +47,8 @@ setGenericVerif(name="colRange.max", function(object) { standardGeneric("colRang
 setGenericVerif(name="colRange.max<-", function(.Object,value) { standardGeneric("colRange.max<-") })
 setGenericVerif(name="colRange", function(object) { standardGeneric("colRange") })
 setGenericVerif(name="colRange<-", function(.Object,value) { standardGeneric("colRange<-") })
+setGenericVerif(name="fillAngle", function(object) { standardGeneric("fillAngle") })
+setGenericVerif(name="fillAngle<-", function(.Object,value) { standardGeneric("fillAngle<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingColors",
@@ -59,6 +62,7 @@ setMethod(f="initialize", signature="MappingColors",
             .Object@colrange.min <- 0
             .Object@colrange.max <- 1
             .Object@target.attribute <- character()
+            .Object@fill.angle <- 0
 
             ## eop
             return(.Object)
@@ -167,6 +171,25 @@ setReplaceMethod(f="colRange", signature="MappingColors",
                  }
                  )
 
+setMethod(f="fillAngle", signature="MappingColors",
+          definition=function(object)
+          {
+            return(object@fill.angle)
+          }
+          )
+
+setReplaceMethod(f="fillAngle", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## -- more check
+                   if(!is.numeric(value))
+                     stop("'value' must be a numeric value")
+                   
+                   
+                   .Object@fill.angle <- value
+                 }
+                 )
+
 setMethod(f="exec", signature="MappingColors",
           definition=function(.Object, svg)
           {
@@ -184,15 +207,26 @@ setMethod(f="exec", signature="MappingColors",
             ## init.
             namedOjbect <- deparse(substitute(.Object))          
 
-            ## transform fn(values) -> colors
-            l <- length(.Object@map.colors)
-            s <- (l-1) / (.Object@colrange.max-.Object@colrange.min)
-            .Object@.values <- sapply(.Object@.values,
-                                      .v2col,
-                                      .Object@map.colors, s, l, .Object@colrange.min)
+            ## 1) Single Value (one-color) mode
+            if(ncol(.Object@values) < 2) {
+              
+              ## transform fn(values) -> colors
+              l <- length(.Object@map.colors)
+              s <- (l-1) / (.Object@colrange.max-.Object@colrange.min)
+              .Object@.values <- sapply(.Object@.values,
+                                        .v2col,
+                                        .Object@map.colors, s, l, .Object@colrange.min)
 
-            ## map colors on the template attribute
-            svg[.Object@targets,.Object@target.attribute] <- .Object@.values
+              ## map colors on the template attribute
+              svg[.Object@targets,.Object@target.attribute] <- .Object@.values
+            }
+            
+            ## 2) Multiple Values (gradients) mode
+            else {
+
+              ## init.
+              
+            }
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
