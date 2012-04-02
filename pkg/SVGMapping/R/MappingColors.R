@@ -342,6 +342,7 @@ setMethod(f="exec", signature="MappingColors",
 ## F A C T O R Y
 ##--------------
 
+## @TODO: MISSING GRADIENT TYPE (linear or radial)
 MappingColors.factory <- function(data,targets=rownames(data),
                                   colors=microarrayColors,colors.range=c(-2,2),
                                   attribute="style::fill",
