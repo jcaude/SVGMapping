@@ -443,7 +443,7 @@ setMethod(f="definitions", signature="SVG",
 
 setReplaceMethod(f="definitions", signature="SVG",
                  definition=function(.Object,value)
-                 {
+                 {                 
                    ## check
                    if(!is.object(value) &&
                       !(is(value,"XMLInternalNode") || is(value,"Gradient")))
@@ -579,6 +579,7 @@ setMethod(f="read.SVG", signature="SVG",
             nameObject <- deparse(substitute(object))
             
             ## try to load document.
+            ## -- TODO: Check return values more control here
             object@svg <- xmlTreeParse(file,
                                        useInternalNodes=TRUE,
                                        addAttributeNamespaces=TRUE,

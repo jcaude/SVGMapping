@@ -82,6 +82,11 @@ setMethod(f=".xml", signature="GradientStop",
 ##----------------------------------------
 
 GradientStop.factory <- function(offset="0",color="white",opacity=1.0) {
+
+  ## init.
+  if(is.numeric(offset)) offset <- as.character(offset)
+
+  ## create offset.
   return(new("GradientStop", offset=offset, stop.color=color, stop.opacity=opacity))
 }
 

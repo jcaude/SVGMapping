@@ -276,9 +276,14 @@ setMethod(f="exec", signature="Mapping",
             namedOjbect <- deparse(substitute(.Object))          
 
             ## apply function to values and update object.
-            .Object@.values <- sapply(.Object@values,
-                                      function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
-                                      )
+            if(is.list(.Object@values) || is.vector(.Object@values)) 
+              .Object@.values <- sapply(.Object@values,
+                                        function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                        )
+            else
+              .Object@.values <- apply(.Object@values, c(1,2),
+                                       function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                       )
 
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())

@@ -156,7 +156,7 @@ setMethod(f=".xml", signature="RadialGradient",
 
 ## F A C T O R Y
 ##----------------------------------------
-RadialGradient.factory <- function(...,coords,spread.method,units,transform) {
+RadialGradient.factory <- function(...,stops,coords,spread.method,units,transform) {
 
   ## init. radial gradient
   args <- list("RadialGradient")
@@ -167,7 +167,7 @@ RadialGradient.factory <- function(...,coords,spread.method,units,transform) {
   gradient = do.call(new, args)
 
   ## add stops
-  stops(gradient) <- list(...)
+  stops(gradient) <- if(imissing(stops)) stops else list(...)
   
   ## eop
   return(gradient)

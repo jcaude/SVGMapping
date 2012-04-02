@@ -32,6 +32,7 @@ setClass("MappingColors",
                         map.colors="vector",
                         colrange.min="numeric",
                         colrange.max="numeric",
+                        gradient.type="character",
                         fill.angle="numeric"
                         ),
          contains="Mapping"
@@ -47,6 +48,8 @@ setGenericVerif(name="colRange.max", function(object) { standardGeneric("colRang
 setGenericVerif(name="colRange.max<-", function(.Object,value) { standardGeneric("colRange.max<-") })
 setGenericVerif(name="colRange", function(object) { standardGeneric("colRange") })
 setGenericVerif(name="colRange<-", function(.Object,value) { standardGeneric("colRange<-") })
+setGenericVerif(name="gradientType", function(object) { standardGeneric("gradientType") })
+setGenericVerif(name="gradientType<-", function(.Object,value) { standardGeneric("gradientType<-") })
 setGenericVerif(name="fillAngle", function(object) { standardGeneric("fillAngle") })
 setGenericVerif(name="fillAngle<-", function(.Object,value) { standardGeneric("fillAngle<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
@@ -63,6 +66,7 @@ setMethod(f="initialize", signature="MappingColors",
             .Object@colrange.max <- 1
             .Object@target.attribute <- character()
             .Object@fill.angle <- 0
+            .Object@gradient.type <- "linear"
 
             ## eop
             return(.Object)
@@ -171,6 +175,27 @@ setReplaceMethod(f="colRange", signature="MappingColors",
                  }
                  )
 
+setMethod(f="gradientType", signature="MappingColors",
+          definition=function(object)
+          {
+            return(object@gradient.type)
+          }
+          )
+
+setReplaceMethod(f="gradientType", signature="MappingColors",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.character(value) ||
+                      !(tolower(value) %in% list("linear", "radial")))
+                     stop("'value' must be a character string, either 'linear' or 'radial'")
+
+                   ## eop
+                   .Object@gradient.type <- tolower(value)
+                   return(.Object)
+                 }
+                 )
+
 setMethod(f="fillAngle", signature="MappingColors",
           definition=function(object)
           {
@@ -181,12 +206,14 @@ setMethod(f="fillAngle", signature="MappingColors",
 setReplaceMethod(f="fillAngle", signature="MappingColors",
                  definition=function(.Object,value)
                  {
-                   ## -- more check
+                   ## -- TODO: more check about 'vectors'
+                   ## --       or move concept to the Roadmap
                    if(!is.numeric(value))
                      stop("'value' must be a numeric value")
-                   
-                   
+
+                   ## eop
                    .Object@fill.angle <- value
+                   return(.Object)
                  }
                  )
 
@@ -194,28 +221,100 @@ setMethod(f="exec", signature="MappingColors",
           definition=function(.Object, svg)
           {
             ## local
-            .v2col <- function(v,colors,s,l,m) {
-              v <- (v-m)*s+1
+            .v2col <- function(v) {
+              v <- (v-cmin)*cscale+1
               v <- if(v < 1) 1 else v
-              v <- if(v > l) l else v
+              v <- if(v > clen) clen else v
               return(colors[as.integer(round(v))])
             }
+
+            .v2grad.stops <- function(v) {
+              ## compute colors & create gradient stops
+              vcolors <- sapply(v, .v2col)
+              stops <- list()
+              for(i in 1:length(vcolors)) {
+                s1 <- GradientStop.factory((i-1)/ncond, vcolors[[i]])
+                s2 <- GradientStop.factory((i)/ncond, vcolors[[i]])
+                stops <- c(stops,s1,s2)
+              }
+              return(stops)
+            }
+            
+            .v2grad.lin <- function(v) {
+
+              ## init.
+              stops <- .v2grad.stops(v)
+
+              ## gradient init.
+              if(angle != 0) {
+                x <- cos(fillAngle)
+                y <- sin(fillAngle)
+                if (x < 0) {
+                  x1 <- -x
+                  x2 <- 0
+                } else {
+                  x1 <- 0
+                  x2 <- x
+                }
+                if (y < 0) {
+                  y1 <- -y
+                  y2 <- 0
+                } else {
+                  y1 <- 0
+                  y2 <- y
+                }
+                coords <- list(x1 = paste(round(x1*100), "%", sep=""),
+                               x2 = paste(round(x2*100), "%", sep=""),
+                               y1 = paste(round(y1*100), "%", sep=""),
+                               y2 = paste(round(y2*100), "%", sep=""))
+                gradient <- LinearGradient.factory(stops=stops, coords=coords)
+              }
+              else
+                gradient <- LinearGradient.factory(stops=stops)
+                
+              ## put gradient in def.
+              definitions(svg) <- gradient
+              return(gradient)            
+            }
+
+            .v2grad.rad <- function(v) {
+
+              ## init.
+              stops <- .v2grad.stops(v)
+
+              ## gradient init.
+              if(angle != 0) {
+                ## @TODO FINISH HERE..
+              }
+              else
+                gradient <- RadialGradient.factory(stops=stops)
+
+              ## put gradient in def.
+              definitions(svg) <- gradient
+              return(gradient)
+            }
+
+            ##------------------------------
             
             ## call super
             callNextMethod()
             
             ## init.
+            colors <- .Object@map.colors
+            clen <- length(colors)
+            cmin <- .Object@colrange.min
+            cscale <- (clen-1) / (.Object@colrange.max - cmin)
+            ncond <- ncol(.Object@values)
+            if(is.null(ncond)) ncond <- 1
+            angle <- .Object@fill.angle
+            gtype <- .Object@gradient.type
             namedOjbect <- deparse(substitute(.Object))          
 
             ## 1) Single Value (one-color) mode
-            if(ncol(.Object@values) < 2) {
+            if(ncond < 2) {
               
               ## transform fn(values) -> colors
-              l <- length(.Object@map.colors)
-              s <- (l-1) / (.Object@colrange.max-.Object@colrange.min)
-              .Object@.values <- sapply(.Object@.values,
-                                        .v2col,
-                                        .Object@map.colors, s, l, .Object@colrange.min)
+              .Object@.values <- sapply(.Object@.values, .v2col)
 
               ## map colors on the template attribute
               svg[.Object@targets,.Object@target.attribute] <- .Object@.values
@@ -224,8 +323,14 @@ setMethod(f="exec", signature="MappingColors",
             ## 2) Multiple Values (gradients) mode
             else {
 
-              ## init.
-              
+              ## transform fn(values) -> gradients
+              if(gtype == "linear")
+                .Object@.values <- apply(.Object@.values, 1, .v2grad.lin)
+              else
+                .Object@.values <- apply(.Object@.values, 1, .v2grad.lin) ## TODO: Implement THIS
+
+              ## map gradient on the template attribute
+              svg[.Object@targets, .Object@target.attribute] <- sapply(.Object@.values, URL)              
             }
             
             ## eop

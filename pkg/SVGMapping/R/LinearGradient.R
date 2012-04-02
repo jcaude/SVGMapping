@@ -147,7 +147,7 @@ setMethod(f=".xml", signature="LinearGradient",
 
 ## F A C T O R Y
 ##----------------------------------------
-LinearGradient.factory <- function(...,coords,spread.method,units,transform) {
+LinearGradient.factory <- function(...,stops,coords,spread.method,units,transform) {
   
   ## init. linear gradient
   args <- list("LinearGradient")
@@ -158,7 +158,7 @@ LinearGradient.factory <- function(...,coords,spread.method,units,transform) {
   linear.gradient = do.call(new, args)
 
   ## add stops
-  stops(linear.gradient) <- list(...)
+  stops(linear.gradient) <- if(!missing(stops)) stops else list(...)
   
   ## eop
   return(linear.gradient)
