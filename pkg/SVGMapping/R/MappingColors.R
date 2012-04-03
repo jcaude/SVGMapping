@@ -228,7 +228,8 @@ setMethod(f="exec", signature="MappingColors",
               return(colors[as.integer(round(v))])
             }
 
-            .v2grad.stops <- function(v) {
+            .v2grad <- function(v) {
+           
               ## compute colors & create gradient stops
               vcolors <- sapply(v, .v2col)
               stops <- list()
@@ -237,18 +238,11 @@ setMethod(f="exec", signature="MappingColors",
                 s2 <- GradientStop.factory((i)/ncond, vcolors[[i]])
                 stops <- c(stops,s1,s2)
               }
-              return(stops)
-            }
-            
-            .v2grad.lin <- function(v) {
-
-              ## init.
-              stops <- .v2grad.stops(v)
-
+              
               ## gradient init.
-              if(angle != 0) {
-                x <- cos(fillAngle)
-                y <- sin(fillAngle)
+              if((gtype == "linear") && (angle != 0)) {
+                x <- cos(angle)
+                y <- sin(angle)
                 if (x < 0) {
                   x1 <- -x
                   x2 <- 0
@@ -269,36 +263,21 @@ setMethod(f="exec", signature="MappingColors",
                                y2 = paste(round(y2*100), "%", sep=""))
                 gradient <- LinearGradient.factory(stops=stops, coords=coords)
               }
-              else
+              else if(gtype == "linear")
                 gradient <- LinearGradient.factory(stops=stops)
+              else
+                gradient <- RadialGradient.factory(stops=stops)
                 
               ## put gradient in def.
               definitions(svg) <- gradient
               return(gradient)            
             }
 
-            .v2grad.rad <- function(v) {
-
-              ## init.
-              stops <- .v2grad.stops(v)
-
-              ## gradient init.
-              if(angle != 0) {
-                ## @TODO FINISH HERE..
-              }
-              else
-                gradient <- RadialGradient.factory(stops=stops)
-
-              ## put gradient in def.
-              definitions(svg) <- gradient
-              return(gradient)
-            }
-
             ##------------------------------
             
             ## call super
             callNextMethod()
-            
+
             ## init.
             colors <- .Object@map.colors
             clen <- length(colors)
@@ -315,7 +294,7 @@ setMethod(f="exec", signature="MappingColors",
               
               ## transform fn(values) -> colors
               .Object@.values <- sapply(.Object@.values, .v2col)
-
+              
               ## map colors on the template attribute
               svg[.Object@targets,.Object@target.attribute] <- .Object@.values
             }
@@ -324,10 +303,7 @@ setMethod(f="exec", signature="MappingColors",
             else {
 
               ## transform fn(values) -> gradients
-              if(gtype == "linear")
-                .Object@.values <- apply(.Object@.values, 1, .v2grad.lin)
-              else
-                .Object@.values <- apply(.Object@.values, 1, .v2grad.lin) ## TODO: Implement THIS
+              .Object@.values <- apply(.Object@.values, 1, .v2grad)
 
               ## map gradient on the template attribute
               svg[.Object@targets, .Object@target.attribute] <- sapply(.Object@.values, URL)              
@@ -342,10 +318,10 @@ setMethod(f="exec", signature="MappingColors",
 ## F A C T O R Y
 ##--------------
 
-## @TODO: MISSING GRADIENT TYPE (linear or radial)
 MappingColors.factory <- function(data,targets=rownames(data),
                                   colors=microarrayColors,colors.range=c(-2,2),
                                   attribute="style::fill",
+                                  gradient.type="linear", fill.angle=0,
                                   fn="Identity", fn.parameters=list()) {
   ## init.
   mapC <- new("MappingColors")
@@ -356,6 +332,8 @@ MappingColors.factory <- function(data,targets=rownames(data),
   mapColors(mapC) <- colors
   colRange(mapC) <- colors.range
   targetAttribute(mapC) <- attribute
+  gradientType(mapC) <- gradient.type
+  fillAngle(mapC) <- fill.angle
 
   ## select transform function
   if(missing(fn)) {

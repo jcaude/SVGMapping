@@ -167,7 +167,7 @@ RadialGradient.factory <- function(...,stops,coords,spread.method,units,transfor
   gradient = do.call(new, args)
 
   ## add stops
-  stops(gradient) <- if(imissing(stops)) stops else list(...)
+  stops(gradient) <- if(!missing(stops)) stops else list(...)
   
   ## eop
   return(gradient)

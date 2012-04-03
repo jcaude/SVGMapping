@@ -579,7 +579,6 @@ setMethod(f="read.SVG", signature="SVG",
             nameObject <- deparse(substitute(object))
             
             ## try to load document.
-            ## -- TODO: Check return values more control here
             object@svg <- xmlTreeParse(file,
                                        useInternalNodes=TRUE,
                                        addAttributeNamespaces=TRUE,
@@ -638,6 +637,7 @@ setMethod(f="mapping", signature="SVG",
           {
             ## apply mapping on the current svg
             exec(op,svg)
+            return(invisible())
           }
           )
 
