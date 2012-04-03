@@ -21,12 +21,12 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("MappingOpacity",
-         representation(target.attribute="character"),
+         representation(target.attributes="vector"),
          contains="Mapping"
          )
 
-setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
-setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
+setGenericVerif(name="targetAttributes", function(object) { standardGeneric("targetAttributes") })
+setGenericVerif(name="targetAttributes<-", function(.Object,value) { standardGeneric("targetAttributes<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingOpacity",
@@ -36,29 +36,32 @@ setMethod(f="initialize", signature="MappingOpacity",
             .Object <- callNextMethod()
 
             ## default init.
-            .Object@target.attribute <- "opacity"
+            .Object@target.attributes <- c("opacity")
 
             ## eop
             return(.Object)
           }
           )
 
-setMethod(f="targetAttribute", signature="MappingOpacity",
+setMethod(f="targetAttributes", signature="MappingOpacity",
           definition=function(object)
           {
-            return(object@target.attribute)
+            return(object@target.attributes)
           }
           )
 
-setReplaceMethod(f="targetAttribute", signature="MappingOpacity",
+setReplaceMethod(f="targetAttributes", signature="MappingOpacity",
                  definition=function(.Object,value)
                  {
+                   ## init.
+                   if(is.atomic(value)) value <- c(value)
+                   
                    ## check
                    if(!is.character(value))
-                     stop("Target attribute 'value' must be a string")
+                     stop("Target attribute 'value' must be character strings")
 
                    ## init.
-                   .Object@target.attribute <- value
+                   .Object@target.attributes <- value
                    return(.Object)
                  }
                  )
@@ -72,15 +75,19 @@ setMethod(f="exec", signature="MappingOpacity",
             
             ## call super
             callNextMethod()
+            assign("values",.Object@.values,envir=globalenv())
 
             ## check & bound
             if(ncond < 2) 
               .Object@.values <- sapply(.Object@.values, function(x) {return(min(max(0,x),1))})
             else
-              .Object@.values <- apply(.Object@.values, 1, function(x) {return(min(max(0,max(x)),1))})
+              .Object@.values <- apply(.Object@.values, c(1,2),
+                                       function(x) {return(as.character(min(max(0,x),1)))}
+                                       )
+            assign("values2",.Object@.values,envir=globalenv())
 
             ## set opacity values
-            svg[.Object@targets, .Object@target.attribute] <- as.character(.Object@.values)
+            svg[.Object@targets, .Object@target.attributes] <- .Object@.values
 
             ## eop
             return(invisible(.Object))
@@ -90,7 +97,7 @@ setMethod(f="exec", signature="MappingOpacity",
 ## F A C T O R Y
 ##--------------
 MappingOpacity.factory <- function(data,targets=rownames(data),
-                                   target.attribute="opacity",
+                                   target.attributes=c("opacity"),
                                    fn="Identity", fn.parameters=list()) {
   ## init.
   mapO <- new("MappingOpacity")
@@ -98,7 +105,7 @@ MappingOpacity.factory <- function(data,targets=rownames(data),
   ## fill mapping structure
   values(mapO) <- data
   targets(mapO) <- targets
-  targetAttribute(mapO) <- target.attribute
+  targetAttributes(mapO) <- target.attributes
   if(missing(fn.parameters))
     mapO <- setFunction(mapO,fn)
   else

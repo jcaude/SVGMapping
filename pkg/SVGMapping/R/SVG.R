@@ -349,17 +349,20 @@ setReplaceMethod(f="[", signature="SVG",
                      }
                      else {  # vector case
 
-                       ## init. & check
+                       ## init.
                        j <- if(is.list(j)) unlist(j) else j
-                       if(!is.list(value) && (length(value)==length(j)))
-                         value <- as.list(value)
-                       if(!is.list(value) || (length(value) != length(j)))
-                         stop("'value' must be a 'list()' having the same length than 'j'")
+                       value <- if(!is.list(value) && is.vector(value)) as.list(value) else value
+
+                       ## check.
+                       if(is.array(value) && (ncol(value) != length(j)))
+                         stop("'value' must be an 'array' having the same nb. of columns than 'j'")
+                       if(is.list(value) && (length(value) != length(j)))
+                         stop("'value' must be a 'list' having the same length than 'j'")
 
                        ## loop over 'j'
                        for(att.id in 1:length(j)) {
                          att <- j[att.id]
-                         v <- value[[att.id]]
+                         v <- if(is.array(value)) value[,att.id] else value[[att.id]]
                          .atomic_setter(x,xpath,att,v)
                        }                       
                      }
@@ -375,15 +378,17 @@ setReplaceMethod(f="[", signature="SVG",
                    if(is.list(i) || (length(i) > 1)) {
 
                      ## init.
-                     if(!is.list(value) && length(value) == length(j))
+                     if(!is.list(value) && is.vector(value) && length(value) == length(j))
                        value <- replicate(length(i),value,simplify=FALSE)
-                     if(!is.list(value) && (length(value) != length(i)))
-                       stop("'value' must be a 'list' or a 'vector' having the same length than 'svg[i]'")
+                     if(is.vector(value) && (length(value) != length(i)))
+                       stop("'value' must be a 'list' or 'vector' having the same length than 'svg[i]'")
+                     if(is.array(value) && (nrow(value) != length(i)))
+                       stop("'value' must be an 'array' having the same nb. of rows than 'svg[i]'")
 
                      ## proceed..
                      for(idx in 1:length(i)) {
                        node <- i[[idx]]
-                       v <- value[[idx]]
+                       v <- if(is.array(value)) value[idx,] else value[[idx]]
                        .setter(node,x,j,v)
                      }
                    }
