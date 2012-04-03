@@ -66,6 +66,10 @@ setReplaceMethod(f="targetAttribute", signature="MappingOpacity",
 setMethod(f="exec", signature="MappingOpacity",
           definition=function(.Object,svg)
           {
+            ## init.            
+            ncond <- ncol(.Object@values)
+            if(is.null(ncond)) ncond <- 1
+            
             ## call super
             callNextMethod()
 
@@ -73,10 +77,10 @@ setMethod(f="exec", signature="MappingOpacity",
             if(ncond < 2) 
               .Object@.values <- sapply(.Object@.values, function(x) {return(min(max(0,x),1))})
             else
-              .Object@.values <- sapply(.Object@.values, c(1,2), function(x) {return(min(max(0,x),1))})
+              .Object@.values <- apply(.Object@.values, 1, function(x) {return(min(max(0,max(x)),1))})
 
             ## set opacity values
-            svg[.Object@targets, "style::opacity"] <- as.character(.Object@.values)
+            svg[.Object@targets, .Object@target.attribute] <- as.character(.Object@.values)
 
             ## eop
             return(invisible(.Object))
@@ -85,15 +89,20 @@ setMethod(f="exec", signature="MappingOpacity",
 
 ## F A C T O R Y
 ##--------------
-MappingOpacity.factory <- function(data,targets=rownames(data),                                   
-                                  fn="Identity", fn.parameters=list()) {
+MappingOpacity.factory <- function(data,targets=rownames(data),
+                                   target.attribute="opacity",
+                                   fn="Identity", fn.parameters=list()) {
   ## init.
   mapO <- new("MappingOpacity")
 
   ## fill mapping structure
   values(mapO) <- data
   targets(mapO) <- targets
-  mapO <- setFunction(mapO,fn,fn.parameters)
+  targetAttribute(mapO) <- target.attribute
+  if(missing(fn.parameters))
+    mapO <- setFunction(mapO,fn)
+  else
+    mapO <- setFunction(mapO,fn,fn.parameters)
 
   ## eop
   return(mapO)

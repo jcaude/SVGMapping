@@ -153,27 +153,27 @@ setMethod(f="setFunction", signature="Mapping",
               else {
                 fn <- tolower(fn)
                 if(fn=="random") {
-                  if(missing(fn.parameters)) fn.parameters <- list(min=0,max=1)
-                  fnRandom(.Object,fn.parameters$min, fn.parameters$max)
+                  if(missing(fn.params)) fn.params <- list(min=0,max=1)
+                  fnRandom(.Object,fn.params$min, fn.params$max)
                 }
                 else if(fn=="identity") fnIdentity(mapO)
                 else if(fn=="Linear") {
-                  if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0)
-                  fnLinear(.Object, fn.parameters$a, fn.parameters$b)
+                  if(missing(fn.params)) fn.params <- list(a=1,b=0)
+                  fnLinear(.Object, fn.params$a, fn.params$b)
                 }
                 else if(fn=="RangeLinear") {
-                  if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0,min=0,max=1)
+                  if(missing(fn.params)) fn.params <- list(a=1,b=0,min=0,max=1)
                   fnRangeLinear(.Object,
-                                fn.parameters$a, fn.parameters$b,
-                                fn.parameters$min, fn.parameters$max)
+                                fn.params$a, fn.params$b,
+                                fn.params$min, fn.params$max)
                 }
                 else if(fn=="Logistic") {
-                  if(missing(fn.parameters)) fn.parameters <- list(K=1,a=1,r=1)
-                  fnLogistic(.Object, fn.parameters$K, fn.parameters$a, fn.parameters$r)
+                  if(missing(fn.params)) fn.params <- list(K=1,a=1,r=1)
+                  fnLogistic(.Object, fn.params$K, fn.params$a, fn.params$r)
                 }
                 else if(fn=="Sigmoid") {
-                  if(missing(fn.parameters)) fn.parameters <- list(r=1)
-                  fnLogistic(.Object, fn.parameters$r)
+                  if(missing(fn.params)) fn.params <- list(r=1)
+                  fnLogistic(.Object, fn.params$r)
                 }
                 else 
                   stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
@@ -191,8 +191,8 @@ setMethod(f="fnRandom", signature="Mapping",
           {
             ## init.
             namedOjbect <- deparse(substitute(.Object))
-            min <- if(missing(min)) 0 else min
-            max <- if(missing(max)) 1 else max            
+            min <- if(missing(min)) 0 else as.numeric(min)
+            max <- if(missing(max)) 1 else as.numeric(max)
 
             ## check
             if(!is.numeric(min) || !is.numeric(max))
