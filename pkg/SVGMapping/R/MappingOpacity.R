@@ -21,10 +21,12 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("MappingOpacity",
-         representation(),
+         representation(target.attribute="character"),
          contains="Mapping"
          )
 
+setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
+setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingOpacity",
@@ -33,11 +35,33 @@ setMethod(f="initialize", signature="MappingOpacity",
             ## super
             .Object <- callNextMethod()
 
+            ## default init.
+            .Object@target.attribute <- "opacity"
+
             ## eop
             return(.Object)
           }
           )
 
+setMethod(f="targetAttribute", signature="MappingOpacity",
+          definition=function(object)
+          {
+            return(object@target.attribute)
+          }
+          )
+
+setReplaceMethod(f="targetAttribute", signature="MappingOpacity",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.character(value))
+                     stop("Target attribute 'value' must be a string")
+
+                   ## init.
+                   .Object@target.attribute <- value
+                   return(.Object)
+                 }
+                 )
 
 setMethod(f="exec", signature="MappingOpacity",
           definition=function(.Object,svg)
