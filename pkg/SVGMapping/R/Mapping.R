@@ -52,6 +52,7 @@ setGenericVerif(name="values", function(object) { standardGeneric("values") })
 setGenericVerif(name="values<-", function(.Object,value) { standardGeneric("values<-") })
 setGenericVerif(name="getFunction", function(object) { standardGeneric("getFunction") })
 setGenericVerif(name="getFunctionParams", function(object) { standardGeneric("getFunctionParams") })
+setGenericVerif(name="setFunction", function(.Object,fn,fn.params) { standardGeneric("setFunction") })
 setGenericVerif(name="fnRandom", function(.Object,min,max) { standardGeneric("fnRandom") })
 setGenericVerif(name="fnIdentity", function(.Object) { standardGeneric("fnIdentity") })
 setGenericVerif(name="fnLinear", function(.Object,a,b) { standardGeneric("fnLinear") })
@@ -123,6 +124,65 @@ setMethod(f="getFunctionParams", signature="Mapping",
           definition=function(object)
           {
             return(object@fn.parameters)
+          }
+          )
+
+setMethod(f="setFunction", signature="Mapping",
+          definition=function(.Object,fn,fn.params)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+            
+            ## select transform function
+            if(missing(fn)) {
+              fnIdentity(.Object)
+            }
+            else {
+              ## check
+              if(!(is.character(fn) || is.function(fn))) {
+                stop("Invalid 'fn' argument, must be 'character' or 'function'")
+              }
+              if(!missing(fn.params) && !is.list(fn.params)) {
+                stop("Invalid 'fn.params' argument, must be a list")
+              }
+
+              ## fill
+              if(is.function(fn)) {
+                fnUser(mapc,fn,fn.params)
+              }
+              else {
+                fn <- tolower(fn)
+                if(fn=="random") {
+                  if(missing(fn.parameters)) fn.parameters <- list(min=0,max=1)
+                  fnRandom(.Object,fn.parameters$min, fn.parameters$max)
+                }
+                else if(fn=="identity") fnIdentity(mapO)
+                else if(fn=="Linear") {
+                  if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0)
+                  fnLinear(.Object, fn.parameters$a, fn.parameters$b)
+                }
+                else if(fn=="RangeLinear") {
+                  if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0,min=0,max=1)
+                  fnRangeLinear(.Object,
+                                fn.parameters$a, fn.parameters$b,
+                                fn.parameters$min, fn.parameters$max)
+                }
+                else if(fn=="Logistic") {
+                  if(missing(fn.parameters)) fn.parameters <- list(K=1,a=1,r=1)
+                  fnLogistic(.Object, fn.parameters$K, fn.parameters$a, fn.parameters$r)
+                }
+                else if(fn=="Sigmoid") {
+                  if(missing(fn.parameters)) fn.parameters <- list(r=1)
+                  fnLogistic(.Object, fn.parameters$r)
+                }
+                else 
+                  stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
+              }
+            }
+
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -290,3 +350,5 @@ setMethod(f="exec", signature="Mapping",
             return(invisible(.Object))
           }
           )
+
+  

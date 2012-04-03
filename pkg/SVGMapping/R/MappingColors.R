@@ -317,7 +317,6 @@ setMethod(f="exec", signature="MappingColors",
 
 ## F A C T O R Y
 ##--------------
-
 MappingColors.factory <- function(data,targets=rownames(data),
                                   colors=microarrayColors,colors.range=c(-2,2),
                                   attribute="style::fill",
@@ -334,51 +333,8 @@ MappingColors.factory <- function(data,targets=rownames(data),
   targetAttribute(mapC) <- attribute
   gradientType(mapC) <- gradient.type
   fillAngle(mapC) <- fill.angle
+  mapC <- setFunction(mapC,fn,fn.parameters)
 
-  ## select transform function
-  if(missing(fn)) {
-    fnIdentity(mapC)
-  }
-  else {
-    ## check
-    if(!(is.character(fn) || is.function(fn))) {
-      stop("Invalid 'fn' argument, must be 'character' or 'function'")
-    }
-    if(!missing(fn.parameters) && !is.list(fn.parameters)) {
-      stop("Invalid 'fn.parameter' argument, must be a list")
-    }
-
-    ## fill
-    if(is.function(fn)) {
-      fnUser(mapc,fn,fn.parameters)
-    }
-    else {
-      fn <- tolower(fn)
-      if(fn=="random") {
-        if(missing(fn.parameters)) fn.parameters <- list(min=0,max=1)
-        fnRandom(mapC,fn.parameters$min, fn.parameters$max)
-      }
-      else if(fn=="identity") fnIdentity(mapC)
-      else if(fn=="Linear") {
-        if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0)
-        fnLinear(mapC, fn.parameters$a, fn.parameters$b)
-      }
-      else if(fn=="RangeLinear") {
-        if(missing(fn.parameters)) fn.parameters <- list(a=1,b=0,min=0,max=1)
-        fnRangeLinear(mapC,
-                      fn.parameters$a, fn.parameters$b,
-                      fn.parameters$min, fn.parameters$max)
-      }
-      else if(fn=="Logistic") {
-        if(missing(fn.parameters)) fn.parameters <- list(K=1,a=1,r=1)
-        fnLogistic(mapC, fn.parameters$K, fn.parameters$a, fn.parameters$r)
-      }
-      else if(fn=="Sigmoid") {
-        if(missing(fn.parameters)) fn.parameters <- list(r=1)
-        fnLogistic(mapC, fn.parameters$r)
-      }
-      else 
-        stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
-    }
-  }
+  ## eop
+  return(mapC)
 }
