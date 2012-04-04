@@ -62,7 +62,7 @@ exportMethods("colRange.max", "colRange.max<-")
 exportMethods("colRange", "colRange<-")
 export("MappingColors.factory")
 
-exportClasses("MappingOpacity")
+exportClasses("MappingValues")
 exportMethods("valuesUnit", "valuesUnit<-")
-export("MappingOpacity.factory")
+export("MappingValues.factory")
 

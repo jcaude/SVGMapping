@@ -15,12 +15,12 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ## SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-## M A P P I N G   -   O P A C I T Y
+## M A P P I N G   -   V A L U E S
 ## --------------------------------------------------
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
-setClass("MappingOpacity",
+setClass("MappingValues",
          representation(target.attributes="vector",
                         values.unit="vector"),
          contains="Mapping"
@@ -32,7 +32,7 @@ setGenericVerif(name="valuesUnit", function(object) { standardGeneric("valuesUni
 setGenericVerif(name="valuesUnit<-", function(.Object,value) { standardGeneric("valuesUnit<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
-setMethod(f="initialize", signature="MappingOpacity",
+setMethod(f="initialize", signature="MappingValues",
           definition=function(.Object,...)
           {            
             ## super
@@ -47,14 +47,14 @@ setMethod(f="initialize", signature="MappingOpacity",
           }
           )
 
-setMethod(f="targetAttributes", signature="MappingOpacity",
+setMethod(f="targetAttributes", signature="MappingValues",
           definition=function(object)
           {
             return(object@target.attributes)
           }
           )
 
-setReplaceMethod(f="targetAttributes", signature="MappingOpacity",
+setReplaceMethod(f="targetAttributes", signature="MappingValues",
                  definition=function(.Object,value)
                  {
                    ## init.
@@ -70,14 +70,14 @@ setReplaceMethod(f="targetAttributes", signature="MappingOpacity",
                  }
                  )
 
-setMethod(f="valuesUnit", signature="MappingOpacity",
+setMethod(f="valuesUnit", signature="MappingValues",
           definition=function(object)
           {
             return(object@values.unit)
           }
           )
 
-setReplaceMethod(f="valuesUnit", signature="MappingOpacity",
+setReplaceMethod(f="valuesUnit", signature="MappingValues",
                  definition=function(.Object,value)
                  {
                    ## init.
@@ -93,7 +93,7 @@ setReplaceMethod(f="valuesUnit", signature="MappingOpacity",
                  }
                  )
 
-setMethod(f="exec", signature="MappingOpacity",
+setMethod(f="exec", signature="MappingValues",
           definition=function(.Object,svg)
           {
             ## init.            
@@ -126,11 +126,11 @@ setMethod(f="exec", signature="MappingOpacity",
 
 ## F A C T O R Y
 ##--------------
-MappingOpacity.factory <- function(data,targets=rownames(data),
+MappingValues.factory <- function(data,targets=rownames(data),
                                    target.attributes=c("opacity"),
                                    fn="Identity", fn.parameters=list()) {
   ## init.
-  mapO <- new("MappingOpacity")
+  mapO <- new("MappingValues")
 
   ## fill mapping structure
   values(mapO) <- data
