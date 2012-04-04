@@ -105,16 +105,15 @@ setMethod(f="exec", signature="MappingValues",
 
             ## check & bound
             if(ncond < 2) 
-              .Object@.values <- sapply(.Object@.values, function(x) {return(min(max(0,x),1))})
-            else
-              .Object@.values <- apply(.Object@.values, c(1,2),
-                                       function(x) {return(as.character(min(max(0,x),1)))}
-                                       )
-            ## paste units
-            if(length(.Object@target.attributes) == length(.Object@values.unit))
-              .Object@.values <- apply(.Object@.values,1,
-                                       function(x,u) {return(paste(x,u,sep=""))},
-                                       .Object@values.unit)
+              .Object@.values <- sapply(.Object@.values,
+                                        function(x,u) { return(paste(x,u,sep="")) },
+                                        .Object@values.unit
+                                        )
+            else {
+              .Object@.values <- t(apply(.Object@.values, 1,
+                                       function(x,u) { return(paste(x,u,sep="")) },
+                                       .Object@values.unit))
+            }
             
             ## set opacity values
             svg[.Object@targets, .Object@target.attributes] <- .Object@.values
@@ -127,20 +126,96 @@ setMethod(f="exec", signature="MappingValues",
 ## F A C T O R Y
 ##--------------
 MappingValues.factory <- function(data,targets=rownames(data),
+                                  target.attributes,values.units=c(""),
+                                  fn="Identity", fn.parameters=list()) {
+  
+  ## init.
+  mapV <- new("MappingValues")
+
+  ## check length
+  if(length(values.units) != length(target.attributes))
+    values.units <- rep(values.units[[1]], length(target.attributes))
+  
+  ## fill mapping structure
+  values(mapV) <- data
+  targets(mapV) <- targets
+  targetAttributes(mapV) <- target.attributes
+  valuesUnit(mapV) <- values.units
+
+  ## set transform function
+  if(missing(fn.parameters))
+    mapV <- setFunction(mapV,fn)
+  else
+    mapV <- setFunction(mapV,fn,fn.parameters)
+  
+  #eop
+  return(mapV)
+}
+
+MappingOpacity.factory <- function(data,targets=rownames(data),
                                    target.attributes=c("opacity"),
                                    fn="Identity", fn.parameters=list()) {
   ## init.
-  mapO <- new("MappingValues")
-
-  ## fill mapping structure
-  values(mapO) <- data
-  targets(mapO) <- targets
-  targetAttributes(mapO) <- target.attributes
-  if(missing(fn.parameters))
-    mapO <- setFunction(mapO,fn)
+  if(missing(fn.parameters)) 
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn)
   else
-    mapO <- setFunction(mapO,fn,fn.parameters)
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn,fn.parameters)
 
   ## eop
-  return(mapO)
+  return(mapV)
+}
+
+MappingFillOpacity.factory <- function(data,targets=rownames(data),
+                                       target.attributes=c("style::fill-opacity"),
+                                       fn="Identity", fn.parameters=list()) {
+  ## init.
+  if(missing(fn.parameters)) 
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn)
+  else
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn,fn.parameters)
+
+  ## eop
+  return(mapV)
+}
+
+MappingStrokeOpacity.factory <- function(data,targets=rownames(data),
+                                         target.attributes=c("style::stroke-opacity"),
+                                         fn="Identity", fn.parameters=list()) {
+  ## init.
+  if(missing(fn.parameters)) 
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn)
+  else
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn,fn.parameters)
+
+  ## eop
+  return(mapV)
+}
+
+MappingStrokeWidth.factory <- function(data,targets=rownames(data),
+                                       target.attributes=c("style::stroke-width"),
+                                       fn="Identity", fn.parameters=list()) {
+  ## init.
+  if(missing(fn.parameters)) 
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn)
+  else
+    mapV <- MappingValues.factory(data,targets,
+                                  target.attributes,values.units=c(""),
+                                  fn,fn.parameters)
+
+  ## eop
+  return(mapV)
 }

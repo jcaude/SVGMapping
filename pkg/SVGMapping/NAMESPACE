@@ -65,4 +65,8 @@ export("MappingColors.factory")
 exportClasses("MappingValues")
 exportMethods("valuesUnit", "valuesUnit<-")
 export("MappingValues.factory")
+export("MappingOpacity.factory")
+export("MappingFillOpacity.factory")
+export("MappingStrokeOpacity.factory")
+export("MappingStrokeWidth.factory")
 
