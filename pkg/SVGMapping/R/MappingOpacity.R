@@ -21,12 +21,15 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("MappingOpacity",
-         representation(target.attributes="vector"),
+         representation(target.attributes="vector",
+                        values.unit="vector"),
          contains="Mapping"
          )
 
 setGenericVerif(name="targetAttributes", function(object) { standardGeneric("targetAttributes") })
 setGenericVerif(name="targetAttributes<-", function(.Object,value) { standardGeneric("targetAttributes<-") })
+setGenericVerif(name="valuesUnit", function(object) { standardGeneric("valuesUnit") })
+setGenericVerif(name="valuesUnit<-", function(.Object,value) { standardGeneric("valuesUnit<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingOpacity",
@@ -37,6 +40,7 @@ setMethod(f="initialize", signature="MappingOpacity",
 
             ## default init.
             .Object@target.attributes <- c("opacity")
+            .Object@values.unit <- vector()
 
             ## eop
             return(.Object)
@@ -66,6 +70,29 @@ setReplaceMethod(f="targetAttributes", signature="MappingOpacity",
                  }
                  )
 
+setMethod(f="valuesUnit", signature="MappingOpacity",
+          definition=function(object)
+          {
+            return(object@values.unit)
+          }
+          )
+
+setReplaceMethod(f="valuesUnit", signature="MappingOpacity",
+                 definition=function(.Object,value)
+                 {
+                   ## init.
+                   if(is.atomic(value)) value <- c(value)
+                   
+                   ## check
+                   if(!is.character(value))
+                     stop("Values unit 'value' must be character strings")
+
+                   ## init.
+                   .Object@values.unit <- value
+                   return(.Object)
+                 }
+                 )
+
 setMethod(f="exec", signature="MappingOpacity",
           definition=function(.Object,svg)
           {
@@ -75,7 +102,6 @@ setMethod(f="exec", signature="MappingOpacity",
             
             ## call super
             callNextMethod()
-            assign("values",.Object@.values,envir=globalenv())
 
             ## check & bound
             if(ncond < 2) 
@@ -84,8 +110,12 @@ setMethod(f="exec", signature="MappingOpacity",
               .Object@.values <- apply(.Object@.values, c(1,2),
                                        function(x) {return(as.character(min(max(0,x),1)))}
                                        )
-            assign("values2",.Object@.values,envir=globalenv())
-
+            ## paste units
+            if(length(.Object@target.attributes) == length(.Object@values.unit))
+              .Object@.values <- apply(.Object@.values,1,
+                                       function(x,u) {return(paste(x,u,sep=""))},
+                                       .Object@values.unit)
+            
             ## set opacity values
             svg[.Object@targets, .Object@target.attributes] <- .Object@.values
 

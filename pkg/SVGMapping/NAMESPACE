@@ -63,5 +63,6 @@ exportMethods("colRange", "colRange<-")
 export("MappingColors.factory")
 
 exportClasses("MappingOpacity")
+exportMethods("valuesUnit", "valuesUnit<-")
 export("MappingOpacity.factory")
 
