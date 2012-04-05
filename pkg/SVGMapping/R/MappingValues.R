@@ -115,7 +115,7 @@ setMethod(f="exec", signature="MappingValues",
                                        .Object@values.unit))
             }
             
-            ## set opacity values
+            ## set values
             svg[.Object@targets, .Object@target.attributes] <- .Object@.values
 
             ## eop
