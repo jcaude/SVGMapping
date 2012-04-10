@@ -60,6 +60,7 @@ setGenericVerif(name="fnRangeLinear", function(.Object,a,b,min,max) { standardGe
 setGenericVerif(name="fnLogistic", function(.Object,K,a,r) { standardGeneric("fnLogistic") })
 setGenericVerif(name="fnSigmoid", function(.Object,r) { standardGeneric("fnSigmoid") })
 setGenericVerif(name="fnUser", function(.Object,fn,fn.params) { standardGeneric("fnUser") })
+setGenericVerif(name="fnNone", function(.Object) { standardGeneric("fnNone") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="Mapping",
@@ -152,6 +153,9 @@ setMethod(f="setFunction", signature="Mapping",
               }
               else {
                 fn <- tolower(fn)
+                if(fn=="none") {
+                  fnNone(.Object)
+                }
                 if(fn=="random") {
                   if(missing(fn.params)) fn.params <- list(min=0,max=1)
                   fnRandom(.Object,fn.params$min, fn.params$max)
@@ -204,6 +208,7 @@ setMethod(f="fnRandom", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -219,6 +224,7 @@ setMethod(f="fnIdentity", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
           
@@ -240,6 +246,7 @@ setMethod(f="fnLinear", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -263,6 +270,7 @@ setMethod(f="fnRangeLinear", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -285,6 +293,7 @@ setMethod(f="fnLogistic", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -305,6 +314,7 @@ setMethod(f="fnSigmoid", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -326,6 +336,23 @@ setMethod(f="fnUser", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
+          }
+          )
+
+setMethod(f="fnNone", signature="Mapping",
+          definition=function(.Object)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+
+            ## update
+            .Object@fn <- NULL
+            .Object@fn.parameters <- list()
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))            
           }
           )
 
@@ -335,15 +362,21 @@ setMethod(f="exec", signature="Mapping",
             ## init.
             namedOjbect <- deparse(substitute(.Object))          
 
+            ## 'none' case
+            if(is.null(.Object@fn))
+              .Object@.values <- .Object@values
+
             ## apply function to values and update object.
-            if(is.list(.Object@values) || is.vector(.Object@values)) 
-              .Object@.values <- sapply(.Object@values,
-                                        function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
-                                        )
-            else
-              .Object@.values <- apply(.Object@values, c(1,2),
-                                       function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
-                                       )
+            else {
+              if(is.list(.Object@values) || is.vector(.Object@values)) 
+                .Object@.values <- sapply(.Object@values,
+                                          function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                          )
+              else
+                .Object@.values <- apply(.Object@values, c(1,2),
+                                         function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                         )
+            }
 
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())

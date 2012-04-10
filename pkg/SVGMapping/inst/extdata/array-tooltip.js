@@ -1,71 +1,7 @@
 // Tooltip system
 // -----------------------------
 
-function legacyTooltip(evt,text) {
-
-    // locals
-    var h_max = 30;
-    var w_max = 400;
-    var w_margin = 20;
-    var h_margin = 8;
-
-    ww = svgDocument.rootElement.getBBox().width;
-    wh = svgDocument.rootElement.getBBox().height;
-
-    // build a text item and adjust to BBox
-    svg_text = svgDocument.createElementNS(svgNS, "text")
-    svg_text.appendChild(svgDocument.createTextNode(text))
-    svg_text.setAttributeNS(null,"font-size", "80%")
-    svgDocument.rootElement.appendChild(svg_text)
-    var text_w = svg_text.getComputedTextLength()
-    var text_len = text.length
-    while(text_w + w_margin > w_max && text_w > 10) {
-	text_len = text_len - 1
-	svg_text.firstChild.replaceWholeText(text.substr(0, l) + "...")
-	text_w = svg_text.getComputedTextLength()
-    }
-    text_h = h_max
-    svgDocument.rootElement.removeChild(svg_text)
-    
-    // compute final size
-    var w = text_w + w_margin
-    var h = text_h + h_margin
-
-    // create & insert the background rectangle
-    bg_rect = svgDocument.createElementNS(svgNS, "rect")
-    bg_rect.setAttributeNS(null, "width", w)
-    bg_rect.setAttributeNS(null, "height", h)
-    bg_rect.setAttributeNS(null, "fill", "#eeeeee")
-    bg_rect.setAttributeNS(null, "stroke", "black")
-    svgDocument.rootElement.appendChild(bg_rect)
-    uiItems.push(bg_rect)
-
-    // insert the text element (again)
-    svgDocument.rootElement.appendChild(svg_text)
-    uiItems.push(svg_text)
-
-    // compute tooltip (best) position
-    x = evt.clientX + 9 + window.pageXOffset;
-    y = evt.clientY + 17 + window.pageYOffset;
-    if (x + w > ww) {
-	// The tooltip is out of the SVG document (on the right), 
-	// so display it on the left of the mouse cursor
-	x = x - w;
-    }
-    if (y + h > wh) {
-	// Same idea, when tooltip is below the document bottom
-	y = y - h - 25;
-    }
-
-    // Put all elements on the right place
-    bg_rect.setAttributeNS(null, "x", x)
-    bg_rect.setAttributeNS(null, "y", y)
-    svg_text.setAttributeNS(null, "x", x + w_margin/2)
-    svg_text.setAttributeNS(null, "y", y + h_max/2 + h_margin/2)
-    
-}
-
-function displayAnnotation(evt, name, description, foldchanges, colors)
+function arrayTooltip(evt, name, description, foldchanges, colors)
 {
     var n = foldchanges.length
 
@@ -173,4 +109,3 @@ function displayAnnotation(evt, name, description, foldchanges, colors)
 	fcs[i].setAttributeNS(null, "x", x + 10 + cw*i + cw/2 - fcs[i].getComputedTextLength()/2)
     }
 }
-
