@@ -71,4 +71,4 @@ export("MappingStrokeOpacity.factory")
 export("MappingStrokeWidth.factory")
 
 exportClasses("MappingTooltips")
-exportMethods("tooltipStyle", "tooltipStyle<-")
+
