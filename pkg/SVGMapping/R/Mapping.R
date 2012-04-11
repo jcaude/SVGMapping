@@ -34,6 +34,7 @@ MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
 MAPPING.RangeLinear <- function(x,p) {return(min(p$max, max(p$min,p$a*x+p$b))) } 
 MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 MAPPING.Sigmoid <- function(x,p) { return(1/(1+exp(-p$r*x))) }
+MAPPING.Log2FC <- function(x,p) { return(ifelse(x>=0,exp(x*log(2)),-1/exp(x*log(2)))) }
 
 setClass("Mapping",
          representation(targets="ANY",
@@ -59,6 +60,7 @@ setGenericVerif(name="fnLinear", function(.Object,a,b) { standardGeneric("fnLine
 setGenericVerif(name="fnRangeLinear", function(.Object,a,b,min,max) { standardGeneric("fnRangeLinear") })
 setGenericVerif(name="fnLogistic", function(.Object,K,a,r) { standardGeneric("fnLogistic") })
 setGenericVerif(name="fnSigmoid", function(.Object,r) { standardGeneric("fnSigmoid") })
+setGenericVerif(name="fnLog2FC", function(.Object) { standardGeneric("fnLog2FC") })
 setGenericVerif(name="fnUser", function(.Object,fn,fn.params) { standardGeneric("fnUser") })
 setGenericVerif(name="fnNone", function(.Object) { standardGeneric("fnNone") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
@@ -161,23 +163,26 @@ setMethod(f="setFunction", signature="Mapping",
                   fnRandom(.Object,fn.params$min, fn.params$max)
                 }
                 else if(fn=="identity") fnIdentity(mapO)
-                else if(fn=="Linear") {
+                else if(fn=="linear") {
                   if(missing(fn.params)) fn.params <- list(a=1,b=0)
                   fnLinear(.Object, fn.params$a, fn.params$b)
                 }
-                else if(fn=="RangeLinear") {
+                else if(fn=="rangelinear") {
                   if(missing(fn.params)) fn.params <- list(a=1,b=0,min=0,max=1)
                   fnRangeLinear(.Object,
                                 fn.params$a, fn.params$b,
                                 fn.params$min, fn.params$max)
                 }
-                else if(fn=="Logistic") {
+                else if(fn=="logistic") {
                   if(missing(fn.params)) fn.params <- list(K=1,a=1,r=1)
                   fnLogistic(.Object, fn.params$K, fn.params$a, fn.params$r)
                 }
-                else if(fn=="Sigmoid") {
+                else if(fn=="sigmoid") {
                   if(missing(fn.params)) fn.params <- list(r=1)
                   fnLogistic(.Object, fn.params$r)
+                }
+                else if(fn=="log2fc") {
+                  fnLog2FC(.Object)
                 }
                 else 
                   stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
@@ -311,6 +316,22 @@ setMethod(f="fnSigmoid", signature="Mapping",
             ## update
             .Object@fn <- MAPPING.Sigmoid
             .Object@fn.parameters <- list(r=r)
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
+          }
+          )
+
+setMethod(f="fnLog2FC", signature="Mapping",
+          definition=function(.Object)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+
+            ## update
+            .Object@fn <- MAPPING.Log2FC
+            .Object@fn.parameters <- list()
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())

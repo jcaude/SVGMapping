@@ -50,6 +50,7 @@ exportMethods("fnLinear")
 exportMethods("fnRangeLinear")
 exportMethods("fnLogistic")
 exportMethods("fnSigmoid")
+exportMethods("fnLog2FC")
 exportMethods("fnUser")
 exportMethods("fnNone")
 
