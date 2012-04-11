@@ -32,9 +32,6 @@ setMethod(f="initialize", signature="MappingTooltips",
             ## super
             .Object <- callNextMethod()
 
-            ## default init.
-            .Object@tooltip.style <- "legacy"
-
             ## eop
             return(.Object)
           }
