@@ -21,13 +21,9 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("MappingTooltips",
-         representation(tooltip.style="character"
-                        ),
          contains="Mapping"
          )
 
-setGenericVerif(name="tooltipStyle", function(object) { standardGeneric("tooltipStyle") })
-setGenericVerif(name="tooltipStyle<-", function(.Object,value) { standardGeneric("tooltipStyle<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingTooltips",
@@ -44,48 +40,19 @@ setMethod(f="initialize", signature="MappingTooltips",
           }
           )
 
-setMethod(f="tooltipStyle", signature="MappingTooltips",
-          definition=function(object)
-          {
-            return(object@tooltip.style)
-          }
-          )
-
-setReplaceMethod(f="tooltipStyle", signature="MappingTooltips",
-                 definition=function(.Object, value)
-                 {
-                   ## check
-                   if(!is.character(value) || !(value %in% c("legacy","bio.array"))) 
-                      stop("'value' must be a string equals to 'legacy' or 'bio.array'")
-                   
-                   ## init.
-                   .Object@tooltip.style <- value
-                   return(.Object)
-                 }
-                 )
-
 setMethod(f="exec", signature="MappingTooltips",
           definition=function(.Object,svg)
           {
             ## check
-            if(.Object@tooltip.style == "legacy" && ncol(.Object@values) != 1)
+            if(ncol(.Object@values) != 1)
               stop("In tooltip 'legacy' mode, mapping values array must have only one column")
-            if(.Object@tooltip.style == "bio.array" && ncol(.Object@values) > 3)
-              stop("In tooltip 'bio.array' mode, mapping values array must have only ",
-                   "three columns (name,description and fold-change)")
             
             ## call super
             callNextMethod()
 
             ## 'legacy' mode
-            if(.Object@tooltip.style == "legacy") {
-              .Object@.values <- data.frame(onmouseover=paste("legacyTooltip(evt,'",.Object@.values,"')"),
-                                            onmouseout="hideUIitems(evt)")              
-            }
-
-            ## 'bio.array' mode
-            else if (.Object@tooltip.style == "bio.array") {
-            }
+            .Object@.values <- data.frame(onmouseover=paste("legacyTooltip(evt,'",.Object@.values,"')"),
+                                          onmouseout="hideUIitems(evt)")              
 
             ## update targets
             svg[.Object@targets, c("onmouseover","onmouseout")] <- .Object@.values
