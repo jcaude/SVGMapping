@@ -1,15 +1,15 @@
 import("XML")
 import("rJava")
 export("microarrayColors")
-export("computeExprColors")
 export("mapDataSVG")
 export("devSVGMapping")
 export("dev.off")
 export("includeSVG")
 export("setTextSVG")
-export("addDefinesSVG")
 export("addLinkSVG")
 export("addLinkByLabelSVG")
+
+export("SVG.VALUE")
 
 exportClasses("SVG")
 exportMethods("SVG", "SVG<-")
@@ -52,7 +52,9 @@ exportMethods("fnLinear")
 exportMethods("fnRangeLinear")
 exportMethods("fnLogistic")
 exportMethods("fnSigmoid")
+exportMethods("fnLog2FC")
 exportMethods("fnUser")
+exportMethods("fnNone")
 
 exportClasses("MappingColors")
 exportMethods("targetAttribute", "targetAttribute<-")
@@ -72,4 +74,7 @@ export("MappingStrokeWidth.factory")
 
 exportClasses("MappingLinks")
 exportMethods("urlPattern", "urlPattern<-")
+
+exportClasses("MappingTooltips")
+
 

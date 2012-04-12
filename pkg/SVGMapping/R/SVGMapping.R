@@ -24,18 +24,6 @@
 
 load("inst/extdata/microarrayColors.rda")
 
-computeExprColors <- function(X, col=microarrayColors, NA.color="#999999", a=-2, b=2) {
-  satval <- 2
-  n <- length(col)
-  X <- (X - a)/(b - a) * (n-1) + 1
-  X <- as.integer(round(X))
-  X[X < 1] <- 1
-  X[X > n] <- n
-  X <- col[X]
-  X[is.na(X)] <- NA.color
-  return(X)
-}
-
 setTextSVG <- function(svg, searchAttributeValue, text, searchAttribute="inkscape:label") {
   nodes <- getNodeSet(svg, paste("//svg:text[@", searchAttribute, "]", sep=""), namespaces=completeNamespaces(svg))
   for (node in nodes) {
@@ -565,15 +553,4 @@ mapDataSVG <- function(svg, numData, tooltipData=numData,
     stop(paste("Invalid mode:", mode))
   }
   return(invisible())
-}
-
-addDefinesSVG <- function(svg, nodes) {
-  defs <- getNodeSet(svg, "//svg:defs", namespaces=completeNamespaces(svg))
-  if (length(defs) == 0) {
-    defs <- newXMLNode("defs")
-    addChildren(xmlRoot(svg), defs)
-  } else {
-    defs <- defs[[1]]
-  }
-  addChildren(defs, nodes)
 }

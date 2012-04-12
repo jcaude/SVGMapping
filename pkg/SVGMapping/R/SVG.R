@@ -29,6 +29,7 @@ library(methods)
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 svgNS <- "http://www.w3.org/2000/svg"
+SVG.VALUE <- factor("@VALUE@")
 
 .completeNamespaces <- function(svgdata) {
   NS <- xmlNamespaceDefinitions(svgdata, simplify=TRUE)
@@ -220,7 +221,7 @@ setMethod(f="[", signature="SVG",
               
               ## -- Nodes and Attributes selection
               else {
-                if(is.character(j) && (length(j) == 1)) {     # atomic case
+                if(is.character(j) && (length(j) == 1)) {     # atomic case (string)
                   
                   ## init.
                   item <- NA
@@ -234,21 +235,27 @@ setMethod(f="[", signature="SVG",
                   ## extraction
                   return(xpathSApply(x@svg, xpath, .sub_attribute,                                     
                                      attname, item,
-                                     namespaces=.completeNamespaces(x@svg) ) )
-              }
-              else {  # vectory case -- very loosy testing here..
-                j <- if(is.list(j)) unlist(j) else j
-                .row_attnames <- NULL
-                res <- xpathSApply(x@svg, xpath,
-                                   function(x,j) {
-                                     res <- .sub_vector_attribute(x,j)
-                                     .row_attnames <<- .attnames
-                                     return(res)
-                                   }, j,
-                                   namespaces=.completeNamespaces(x@svg) )
-                rownames(res) <- .row_attnames
-                return(res)
-              }
+                                     namespaces=.completeNamespaces(x@svg)))
+                }
+                else if((length(j) == 1) && (j == SVG.VALUE)) {  # atomic case (value)
+                  ## extraction
+                  return(xpathSApply(x@svg, xpath, xmlValue,
+                                     recursive=FALSE,
+                                     namespaces=.completeNamespaces(x@svg)))
+                }
+                else {  # vectory case -- very loosy testing here..
+                  j <- if(is.list(j)) unlist(j) else j
+                  .row_attnames <- NULL
+                  res <- xpathSApply(x@svg, xpath,
+                                     function(x,j) {
+                                       res <- .sub_vector_attribute(x,j)
+                                       .row_attnames <<- .attnames
+                                       return(res)
+                                     }, j,
+                                     namespaces=.completeNamespaces(x@svg) )
+                  rownames(res) <- .row_attnames
+                  return(res)
+                }
               }
             }
 
@@ -257,7 +264,7 @@ setMethod(f="[", signature="SVG",
             ## - Check
             if(!(is.character(i) || is.list(i)))
               stop("'i' should be a valid node selector")
-            
+
             if(is.list(i) || (length(i) > 1)) {
               if(missing(j))
                 res <- lapply(i, .atomic_getter, x)
@@ -269,7 +276,7 @@ setMethod(f="[", signature="SVG",
             else
               return(.atomic_getter(i,x,j))
           }
-        )
+          )
 
 setReplaceMethod(f="[", signature="SVG",
                  definition=function(x,i,j,value)
@@ -287,7 +294,7 @@ setReplaceMethod(f="[", signature="SVG",
                      x <- paste(names(items), items,sep=":",collapse=";")
                      return(x)
                    }
-            
+                   
                    .sub_attribute <- function(x,attname, item, value) {
                      attrs <- xmlAttrs(x,addNamespacePrefix=TRUE)
                      if(attname %in% names(attrs) && !is.na(item)) 
@@ -310,7 +317,7 @@ setReplaceMethod(f="[", signature="SVG",
                      else
                        attname <- j
                      node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
-                       
+                     
                      ## check
                      if(length(node.set) == 0) return(invisible())                       
                      if((length(value) != length(node.set)) && (length(value) != 1))
@@ -321,7 +328,39 @@ setReplaceMethod(f="[", signature="SVG",
                      for(i in 1:length(node.set)) {
                        node <- node.set[[i]]
                        .sub_attribute(node,attname, item, value[[i]])
-                     }                     
+                     }
+
+                     ## eop
+                     return(invisible())
+                   }
+
+                   .atomic_setter_value <- function(x,xpath,j,value) {
+                     ## init
+                     node.set <- getNodeSet(x@svg, xpath, namespaces=.completeNamespaces(x@svg))
+
+                     ## check
+                     if(length(node.set) == 0) return(invisible())                       
+                     if((length(value) != length(node.set)) && (length(value) != 1))
+                       stop("'value' and 'nodes(i)' have different length")
+                     if(length(value) == 1) value <- replicate(length(node.set),value)
+
+                     ## loop over nodes
+                     for(i in 1:length(node.set)) {
+                       node <- node.set[[i]]
+                       while(!is.null(node) && !is(node,"XMLInternalTextNode")) {
+                         if(xmlSize(node) > 0)
+                           node <- xmlChildren(node)[[1]]
+                         else
+                           node <- null
+                       }
+                       if(!is.null(node))
+                         xmlValue(node) <- value[[i]]
+                       else
+                         warning(paste("no text node found to set value=",value,")",sep=""))
+                     }
+
+                     ## eop
+                     return(invisible())
                    }
 
                    .setter <- function(i,x,j,value) {
@@ -344,8 +383,11 @@ setReplaceMethod(f="[", signature="SVG",
                      }
 
                      ## - Attribute selection
-                     if(is.character(j) && (length(j) == 1)) {  # atomic case
+                     if(is.character(j) && (length(j) == 1)) {  # atomic case (string)
                        .atomic_setter(x,xpath,j,value)
+                     }
+                     else if((length(j) == 1) && (j == SVG.VALUE)) { # atomic case (value)
+                       .atomic_setter_value(x,xpath,j,value)
                      }
                      else {  # vector case
 
@@ -407,7 +449,7 @@ setMethod(f="SVG", signature="SVG",
             return(object@svg)
           }
           )
-          
+
 setReplaceMethod(f="SVG", signature="SVG",
                  definition=function(.Object,value)
                  {
@@ -562,7 +604,7 @@ setMethod(f="addScript", signature="SVG",
             script.attrs <- list(type="text/ecmascript")
             if (!missing(id)) script.attrs[["id"]] <- id
             scriptnode <- newXMLNode("script", attrs=script.attrs, .children=list(cdata))
-  
+            
             ## Update/Insert script
             updated <- FALSE
             if (!mising(id)) {
@@ -631,7 +673,7 @@ setMethod(f="write.SVG", signature="SVG",
             xml <- saveXML(object@svg, indent=FALSE)
             xml <- gsub("\n</text>","</text>", xml)
             xml <- gsub("\n<tspan","<tspan", xml)
-  
+            
             ## Write/output the SVG
             cat(xml, file=file)
           }
@@ -749,7 +791,7 @@ SVG.factory <- function(file,dims,landscape) {
     }
     else 
       stop("invalid dimensions argument")
-      
+    
   }
 
   ## eop

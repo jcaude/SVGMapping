@@ -34,6 +34,7 @@ MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
 MAPPING.RangeLinear <- function(x,p) {return(min(p$max, max(p$min,p$a*x+p$b))) } 
 MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 MAPPING.Sigmoid <- function(x,p) { return(1/(1+exp(-p$r*x))) }
+MAPPING.Log2FC <- function(x,p) { return(ifelse(x>=0,exp(x*log(2)),-1/exp(x*log(2)))) }
 
 setClass("Mapping",
          representation(targets="ANY",
@@ -59,7 +60,9 @@ setGenericVerif(name="fnLinear", function(.Object,a,b) { standardGeneric("fnLine
 setGenericVerif(name="fnRangeLinear", function(.Object,a,b,min,max) { standardGeneric("fnRangeLinear") })
 setGenericVerif(name="fnLogistic", function(.Object,K,a,r) { standardGeneric("fnLogistic") })
 setGenericVerif(name="fnSigmoid", function(.Object,r) { standardGeneric("fnSigmoid") })
+setGenericVerif(name="fnLog2FC", function(.Object) { standardGeneric("fnLog2FC") })
 setGenericVerif(name="fnUser", function(.Object,fn,fn.params) { standardGeneric("fnUser") })
+setGenericVerif(name="fnNone", function(.Object) { standardGeneric("fnNone") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="Mapping",
@@ -152,28 +155,34 @@ setMethod(f="setFunction", signature="Mapping",
               }
               else {
                 fn <- tolower(fn)
+                if(fn=="none") {
+                  fnNone(.Object)
+                }
                 if(fn=="random") {
                   if(missing(fn.params)) fn.params <- list(min=0,max=1)
                   fnRandom(.Object,fn.params$min, fn.params$max)
                 }
                 else if(fn=="identity") fnIdentity(mapO)
-                else if(fn=="Linear") {
+                else if(fn=="linear") {
                   if(missing(fn.params)) fn.params <- list(a=1,b=0)
                   fnLinear(.Object, fn.params$a, fn.params$b)
                 }
-                else if(fn=="RangeLinear") {
+                else if(fn=="rangelinear") {
                   if(missing(fn.params)) fn.params <- list(a=1,b=0,min=0,max=1)
                   fnRangeLinear(.Object,
                                 fn.params$a, fn.params$b,
                                 fn.params$min, fn.params$max)
                 }
-                else if(fn=="Logistic") {
+                else if(fn=="logistic") {
                   if(missing(fn.params)) fn.params <- list(K=1,a=1,r=1)
                   fnLogistic(.Object, fn.params$K, fn.params$a, fn.params$r)
                 }
-                else if(fn=="Sigmoid") {
+                else if(fn=="sigmoid") {
                   if(missing(fn.params)) fn.params <- list(r=1)
                   fnLogistic(.Object, fn.params$r)
+                }
+                else if(fn=="log2fc") {
+                  fnLog2FC(.Object)
                 }
                 else 
                   stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
@@ -204,6 +213,7 @@ setMethod(f="fnRandom", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -219,6 +229,7 @@ setMethod(f="fnIdentity", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
           
@@ -240,6 +251,7 @@ setMethod(f="fnLinear", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -263,6 +275,7 @@ setMethod(f="fnRangeLinear", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -285,6 +298,7 @@ setMethod(f="fnLogistic", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -305,6 +319,23 @@ setMethod(f="fnSigmoid", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
+          }
+          )
+
+setMethod(f="fnLog2FC", signature="Mapping",
+          definition=function(.Object)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+
+            ## update
+            .Object@fn <- MAPPING.Log2FC
+            .Object@fn.parameters <- list()
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -326,6 +357,23 @@ setMethod(f="fnUser", signature="Mapping",
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))
+          }
+          )
+
+setMethod(f="fnNone", signature="Mapping",
+          definition=function(.Object)
+          {
+            ## init.
+            namedOjbect <- deparse(substitute(.Object))
+
+            ## update
+            .Object@fn <- NULL
+            .Object@fn.parameters <- list()
+            
+            ## eop
+            assign(namedOjbect, .Object, envir=parent.frame())
+            return(invisible(.Object))            
           }
           )
 
@@ -335,15 +383,21 @@ setMethod(f="exec", signature="Mapping",
             ## init.
             namedOjbect <- deparse(substitute(.Object))          
 
+            ## 'none' case
+            if(is.null(.Object@fn))
+              .Object@.values <- .Object@values
+
             ## apply function to values and update object.
-            if(is.list(.Object@values) || is.vector(.Object@values)) 
-              .Object@.values <- sapply(.Object@values,
-                                        function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
-                                        )
-            else
-              .Object@.values <- apply(.Object@values, c(1,2),
-                                       function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
-                                       )
+            else {
+              if(is.list(.Object@values) || is.vector(.Object@values)) 
+                .Object@.values <- sapply(.Object@values,
+                                          function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                          )
+              else
+                .Object@.values <- apply(.Object@values, c(1,2),
+                                         function(x) { sapply(x, .Object@fn, .Object@fn.parameters) }
+                                         )
+            }
 
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())

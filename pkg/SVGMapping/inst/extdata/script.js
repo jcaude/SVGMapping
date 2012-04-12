@@ -28,10 +28,19 @@
 // General functions
 
 var svgNS = "http://www.w3.org/2000/svg"
+var uiItems = new Array()
 
 function init(evt)
 {
 	if (window.svgDocument == null)
 		svgDocument = evt.target.ownerDocument;
+}
+
+function hideUIitems(evt)
+{
+    while (uiItems.length > 0) {
+	el = uiItems.pop();
+	el.parentNode.removeChild(el);
+    }
 }
 
