@@ -334,9 +334,9 @@ MappingColors.factory <- function(data,targets=rownames(data),
   gradientType(mapC) <- gradient.type
   fillAngle(mapC) <- fill.angle
   if(missing(fn.parameters))
-    mapC <- setFunction(mapO,fn)
+    mapC <- setFunction(mapC,fn)
   else
-    mapC <- setFunction(mapO,fn,fn.parameters)
+    mapC <- setFunction(mapC,fn,fn.parameters)
   
   ## eop
   return(mapC)

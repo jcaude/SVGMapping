@@ -9,6 +9,8 @@ export("setTextSVG")
 export("addLinkSVG")
 export("addLinkByLabelSVG")
 
+export("SVG.VALUE")
+
 exportClasses("SVG")
 exportMethods("SVG", "SVG<-")
 exportMethods("uid")

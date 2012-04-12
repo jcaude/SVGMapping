@@ -125,8 +125,7 @@
       <span style="color: #0000ff"><font color="#0000ff">Functionalities</font></span>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-7"/>
 <icon BUILTIN="messagebox_warning"/>
 </node>
@@ -199,16 +198,15 @@
       <span style="color: #0000ff"><font color="#0000ff">Functionalities</font></span>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-5"/>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
 </node>
-<node CREATED="1332342560732" ID="ID_192910120" MODIFIED="1332345490834" TEXT="Nodes Values">
+<node CREATED="1332342560732" ID="ID_192910120" MODIFIED="1334247513488" TEXT="Nodes Values">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="help"/>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node COLOR="#333333" CREATED="1332345499221" ID="ID_1893459855" MODIFIED="1333110350009" TEXT="addScript">
@@ -540,8 +538,7 @@
       GS:targetAttribute
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1333537969250" ID="ID_453635152" MODIFIED="1333538760478" TEXT="GS:valuesUnit">
@@ -557,8 +554,7 @@
       exec
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
@@ -874,8 +870,7 @@
       same dim. as (node selection, attribute size==1)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-1"/>
 <icon BUILTIN="button_ok"/>
 </node>
@@ -892,8 +887,7 @@
       same dim. as (node selection, attribute size &gt;1)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-1"/>
 <icon BUILTIN="button_ok"/>
 </node>
@@ -910,8 +904,7 @@
       same dim. as (node selection, attribute size)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="full-5"/>
 <icon BUILTIN="button_ok"/>
 </node>
@@ -930,9 +923,34 @@
 </node>
 </node>
 </node>
-<node CREATED="1332342624871" ID="ID_1552703913" MODIFIED="1332345495706" TEXT="Nodes Values">
+<node CREATED="1332342624871" ID="ID_1552703913" MODIFIED="1334247404601" TEXT="Nodes Values">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="help"/>
+<icon BUILTIN="button_ok"/>
+<node COLOR="#660066" CREATED="1334247406596" FOLDED="true" ID="ID_306375004" MODIFIED="1334247488689" TEXT="SVG[node,SVG.VALUE] and SVG[node,SVG.VALUE]&lt;-">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1334246883351" ID="ID_1370190959" MODIFIED="1334247357076">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font size="2" color="#666666">We proceed using a special FACTOR value, SVG.VALUE </font>
+    </p>
+    <p>
+      <font size="2" color="#666666">Thus, commands like SVG[node,SVG.VALUE] will retrieve </font>
+    </p>
+    <p>
+      <font size="2" color="#666666">the content of any text node encapsulated in 'node'. </font>
+    </p>
+    <p>
+      <font size="2" color="#666666">Thus, text node should be accessed via their tspan.</font>
+    </p>
+  </body>
+</html></richcontent>
+</node>
+<node CREATED="1334247368403" ID="ID_289211905" MODIFIED="1334247390131" TEXT="Only atomic mode is allowed"/>
+</node>
 </node>
 </node>
 </node>
@@ -1014,8 +1032,7 @@
       using opacity, select only a given group item
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 <node CREATED="1331821501428" ID="ID_707549647" MODIFIED="1331821506385" TEXT="Javascript">
