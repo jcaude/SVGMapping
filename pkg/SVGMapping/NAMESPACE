@@ -73,7 +73,7 @@ export("MappingStrokeOpacity.factory")
 export("MappingStrokeWidth.factory")
 
 exportClasses("MappingLinks")
-exportMethods("urlPattern", "urlPattern<-")
+export("MappingLinks.factory")
 
 exportClasses("MappingTooltips")
 

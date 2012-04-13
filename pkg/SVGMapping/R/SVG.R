@@ -347,13 +347,10 @@ setReplaceMethod(f="[", signature="SVG",
                      ## loop over nodes
                      for(i in 1:length(node.set)) {
                        node <- node.set[[i]]
-                       while(!is.null(node) && !is(node,"XMLInternalTextNode")) {
-                         if(xmlSize(node) > 0)
-                           node <- xmlChildren(node)[[1]]
-                         else
-                           node <- null
-                       }
-                       if(!is.null(node))
+                       if(is.null(node)) break
+                       if(xmlSize(node) > 0)
+                         sub.node <- xmlChildren(node)[[1]]
+                       if(is(node,"XMLInternalTextNode") || is(sub.node,"XMLInternalTextNode"))
                          xmlValue(node) <- value[[i]]
                        else
                          warning(paste("no text node found to set value=",value,")",sep=""))

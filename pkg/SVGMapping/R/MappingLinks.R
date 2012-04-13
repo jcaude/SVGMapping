@@ -21,12 +21,9 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("MappingLinks",
-         representation(url.pattern="character"),
          contains="Mapping"
          )
 
-setGenericVerif(name="urlPattern", function(object) { standardGeneric("urlPattern") })
-setGenericVerif(name="urlPattern<-", function(.Object,value) { standardGeneric("urlPattern<-") })
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingLinks",
@@ -34,9 +31,6 @@ setMethod(f="initialize", signature="MappingLinks",
           {
             ## super
             .Object <- callNextMethod()
-
-            ## default init.
-            .Object@url.pattern <- character(0)
 
             ## eop
             return(.Object)
@@ -50,31 +44,11 @@ setReplaceMethod(f="values", signature="MappingLinks",
                    if(is.null(value)) return(.Object)
                    
                    ## check 1D data
-                   if(!is.vector(value) || (ncol(value) > 1))
+                   if(!is.vector(value) && (ncol(value) > 1))
                      stop("'value' can only be a 'vector/list' or one column 'array/data.frame'")
 
                    ## super & eop
                    .Object <- callNextMethod(.Object,value)
-                   return(.Object)
-                 }
-                 )
-
-setMethod(f="urlPattern", signature="MappingLinks",
-          definition=function(object)
-          {
-            return(object@url.pattern)
-          }
-          )
-
-setReplaceMethod(f="urlPattern", signature="MappingLinks",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.character(value) && !is.atomic(value))
-                     stop("'value' must be an atomic character string")
-
-                   ## assign & eop
-                   .Object@url.pattern <- value
                    return(.Object)
                  }
                  )
@@ -91,17 +65,13 @@ setMethod(f="exec", signature="MappingLinks",
             
             ## call super
             callNextMethod()
-
-            ## forge urls
-            .Object@.values <- t(apply(.Object@.values, 1,
-                                       function(x,pattern) { return(sprintf(pattern,x)) },
-                                       .Object@url.pattern))
             
             ## insert urls into document
             nset <- svg[.Object@targets]
             for(i in 1:length(nset)) {
               node <- nset[[i]]
-              url <- .Object@.values[[i]]
+              if(is(node,"XMLNodeSet")) node <- node[[1]]  ### WE HAVE TO CHECK THIS.. here targets=c("x","y") and get a list of list (nodeset of nodeset)
+              url <- .Object@.values[i,]
               href <- newXMLNode("a", attrs=list("xlink:href"=url, target="_blank"),
                                  namespaceDefinitions=c(xlink="http://www.w3.org/1999/xlink"))
               replaceNodes(oldNode=node,newNode=href)
@@ -115,4 +85,19 @@ setMethod(f="exec", signature="MappingLinks",
 
 ## F A C T O R Y
 ##--------------
+MappingLinks.factory <- function(data,targets=rownames(data),
+                                  fn="None", fn.parameters=list()) {
 
+  ## init.
+  mapL <- new("MappingLinks")
+
+  ## fill mapping structure
+  values(mapL) <- data
+  targets(mapL) <- targets
+
+  ## set transform function
+  mapL <- setFunction(mapL,fn,fn.parameters)
+
+  ## eop
+  return(mapL)
+}

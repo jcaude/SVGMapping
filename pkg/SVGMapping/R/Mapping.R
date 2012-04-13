@@ -158,7 +158,7 @@ setMethod(f="setFunction", signature="Mapping",
                 if(fn=="none") {
                   fnNone(.Object)
                 }
-                if(fn=="random") {
+                else if(fn=="random") {
                   if(missing(fn.params)) fn.params <- list(min=0,max=1)
                   fnRandom(.Object,fn.params$min, fn.params$max)
                 }
@@ -185,7 +185,8 @@ setMethod(f="setFunction", signature="Mapping",
                   fnLog2FC(.Object)
                 }
                 else 
-                  stop("Invalid 'fn' name.. either: Random, Identity, Linear, RangeLinear, Logistic or Sigmoid")
+                  stop("Invalid 'fn' name=",fn,", either: None, Random, Identity, ",
+                       "Linear, RangeLinear, Logistic, Sigmoid or Log2FC")
               }
             }
 
