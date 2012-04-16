@@ -58,3 +58,23 @@ setMethod(f="exec", signature="MappingTooltips",
             return(invisible(.Object))
           }
           )
+
+## F A C T O R Y
+## --------------------------------------------------
+
+MappingTooltips.factory <- function(data,targets=rownames(data),
+                                  fn="None", fn.parameters=list()) {
+
+  ## init
+  mapT <- new("MappingTooltips")
+
+  ## fill the mapping structure
+  values(mapT) <- data
+  targets(mapT) <- targets
+
+  ## set the transform function
+  mapT <- setFunction(mapT,fn,fn.parameters)
+
+  ## eop
+  return(mapT)
+}

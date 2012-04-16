@@ -40,8 +40,9 @@ SVG.VALUE <- factor("@VALUE@")
 setClass("SVG",
          representation(svg="ANY",
                         .default_search_attr="character",
-                        .js_tooltip="logical",
-                        .js_animation="logical")
+                        .js_animation="logical",
+                        .js_scripts="list",
+                        .js_files="list")
          )
 
 setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary")})
@@ -52,10 +53,10 @@ setGenericVerif(name="definitions", function(object) { standardGeneric("definiti
 setGenericVerif(name="definitions<-", function(.Object,value) { standardGeneric("definitions<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
 setGenericVerif(name="defaultSearchAttr<-", function(.Object,value) {standardGeneric("defaultSearchAttr<-")})
-setGenericVerif(name="jsTooltip", function(object) {standardGeneric("jsTooltip")})
-setGenericVerif(name="jsTooltip<-", function(.Object,value) {standardGeneric("jsTooltip<-")})
 setGenericVerif(name="jsAnimation", function(object) {standardGeneric("jsAnimation")})
 setGenericVerif(name="jsAnimation<-", function(.Object,value) {standardGeneric("jsAnimation<-")})
+setGenericVerif(name="jsAddScriptFile", function(.Object,file) {standardGeneric("jsAddScriptFile")})
+setGenericVerif(name="jsAddScriptText", function(.Object,script) {standardGeneric("jsAddScriptText")})
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
@@ -70,8 +71,9 @@ setMethod(f="initialize", signature="SVG",
                                         addAttributeNamespaces=TRUE,
                                         fullNamespaceInfo=FALSE)
             .Object@.default_search_attr <- "id"
-            .Object@.js_tooltip <- FALSE
             .Object@.js_animation <- FALSE
+            .Object@.js_scripts <- list()
+            .Object@.js_files <- list()
             
             ## eop
             return(.Object)
@@ -83,8 +85,8 @@ setMethod(f="summary", signature="SVG",
           {
             ## init.
             svg.stats <- summary(object@svg)
-            svg.stats$jsTooltip <- jsTooltip(object)
             svg.stats$jsAnimation <- jsAnimation(object)
+            svg.stats$scripts <- length(object@js_scripts) + length(object@js_files)
 
             ## return stats
             return(svg.stats)
@@ -99,8 +101,7 @@ setMethod(f="print", signature="SVG",
 
             ## display stats
             cat("SVG Object  :", svg.stats$numNodes, "nodes\n")
-            cat("- javascript: tooltips (", if(jsTooltip(x)) "enable" else "disable",
-                ") animations (", if(jsAnimation(x)) "enable" else "disable", ")\n", sep="")
+            cat("- javascript: animations (", if(jsAnimation(x)) "enable" else "disable", ")\n", sep="")
           }
           )
 
@@ -593,6 +594,27 @@ setReplaceMethod(f="jsAnimation", signature="SVG",
                  }
                  )
 
+setMethod(f="jsAddScriptFile", signature="SVG",
+          definition=function(.Object,file)
+          {
+             ## init.
+            nameObject <- deparse(substitute(.Object))
+
+            ## update js file list
+            .Object@js_files
+            
+            ## eop
+            assign(nameObject,.Object,envir=parent.frame())
+            return(invisible(.Object))
+          }
+          )
+
+setMethod(f="jsAddScriptText", signature="SVG",
+          definition=function(.Object,script)
+          {
+          }
+          )
+
 setMethod(f="addScript", signature="SVG",
           definition=function(object,script,id)
           {
@@ -681,7 +703,7 @@ setMethod(f="mapping", signature="SVG",
           {
             ## apply mapping on the current svg
             exec(op,svg)
-            return(invisible())
+            return(invisible(op))
           }
           )
 

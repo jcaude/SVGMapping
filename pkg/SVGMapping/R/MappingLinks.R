@@ -84,7 +84,7 @@ setMethod(f="exec", signature="MappingLinks",
           )
 
 ## F A C T O R Y
-##--------------
+## ------------------------------------------------------------
 MappingLinks.factory <- function(data,targets=rownames(data),
                                   fn="None", fn.parameters=list()) {
 
