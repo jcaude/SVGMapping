@@ -55,8 +55,8 @@ setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("def
 setGenericVerif(name="defaultSearchAttr<-", function(.Object,value) {standardGeneric("defaultSearchAttr<-")})
 setGenericVerif(name="jsAnimation", function(object) {standardGeneric("jsAnimation")})
 setGenericVerif(name="jsAnimation<-", function(.Object,value) {standardGeneric("jsAnimation<-")})
-setGenericVerif(name="jsAddScriptFile", function(.Object,file) {standardGeneric("jsAddScriptFile")})
-setGenericVerif(name="jsAddScriptText", function(.Object,script) {standardGeneric("jsAddScriptText")})
+setGenericVerif(name="jsAddScriptFile", function(.Object,name,file) {standardGeneric("jsAddScriptFile")})
+setGenericVerif(name="jsAddScriptText", function(.Object,name,script) {standardGeneric("jsAddScriptText")})
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
@@ -102,6 +102,7 @@ setMethod(f="print", signature="SVG",
             ## display stats
             cat("SVG Object  :", svg.stats$numNodes, "nodes\n")
             cat("- javascript: animations (", if(jsAnimation(x)) "enable" else "disable", ")\n", sep="")
+            cat("- javascript: files+inline=",svg.stats$scripts,"\n")
           }
           )
 
@@ -554,26 +555,6 @@ setReplaceMethod(f="defaultSearchAttr", signature="SVG",
                  }
                  )
 
-setMethod(f="jsTooltip", signature="SVG",
-          definition=function(object)
-          {
-            return(object@.js_tooltip)
-          }
-          )
-
-setReplaceMethod(f="jsTooltip", signature="SVG",
-                 definition=function(.Object, value)
-                 {
-                   ## check
-                   if(!is.logical(value))
-                     stop("'flag' must be a boolean")
-
-                   ## eop
-                   .Object@.js_tooltip <- value
-                   return(.Object)
-                 }
-                 )
-
 setMethod(f="jsAnimation", signature="SVG",
           definition=function(object)
           {
@@ -595,13 +576,13 @@ setReplaceMethod(f="jsAnimation", signature="SVG",
                  )
 
 setMethod(f="jsAddScriptFile", signature="SVG",
-          definition=function(.Object,file)
+          definition=function(.Object,name,file)
           {
              ## init.
             nameObject <- deparse(substitute(.Object))
 
             ## update js file list
-            .Object@js_files
+            .Object@js_files[name] <- file
             
             ## eop
             assign(nameObject,.Object,envir=parent.frame())
@@ -612,6 +593,15 @@ setMethod(f="jsAddScriptFile", signature="SVG",
 setMethod(f="jsAddScriptText", signature="SVG",
           definition=function(.Object,script)
           {
+             ## init.
+            nameObject <- deparse(substitute(.Object))
+
+            ## update js file list
+            .Object@js_scripts[name] <- script
+            
+            ## eop
+            assign(nameObject,.Object,envir=parent.frame())
+            return(invisible(.Object))
           }
           )
 
@@ -673,19 +663,28 @@ setMethod(f="write.SVG", signature="SVG",
               script.lines <- readLines(con)
               close(con)
               script <- paste(script.lines, collapse="\n")
-              if(object@.js_tooltip) {
-                con <- file(system.file("extdata/tooltip.js", package="SVGMapping"), "rb")
-                script.lines <- readLines(con)
-                close(con)
-                script <- paste(script,script.lines, collapse="\n")
-              }
+              addScriptSVG(object, script, id="SVGMapping-init")
               if(object@.js_animation) {
                 con <- file(system.file("extdata/animation.js", package="SVGMapping"), "rb")
                 script.lines <- readLines(con)
                 close(con)
                 script <- paste(script,script.lines, collapse="\n")
               }
-              addScriptSVG(object, script, id="SVGMapping-script")
+              addScriptSVG(object, script, id="SVGMapping-animations")
+              if(length(object@js_files) > 0) {
+                script_names <- names(object@js_files)
+                for(i in 1:length(object@js_files)) {
+                  script_file <- object@js_files[[i]]
+                  script_name <- script_names[[i]]
+                  con <- file(script_file, "rb")
+                  script.lines <- readLines(con)
+                  close(con)
+                  script <- paste(script,script.lines, collapse="\n")
+                  addScriptSVG(object, script, id=paste("SVMapping_jsfiles_", script_name, sep=""))
+                }
+              }
+
+              
             }
 
             ## - Produce source XML
