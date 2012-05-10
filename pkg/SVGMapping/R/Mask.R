@@ -22,7 +22,7 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ## SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-## M A S K S
+## M A S K
 ## --------------------------------------------------
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
@@ -44,6 +44,15 @@ setGenericVerif(name="maskUnits", function(object) { standardGeneric("maskUnits"
 setGenericVerif(name="maskUnits<-", function(.Object, value) { standardGeneric("maskUnits<-") })
 setGenericVerif(name="maskContentUnits", function(object) { standardGeneric("maskContentUnits") })
 setGenericVerif(name="maskContentUnits<-", function(.Object, value) { standardGeneric("maskContentUnits<-") })
+setGenericVerif(name="x", function(object) { standardGeneric("x") })
+setGenericVerif(name="x<-", function(.Object, value) { standardGeneric("x<-") })
+setGenericVerif(name="y", function(object) { standardGeneric("y") })
+setGenericVerif(name="y<-", function(.Object, value) { standardGeneric("y<-") })
+setGenericVerif(name="width", function(object) { standardGeneric("width") })
+setGenericVerif(name="width<-", function(.Object, value) { standardGeneric("width<-") })
+setGenericVerif(name="height", function(object) { standardGeneric("height") })
+setGenericVerif(name="height<-", function(.Object, value) { standardGeneric("height<-") })
+
 
 setMethod(f="initialize", signature="Mask",
           definition=function(.Object,...)
@@ -99,14 +108,14 @@ setReplaceMethod(f="id", signature="Mask",
                  }
                  )
 
-setMethod(f="maskUnits", signature="Gradient",
+setMethod(f="maskUnits", signature="Mask",
           definition=function(object)
           {
             return(object@maskUnits)
           }
           )
 
-setReplaceMethod(f="maskUnits", signature="Gradient",
+setReplaceMethod(f="maskUnits", signature="Mask",
                  definition=function(.Object, value)
                  {
                    ## check
@@ -121,14 +130,14 @@ setReplaceMethod(f="maskUnits", signature="Gradient",
                  }
                  )
 
-setMethod(f="maskContentUnits", signature="Gradient",
+setMethod(f="maskContentUnits", signature="Mask",
           definition=function(object)
           {
             return(object@maskContentUnits)
           }
           )
 
-setReplaceMethod(f="maskContentUnits", signature="Gradient",
+setReplaceMethod(f="maskContentUnits", signature="Mask",
                  definition=function(.Object, value)
                  {
                    ## check
@@ -142,3 +151,97 @@ setReplaceMethod(f="maskContentUnits", signature="Gradient",
                    return(.Object)
                  }
                  )
+ 
+setMethod(f="x", signature="Mask",
+          definition=function(object)
+          {
+            return(object@x)
+          }
+          )
+
+setReplaceMethod(f="x", signature="Mask",
+                 definition=function(.Object, value)
+                 {
+                   ## check
+                   if(is.numeric(value))
+                     value <- as.character(value)
+                   if(!is.character(value))
+                     stop("'value' must be a character string or a numeric value")
+
+                   ## assign & eop
+                   .Object@x <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="y", signature="Mask",
+          definition=function(object)
+          {
+            return(object@y)
+          }
+          )
+
+setReplaceMethod(f="y", signature="Mask",
+                 definition=function(.Object, value)
+                 {
+                   ## check
+                   if(is.numeric(value))
+                     value <- as.character(value)
+                   if(!is.character(value))
+                     stop("'value' must be a character string or a numeric value")
+
+                   ## assign & eop
+                   .Object@y <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="width", signature="Mask",
+          definition=function(object)
+          {
+            return(object@width)
+          }
+          )
+
+setReplaceMethod(f="width", signature="Mask",
+                 definition=function(.Object, value)
+                 {
+                   ## check
+                   if(is.numeric(value))
+                     value <- as.character(value)
+                   if(!is.character(value))
+                     stop("'value' must be a character string or a numeric value")
+
+                   ## assign & eop
+                   .Object@width <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="height", signature="Mask",
+          definition=function(object)
+          {
+            return(object@height)
+          }
+          )
+
+setReplaceMethod(f="height", signature="Mask",
+                 definition=function(.Object, value)
+                 {
+                   ## check
+                   if(is.numeric(value))
+                     value <- as.character(value)
+                   if(!is.character(value))
+                     stop("'value' must be a character string or a numeric value")
+
+                   ## assign & eop
+                   .Object@height <- value
+                   return(.Object)
+                 }
+                 )
+
+
+## F A C T O R Y
+##----------------------------------------
+Mask.factory <- function() {
+}
