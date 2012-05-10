@@ -28,18 +28,16 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("Gradient",
-         representation(id="character",
-                        units="character",
+         representation(units="character",
                         transform="character",
                         spread.method="character",
                         xlink.href="character",
                         stops="list",
                         "VIRTUAL"
-                        )
+                        ),
+         contains="SVGNode"
          )
 
-setGenericVerif(name="id", function(object) { standardGeneric("id") })
-setGenericVerif(name="id<-", function(.Object, value) { standardGeneric("id<-") })
 setGenericVerif(name="units", function(object) { standardGeneric("units") })
 setGenericVerif(name="units<-", function(.Object, value) { standardGeneric("units<-") })
 setGenericVerif(name="transform", function(object) { standardGeneric("transform") })
@@ -67,13 +65,15 @@ setMethod(f="initialize", signature="Gradient",
               }
             }
 
+            ## super
+            .Object <- callNextMethod(.Object,...)
+
             ## get args
             args = list(...)
             args.names = names(args)
             if(is.null(args.names)) args.names <- list()
             
             ## default init.
-            .Object@id <- .arg("id",character(0))
             .Object@units <- .arg("units","objectBoundingBox")
             .Object@transform <- .arg("transform",character(0))
             .Object@spread.method <- .arg("spread.method","pad")
@@ -84,26 +84,6 @@ setMethod(f="initialize", signature="Gradient",
             return(.Object)
           }
           )
-
-setMethod(f="id", signature="Gradient",
-          definition=function(object)
-          {
-            return(object@id)
-          }
-          )
-
-setReplaceMethod(f="id", signature="Gradient",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.character(value))
-                     stop("'value' must be a character string")
-                     
-                   ## eop
-                   .Object@id <- as.character(value)
-                   return(.Object)
-                 }
-                 )
 
 setMethod(f="units", signature="Gradient",
           definition=function(object)
@@ -225,8 +205,10 @@ setReplaceMethod(f="stops", signature="Gradient",
 setMethod(f=".xml", signature="Gradient",
           definition=function(object)
           {
+            ## super
+            attr <- callNextMethod(object)
+            
             ## return a list of core attributes
-            attr <- list(id=object@id)
             if(object@units != "objectBoundingBox")
               attr <- c(attr, gradientUnits=object@units)
             if(length(object@transform) > 0)

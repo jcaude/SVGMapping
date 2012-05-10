@@ -28,18 +28,16 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("Mask",
-         representation(id="character",
-                        maskUnits="character",
+         representation(maskUnits="character",
                         maskContentUnits="character",
                         x="character",
                         y="character",
                         width="character",
                         height="character",
-                        content="ANY"),
+                        content="XMLInternalNode"),
+         contains="SVGNode"
          )
 
-setGenericVerif(name="id", function(object) { standardGeneric("id") })
-setGenericVerif(name="id<-", function(.Object, value) { standardGeneric("id<-") })
 setGenericVerif(name="maskUnits", function(object) { standardGeneric("maskUnits") })
 setGenericVerif(name="maskUnits<-", function(.Object, value) { standardGeneric("maskUnits<-") })
 setGenericVerif(name="maskContentUnits", function(object) { standardGeneric("maskContentUnits") })
@@ -52,6 +50,9 @@ setGenericVerif(name="width", function(object) { standardGeneric("width") })
 setGenericVerif(name="width<-", function(.Object, value) { standardGeneric("width<-") })
 setGenericVerif(name="height", function(object) { standardGeneric("height") })
 setGenericVerif(name="height<-", function(.Object, value) { standardGeneric("height<-") })
+setGenericVerif(name="content", function(object) { standardGeneric("content") })
+setGenericVerif(name="content<-", function(.Object, value) { standardGeneric("content<-") })
+setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
 
 setMethod(f="initialize", signature="Mask",
@@ -68,13 +69,15 @@ setMethod(f="initialize", signature="Mask",
               }
             }
 
+            ## super
+            .Object <- callNextMethod(.Object,...)
+            
             ## get args
             args <- list(...)
             args.names <- names(args)
             if(is.null(args.names)) args.names <- list()
 
             ## default init.
-            .Object@id <- character(0)
             .Object@maskUnits <- .arg("maskUnits","objectBoundingBox")
             .Object@maskContentUnits <- .arg("maskContentUnits","userSpaceOnUse")
             .Object@x <- .arg("x","-10%")
@@ -87,26 +90,6 @@ setMethod(f="initialize", signature="Mask",
             return(.Object)
           }
           )
-
-setMethod(f="id", signature="Mask",
-          definition=function(object)
-          {
-            return(object@id)
-          }
-          )
-
-setReplaceMethod(f="id", signature="Mask",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.character(value))
-                     stop("'value' must be a character string")
-                     
-                   ## eop
-                   .Object@id <- as.character(value)
-                   return(.Object)
-                 }
-                 )
 
 setMethod(f="maskUnits", signature="Mask",
           definition=function(object)
@@ -240,8 +223,53 @@ setReplaceMethod(f="height", signature="Mask",
                  }
                  )
 
+setMethod(f="content", signature="Mask",
+          definition=function(object)
+          {
+            return(object@content)
+          }
+          )
+
+setReplaceMethod(f="content", signature="Mask",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.object(value) && !is(value,"XMLInternalNode")) 
+                     stop("'value' must be a XMLInternalNode object")
+
+                   ## assign & eop
+                   .Object@content <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f=".xml", signature="Mask",
+          definition=function(object)
+          {
+            ## super
+            attr <- callNextMethod(object)
+
+            ## return a core attribute list
+            if(object@maskUnits != "objectBoundingBox")
+              attr <- c(attr,maskUnits=object@maskUnits)
+            if(object@maskContentUnits != "userSpaceOnUse")
+              attr <- c(attr,maskContentUnits=object@maskContentUnits)
+            if(object@x != "-10%")
+              attr <- c(attr,x=object@x)
+            if(object@y != "-10%")
+              attr <- c(attr,y=object@y)
+            if(object@width != "120%")
+              attr <- c(attr,width=object@width)
+            if(object@height != "120%")
+              attr <- c(attr,height=object@height)
+
+            ## eop
+            return(attr)
+          }
+          )
 
 ## F A C T O R Y
 ##----------------------------------------
 Mask.factory <- function() {
+  
 }
