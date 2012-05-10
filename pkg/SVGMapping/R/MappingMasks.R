@@ -74,7 +74,7 @@ setReplaceMethod(f="fillAngle", signature="MappingMasks",
 setMethod(f="exec", signature="MappingMasks",
           definition=function(.Object, svg)
           {
-            .v2mask <- function(v) {
+            .v2mask <- function(v,group) {
 
               ## init.
               if(v > 1) v <- 1
@@ -113,6 +113,9 @@ setMethod(f="exec", signature="MappingMasks",
               definitions(svg) <- gradient
 
               ## build alpha-mask
+              mask <- Mask.factory(group)
+              definitions(svg) <- mask
+              
               
             }
             

@@ -492,8 +492,8 @@ setReplaceMethod(f="definitions", signature="SVG",
                  {                 
                    ## check
                    if(!is.object(value) &&
-                      !(is(value,"XMLInternalNode") || is(value,"Gradient")))
-                     stop("'value' must be a valid 'XMLInternalNode' or 'Gradient' object")
+                      !(is(value,"XMLInternalNode") || is(value,"SVGNode")))
+                     stop("'value' must be a valid 'XMLInternalNode' or 'SVGNode' object")
 
                    ## create defs if necessary
                    if(length(definitions(.Object)) == 0) {
@@ -502,10 +502,10 @@ setReplaceMethod(f="definitions", signature="SVG",
                      addChildren(xmlRoot(.Object@svg, defs))
                    }
 
-                   ## init. (gradient)
-                   if(is(value,"Gradient")) {
+                   ## init. (svg node)
+                   if(is(value,"SVGNode")) {
                      nameValue <- deparse(substitute(value))
-                     uid <- uid(.Object,"gradient")
+                     uid <- uid(.Object,tolower(class(value)))
                      id(value) <- uid
                      assign(nameValue,value,envir=parent.frame())
                      value <- .xml(value)

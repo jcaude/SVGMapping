@@ -249,6 +249,8 @@ setMethod(f=".xml", signature="Mask",
             ## super
             attr <- callNextMethod(object)
 
+            ## TODO: Bad must return a XMLNODE !!!! (see LinearGradient)
+            
             ## return a core attribute list
             if(object@maskUnits != "objectBoundingBox")
               attr <- c(attr,maskUnits=object@maskUnits)
@@ -270,6 +272,18 @@ setMethod(f=".xml", signature="Mask",
 
 ## F A C T O R Y
 ##----------------------------------------
-Mask.factory <- function() {
-  
+Mask.factory <- function(content,maskUnits,maskContentUnits,x,y,width,height) {
+
+  ## init. mask
+  args <- list("Mask")
+  if(!missing(maskUnits)) args <- c(args,maskUnits=maskUnits)
+  if(!missing(maskContentUnits)) args <- c(args,maskContentUnits=maskContentUnits)
+  if(!missing(x)) args <- c(args,x=x)
+  if(!missing(y)) args <- c(args,y=y)
+  if(!missing(width)) args <- c(args,width=width)
+  if(!missing(height)) args <- c(args,height=height)
+  mask = do.call(new,args)
+
+  ## eop
+  return(mask)
 }
