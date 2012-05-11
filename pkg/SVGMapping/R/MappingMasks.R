@@ -112,8 +112,16 @@ setMethod(f="exec", signature="MappingMasks",
               gradient <- LinearGradient.factory(stops=stops, coords=coords)
               definitions(svg) <- gradient
 
+              ## clone 'group' and fix id's
+              group.attr <- xmlAttrs(group)
+              if(!"id" %in% names(group.attr))
+                stop("'group' must have an id")
+              group.id <- group.attr[["id"]]
+              group.mask <- xmlClone(group)             
+              ## TODO .. see SVG::fix.uid()
+              
               ## build alpha-mask
-              mask <- Mask.factory(group)
+              mask <- Mask.factory(group.mask)
               definitions(svg) <- mask
               
               

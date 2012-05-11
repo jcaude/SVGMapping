@@ -48,7 +48,7 @@ setClass("SVG",
 setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary")})
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
 setGenericVerif(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
-setGenericVerif(name="uid", function(object,prefix) {standardGeneric("uid")})
+setGenericVerif(name="uid", function(object,prefix,n) {standardGeneric("uid")})
 setGenericVerif(name="definitions", function(object) { standardGeneric("definitions")})
 setGenericVerif(name="definitions<-", function(.Object,value) { standardGeneric("definitions<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
@@ -463,20 +463,40 @@ setReplaceMethod(f="SVG", signature="SVG",
                  )
 
 setMethod(f="uid", signature="SVG",
-          definition=function(object,prefix)
+          definition=function(object,prefix,n=1)
           {
             ## check
             if(missing(prefix)) prefix <- ""
 
             ## create random uid
-            repeat {
-              test.id <- paste(prefix,trunc(runif(n=1,min=1,max=999999)),sep="")
-              chck=object[paste("id::",test.id,sep="")]
-              if(length(chck) == 0) break
+            ids <- list()
+            for(i in 1:n) {            
+              repeat {
+                test.id <- paste(prefix,trunc(runif(n=1,min=1,max=999999)),sep="")
+                chck=(length(object[paste("id::",test.id,sep="")]) == 0)
+                chck=chck && (sum(test.id %in% ids) == 0)
+                if(chck) break
+              }
+              ids <- c(ids,test.id)
             }
 
             ## eop
-            return(test.id)
+            return(ifelse(n==1,ids[[1]],ids))
+          }
+          )
+
+setMethod(f="fix.uid", signature="SVG",
+          definition(object,node,prefix)
+          {
+            ## init.
+            if(missing(prefix)) prefix <- ""
+
+            ## TODO ... I'm not sure about the BEST strategy here.. let's try
+            ##          either node is already in the doc tree or it's not..
+            ##
+            ## NOTE: to get all node children as an array it might be something
+            ##       like xpath: //*[@id='XXXX']/descendant::node() but we have
+            ##       to try ;-)
           }
           )
 

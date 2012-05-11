@@ -246,11 +246,12 @@ setReplaceMethod(f="content", signature="Mask",
 setMethod(f=".xml", signature="Mask",
           definition=function(object)
           {
+            ## init.
+            mask <- newXMLNode("mask")
+            
             ## super
             attr <- callNextMethod(object)
 
-            ## TODO: Bad must return a XMLNODE !!!! (see LinearGradient)
-            
             ## return a core attribute list
             if(object@maskUnits != "objectBoundingBox")
               attr <- c(attr,maskUnits=object@maskUnits)
@@ -264,9 +265,11 @@ setMethod(f=".xml", signature="Mask",
               attr <- c(attr,width=object@width)
             if(object@height != "120%")
               attr <- c(attr,height=object@height)
-
+            xmlAttrs(mask) <- attr
+            
             ## eop
-            return(attr)
+            addChildren(mask,kids=list(object@content))
+            return(mask)
           }
           )
 
