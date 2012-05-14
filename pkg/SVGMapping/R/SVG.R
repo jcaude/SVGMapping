@@ -49,6 +49,7 @@ setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary"
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
 setGenericVerif(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
 setGenericVerif(name="uid", function(object,prefix,n) {standardGeneric("uid")})
+setGenericVerif(name="duplicate.node", function(object,node,prefix) {standardGeneric("duplicate.node")})
 setGenericVerif(name="definitions", function(object) { standardGeneric("definitions")})
 setGenericVerif(name="definitions<-", function(.Object,value) { standardGeneric("definitions<-")})
 setGenericVerif(name="defaultSearchAttr", function(object) {standardGeneric("defaultSearchAttr")})
@@ -487,7 +488,7 @@ setMethod(f="uid", signature="SVG",
           )
 
 setMethod(f="duplicate.node", signature="SVG",
-          definition(object,node,prefix)
+          definition=function(object,node,prefix)
           {
             ## init.
             if(missing(prefix)) prefix <- ""

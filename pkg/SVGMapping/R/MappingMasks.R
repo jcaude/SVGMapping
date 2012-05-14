@@ -74,11 +74,24 @@ setReplaceMethod(f="fillAngle", signature="MappingMasks",
 setMethod(f="exec", signature="MappingMasks",
           definition=function(.Object, svg)
           {
+            .getID <- function(node) {
+              attr <- xmlAttrs(node)
+              return(node["id"])
+            }
+            
             .v2mask <- function(v,group) {
 
               ## init.
               if(v > 1) v <- 1
               if(v < 0) v <- 0
+
+              ## init. group id
+              group.attr <- xmlAttrs(group)
+              if(!"id" %in% names(group.attr)) {
+                group.attr["id"] <- uid(svg,prefix="")
+                xmlAttrs(group) <- group.attr
+              }
+              group.id <- group.attr["id"]
               
               ## init. (gradient stops)
               stops <- c(GradientStop.factory(0.0,"white",1.0),
@@ -111,20 +124,37 @@ setMethod(f="exec", signature="MappingMasks",
               ## build gradient
               gradient <- LinearGradient.factory(stops=stops, coords=coords)
               definitions(svg) <- gradient
+              gradient.url <- paste("url(#",id(gradient),")",sep="")
 
-              ## clone 'group' and fix id's
-              group.attr <- xmlAttrs(group)
-              if(!"id" %in% names(group.attr))
-                stop("'group' must have an id")
-              group.id <- group.attr[["id"]]
-              group.mask <- xmlClone(group)             
-              ## TODO .. see SVG::fix.uid()
+              ## clone 'group' and fix id's (mask)
+              group.mask <- duplicate.node(svg,group,"mask")
+              group.mask.id <- .getID(group.mask)
               
-              ## build alpha-mask
+              ## build alpha-mask, put it in the definitions
               mask <- Mask.factory(group.mask)
               definitions(svg) <- mask
-              
-              
+              mask.url <- paste("url(#",id(mask),")",sep="")              
+
+              ## fill the mask with the associated gradient
+              svg[group.mask.id,"style::fill"] <- gradient.url
+
+              ## clone 'group' and fix id's (stroke)
+              group.stroke <- duplicate.node(svg,group,"stroke")
+              group.stroke.id <- .getID(group.stroke)
+              svg[group.stroke.id,"style::fill-opacity"] <- 0
+
+              ## mask original group and remove its stroke
+              svg[group.id,"mask"] <- mask.url
+              svg[group.id,"style::stroke-opacity"] <- 0
+
+              ## create a new group and put the stroke + shape inside
+              new.group <- newXMLNode("g")
+              replaceNodes(group,new.group)
+              addChildren(new.group,group.stroke)
+              addChildren(new.group,group)
+
+              ## eop
+              return(invisible())
             }
             
             ## call super
@@ -139,6 +169,8 @@ setMethod(f="exec", signature="MappingMasks",
             if(ncond > 1)
               warning("only values in the first column will be used")
 
+            ## TODO CONTINUE HERE..
+            
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
             return(invisible(.Object))
