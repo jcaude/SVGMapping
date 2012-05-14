@@ -481,7 +481,8 @@ setMethod(f="uid", signature="SVG",
             }
 
             ## eop
-            return(ifelse(n==1,ids[[1]],ids))
+           if(n==1) ids <- ids[[1]]
+            return(ids)
           }
           )
 
@@ -500,15 +501,22 @@ setMethod(f="duplicate.node", signature="SVG",
             ## clone node (saved copy)
             node.copy <- xmlClone(node)
 
-            ## get all node descendant
-            
-            
-            ## TODO ... I'm not sure about the BEST strategy here.. let's try
-            ##          either node is already in the doc tree or it's not..
-            ##
-            ## NOTE: to get all node children as an array it might be something
-            ##       like xpath: //*[@id='XXXX']/descendant::node() but we have
-            ##       to try ;-)
+            ## get all node descendant & update node ids
+            xpath <- paste("//*[@id='",node.id,"']/descendant-or-self::node()[@id]",sep="")
+            xpathApply(object@svg,xpath,
+                       function(node) {
+                         node.attr <- xmlAttrs(node)
+                         new.id <- uid(object,prefix)
+                         node.attr["id"] <- new.id
+                         xmlAttrs(node) <- node.attr
+                       }
+                       )
+  
+            ## swap 're-id node' and the saved copy
+            replaceNodes(node,node.copy)
+
+            ## eop return duplicated node
+            return(node)
           }
           )
 
