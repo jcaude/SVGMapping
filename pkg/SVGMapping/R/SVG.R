@@ -485,12 +485,24 @@ setMethod(f="uid", signature="SVG",
           }
           )
 
-setMethod(f="fix.uid", signature="SVG",
+setMethod(f="duplicate.node", signature="SVG",
           definition(object,node,prefix)
           {
             ## init.
             if(missing(prefix)) prefix <- ""
 
+            ## check
+            attrs <- xmlAttrs(node)
+            if(!("id" %in% names(attrs)))
+               stop("You can't duplicate node that don't have an ID")
+            node.id <- attrs[["id"]]
+
+            ## clone node (saved copy)
+            node.copy <- xmlClone(node)
+
+            ## get all node descendant
+            
+            
             ## TODO ... I'm not sure about the BEST strategy here.. let's try
             ##          either node is already in the doc tree or it's not..
             ##
