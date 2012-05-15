@@ -62,7 +62,7 @@ setReplaceMethod(f="fillAngle", signature="MappingMasks",
                    ## check
                    if(!is.numeric(value))
                      stop("fill angle 'value' must be a numeric")
-                   if((value < -pi) || (value > pi))
+                   if(!is.vector(value) && ((value < -pi) || (value > pi)))
                      stop("fill angle 'value' must be in the range [-pi,pi]")
 
                    ## init.
@@ -79,7 +79,7 @@ setMethod(f="exec", signature="MappingMasks",
               return(node["id"])
             }
             
-            .v2mask <- function(v,group) {
+            .v2mask <- function(v,group,angle) {
 
               ## init.
               if(v > 1) v <- 1
@@ -162,14 +162,40 @@ setMethod(f="exec", signature="MappingMasks",
 
             ## init.
             ncond <- ncol(.Object@values)
-            angle <- .Object@fill.angle
-            namedOjbect <- deparse(substitute(.Object))          
+            namedOjbect <- deparse(substitute(.Object))
+            targets <- svg[.Object@targets]
 
+            ## check (#rows)
+            if(nrow(targets) != nrow(.Object@values))
+              stop("'targets' and 'values' have a different number of rows")
+            if(is.vector(.Object@fill.angle) && (nrow(.Object@fill.angle) != nrow(targets)))
+              stop("'targets' and 'fill.angle' (vector) have a different number of rows")
+            
             ## check
             if(ncond > 1)
               warning("only values in the first column will be used")
 
-            ## TODO CONTINUE HERE..
+            ## main loop: value -> mask
+            for(i in 1:nrow(.Object@.values)) {
+
+              ## get value
+              if(is.vector(.Object@.values))
+                v <- .Object@.values[[i]]
+              else
+                v <- .Object@.values[i,1]
+
+              ## get target
+              target <- targets[[i]]
+
+              ## get filling angle
+              if(!is.vector(.Object@fill.angle))
+                angle <- .Object@fill.angle
+              else
+                angle <- .Object@fill.angle[[i]]
+
+              ## forge mask
+              .v2mask(v,target,angle)
+            }
             
             ## eop
             assign(namedOjbect, .Object, envir=parent.frame())
@@ -179,3 +205,22 @@ setMethod(f="exec", signature="MappingMasks",
 
 ## F A C T O R Y
 ##--------------
+MappingMask.factory <- function(data,targets=rownames(data),
+                                fill.angle=-pi/2,
+                                fn="Identity", fn.parameters=list()) {
+
+  ## init.
+  mapM <- new("MappingMask")
+
+  ## fill mapping structure
+  values(mapM) <- data
+  targets(mapM) <- targets
+  fillAngle(mapM) <- fill.angle
+  if(missing(fn.parameters))
+    mapM <- setFunction(mapM,fn)
+  else
+    mapM <- setFunction(mapM,fn,fn.parameters)
+  
+  ## eop
+  return(mapM)
+} 
