@@ -61,6 +61,7 @@ setGenericVerif(name="jsAddScriptText", function(.Object,name,script) {standardG
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
+setGenericVerif(name="merge.SVG<-", function(.Object,target.node,value) {standardGeneric("merge.SVG")})
 setGenericVerif(name="mapping", function(object,op) {standardGeneric("mapping")})
 
 setMethod(f="initialize", signature="SVG",
@@ -695,7 +696,6 @@ setMethod(f="write.SVG", signature="SVG",
             ## - Add Javascript
             if(object@.js_tooltip || object@.js_animation) {
 
-
               ## init.
               object["xpath::/svg:svg","onload"] <- "init(evt)"
               
@@ -724,8 +724,6 @@ setMethod(f="write.SVG", signature="SVG",
                   addScriptSVG(object, script, id=paste("SVMapping_jsfiles_", script_name, sep=""))
                 }
               }
-
-              
             }
 
             ## - Produce source XML
@@ -737,6 +735,68 @@ setMethod(f="write.SVG", signature="SVG",
             cat(xml, file=file)
           }
           )
+
+setReplaceMethod(f="merge.SVG", signature="SVG",
+                 definition=function(.Object,target.node,value)
+                 {
+                   ## check 'target.node'
+                   if(missing(target.node))
+                     target.node <- NULL
+                   if(!is.null(target.node) && !is(target.node, "XMLInternalNode"))
+                     stop("'target.node' must be a valid XMLInternalNode object")
+                   if(!is.null(target.node) &&
+                      !(xmlRoot(target.node) != xmlRoot(.Object@svg)))
+                     stop("'target.node' must be a node of the current SVG object")
+                   
+                   ## check 'value'
+                   if(!is(value,"SVG"))
+                     stop("'value' must be a valid SVG object")
+
+                   ## 1) Fix all IDs
+                   value.ids <- value["xpath:://*[@id]","id"]
+                   value.ids <- data.frame(src=value.ids,new=value.ids)
+                   object.ids <- .Object["xpath:://*[@id]","id"]
+                   dup.ids <- values.ids[values.ids$src %in% object.ids,]
+                   if(nrow(dup.ids) > 0) {
+                     
+                     ## 1.1) forge new ids to avoid duplication
+                     value.ser <- serialize(value@svg,connection=NULL)
+                     value.prefix <- paste(value.ser[sample(1:length(value.ser),size=4)],collapse="")
+                     forge.ids <- uid(.Object,prefix=value.prefix,n=nrow(dup.ids))
+                     value.ids[dup.ids,"new"] <- forge.ids
+
+                     ## 1.2) fix Href references
+                     href.nodes <- value["xpath:://*[@xlink:href]"]
+                     tmp <- sapply(href.nodes,
+                                   function(node,ids) {
+                                     href <- xmlGetAttr(node,"xlink:href")
+                                     if(grepl("^#", href)) {
+                                       href = substr(href,2, nchar(href))
+                                       if(href %in% ids$src)
+                                         xmlAttrs(node) <- c('xlink:href'=ids[ids$src==href,"new"])
+                                     }
+                                   },
+                                   ids=values.ids
+                                   )
+
+                     ## 1.3) fix url(#..) references
+                     for (node in getNodeSet(value@svg, "//*")) {
+                       attrs <- xmlAttrs(node, addNamespacePrefix = TRUE)
+                       for (attname in names(attrs)) {
+                         attval <- attrs[[attname]]
+                         if (grepl("url\\(\\#.+\\)", attval)) {
+                           attval <- gsub("url\\(\\#", paste("url(#", attribute.value, "_", sep=""), attval)
+                           attrs[[attname]] <- attval
+                           xmlAttrs(node, suppressNamespaceWarning = TRUE) <- attrs
+                         }
+                       }
+                     }
+
+                     ## 1.4) fix duplicated IDs
+                     
+                   }
+                 }
+                 )
 
 setMethod(f="mapping", signature="SVG",
           definition=function(object,op)
