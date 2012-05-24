@@ -761,7 +761,7 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    }
 
                    .attr_fix_id <- function(attr,ids) {
-                     hits <- gregexpr("url\\(\\#([[:alnum:]]*)\\)",attr)
+                     hits <- gregexpr("url\\(\\#([[:alnum:]_\\.]*)\\)",attr)
                      urls <- regmatches(attr,hits)[[1]]
                      urls.new <- sapply(urls, .url_fix_id, ids=ids)
                      for(u in 1:length(urls)) {
@@ -820,7 +820,7 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      tmp <- sapply(url.nodes, .node_fix_id, ids=values.ids)
                      
                      ## 1.4) fix duplicated IDs
-                     value["xpath:://*[@id]","id"] <- value.ids[,"new"]
+                     value[value.ids[,"src"],"id"] <- value.ids[,"new"]
                    }
 
                    ## 2) Merge SVG structures
@@ -857,8 +857,14 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                                                 )
                                               )
                    
-                   ## 2.4) Add value to the layer & replace target
-                    
+                   ## 2.4) Add value to the layer & insert/replace target
+                   value.nodes <- xmlChildren(xmlRoot(value@svg))
+                   tmp <- addChildren(target.group, value.nodes)
+                   if(is.null(target.node)) {
+                     tmp <- addChildren(xmlRoot(target@svg), target.group)
+                   } else {
+                     tmp <- replaceNodes(oldNode=target.node, newNode=target.group)
+                   }
 
                    ## eop
                    return(invisible(.Object))
