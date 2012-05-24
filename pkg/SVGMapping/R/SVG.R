@@ -89,7 +89,7 @@ setMethod(f="summary", signature="SVG",
             ## init.
             svg.stats <- summary(object@svg)
             svg.stats$jsAnimation <- jsAnimation(object)
-            svg.stats$scripts <- length(object@js_scripts) + length(object@js_files)
+            svg.stats$scripts <- length(object@.js_scripts) + length(object@.js_files)
 
             ## return stats
             return(svg.stats)
@@ -651,23 +651,24 @@ setMethod(f="jsAddScriptText", signature="SVG",
 setMethod(f="addScript", signature="SVG",
           definition=function(object,script,id)
           {
+            ## init
+            if(missing(id)) id <- uid(object,prefix="script",n=1)
+            
             ## Build script node
             cdata <- newXMLCDataNode(paste("\n", script, "\n", sep=""))
             script.attrs <- list(type="text/ecmascript")
-            if (!missing(id)) script.attrs[["id"]] <- id
+            script.attrs[["id"]] <- id
             scriptnode <- newXMLNode("script", attrs=script.attrs, .children=list(cdata))
             
             ## Update/Insert script
             updated <- FALSE
-            if (!mising(id)) {
-              search.node <- object[paste("id::",id,sep="")]
-              if(length(search.node) > 0) {
-                replaceNodes(search.node[[1]], scriptnode)
-                updated <- TRUE
-              }
+            search.node <- object[paste("id::",id,sep="")]
+            if(length(search.node) > 0) {
+              replaceNodes(search.node[[1]], scriptnode)
+              updated <- TRUE
             }
             if(!updated)
-              addChildren(xmlRoot(svg), kids=list(scriptnode))            
+              addChildren(xmlRoot(object@svg), kids=list(scriptnode))            
           }
           )
 
@@ -695,34 +696,44 @@ setMethod(f="write.SVG", signature="SVG",
               stop("Missing destination 'file' value to save the SVG object")
 
             ## - Add Javascript
-            if(object@.js_tooltip || object@.js_animation) {
+            if((length(object@.js_scripts) > 0) ||
+               (length(object@.js_files) > 0) || object@.js_animation) {
 
               ## init.
               object["xpath::/svg:svg","onload"] <- "init(evt)"
               
               ## get js script (init,tooltip, animation)
               con <- file(system.file("extdata/script.js", package="SVGMapping"), "rb")
-              script.lines <- readLines(con)
+              script <- readLines(con)
               close(con)
-              script <- paste(script.lines, collapse="\n")
-              addScriptSVG(object, script, id="SVGMapping-init")
+              addScript(object, script, id="SVGMapping-init")
+
               if(object@.js_animation) {
                 con <- file(system.file("extdata/animation.js", package="SVGMapping"), "rb")
-                script.lines <- readLines(con)
+                script <- readLines(con)
                 close(con)
-                script <- paste(script,script.lines, collapse="\n")
+                addScript(object, script, id="SVGMapping-animations")
               }
-              addScriptSVG(object, script, id="SVGMapping-animations")
-              if(length(object@js_files) > 0) {
-                script_names <- names(object@js_files)
-                for(i in 1:length(object@js_files)) {
-                  script_file <- object@js_files[[i]]
+
+              if(length(object@.js_files) > 0) {
+                script_names <- names(object@.js_files)
+                for(i in 1:length(object@.js_files)) {
+                  script_file <- object@.js_files[[i]]
                   script_name <- script_names[[i]]
                   con <- file(script_file, "rb")
-                  script.lines <- readLines(con)
+                  script <- readLines(con)
                   close(con)
-                  script <- paste(script,script.lines, collapse="\n")
-                  addScriptSVG(object, script, id=paste("SVMapping_jsfiles_", script_name, sep=""))
+                  addScript(object, script, id=paste("SVMapping_jsfiles_", script_name, sep=""))
+                }
+              }
+
+              script <- ""
+              if(length(object@.js_scripts) > 0) {
+                script_names <- names(object@.js_scripts)
+                for(i in 1:length(object@.js_scripts)) {
+                  script <- object@.js_scripts[[i]]
+                  script_name <- script_names[[i]]
+                  addScript(object, script, id=paste("SVMapping_jstext_", script_name, sep=""))
                 }
               }
             }
@@ -829,10 +840,10 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    value.dim <- getDimensions(value)
                    if(!is.null(target.node)) {
                      target.dim <-
-                       list(x <- .toUserUnit(xmlGetAttr(target.node, "x", "0")),
-                            y <- .toUserUnit(xmlGetAttr(target.node, "y", "0")),
-                            width <- .toUserUnit(xmlGetAttr(target.node, "width", "0")),
-                            height <- .toUserUnit(xmlGetAttr(target.node, "height", "0"))
+                       list(x = .toUserUnit(xmlGetAttr(target.node, "x", "0")),
+                            y = .toUserUnit(xmlGetAttr(target.node, "y", "0")),
+                            width = .toUserUnit(xmlGetAttr(target.node, "width", "0")),
+                            height = .toUserUnit(xmlGetAttr(target.node, "height", "0"))
                             )
                      target.transform <- xmlGetAttr(target.node, "transform", "")
                    } else {
@@ -912,65 +923,65 @@ setMethod(f="mapping", signature="SVG",
 ## --------------------------------------------------
 
 .SVG.STD.DIMS <-
-  list("us.letter" <- c("8.5in","11in"),
-       "us.legal" <- c("8.5in","14in"),
-       "us.executive" <- c("7.2in","10.5in"),
-       "a0" <- c("841mm","1189mm"),
-       "a1" <- c("594mm","841mm"),
-       "a2" <- c("420mm","594mm"),
-       "a3" <- c("297mm","420mm"),
-       "a4" <- c("210mm","297mm"),
-       "a5" <- c("148mm","210mm"),
-       "a6" <- c("105mm","148mm"),
-       "a7" <- c("74mm","105mm"),
-       "a8" <- c("52mm","74mm"),
-       "a9" <- c("37mm","52mm"),
-       "a10" <- c("26mm","37mm"),
-       "b0" <- c("1000mm","1414mm"),
-       "b1" <- c("707mm","1000mm"),
-       "b2" <- c("500mm","707mm"),
-       "b3" <- c("353mm","500mm"),
-       "b4" <- c("250mm","353mm"),
-       "b5" <- c("176mm","250mm"),
-       "b6" <- c("125mm","176mm"),
-       "b7" <- c("88mm","125mm"),
-       "b8" <- c("62mm","88mm"),
-       "b9" <- c("44mm","62mm"),
-       "b10" <- c("31mm","44mm"),
-       "c0" <- c("917mm","1297mm"),
-       "c1" <- c("648mm","917mm"),
-       "c2" <- c("458mm","648mm"),
-       "c3" <- c("324mm","458mm"),
-       "c4" <- c("229mm","324mm"),
-       "c5" <- c("162mm","229mm"),
-       "c6" <- c("114mm","162mm"),
-       "c7" <- c("81mm","114mm"),
-       "c8" <- c("57mm","81mm"),
-       "c9" <- c("40mm","57mm"),
-       "c10" <- c("28mm","40mm"),
-       "d1" <- c("545mm","771mm"),
-       "d2" <- c("385mm","545mm"),
-       "d3" <- c("272mm","385mm"),
-       "d4" <- c("192mm","272mm"),
-       "d5" <- c("136mm","192mm"),
-       "d6" <- c("96mm","136mm"),
-       "d7" <- c("68mm","96mm"),
-       "e3" <- c("400mm","560mm"),
-       "e4" <- c("280mm","400mm"),
-       "e5" <- c("200mm","280mm"),
-       "e6" <- c("140mm","200mm"),
-       "us.#10.envelope" <- c("41.in","9.5in"),
-       "dl.envelop" <- c("110mm","220mm"),
-       "ledger.tabloid" <- c("11in","17in"),
-       "card.iso7810" <- c("54mm","85.6mm"),
-       "card.us" <- c("2in","3.5in"),
-       "card.eu" <- c("55mm","85mm"),
-       "arch.a" <- c("9in","12in"),
-       "arch.b" <- c("12in","18in"),
-       "arch.c" <- c("18in","24in"),
-       "arch.d" <- c("24in","36in"),
-       "arch.e" <- c("36in","48in"),
-       "arch.e1" <- c("30in","42in")
+  list("us.letter" = c("8.5in","11in"),
+       "us.legal" = c("8.5in","14in"),
+       "us.executive" = c("7.2in","10.5in"),
+       "a0" = c("841mm","1189mm"),
+       "a1" = c("594mm","841mm"),
+       "a2" = c("420mm","594mm"),
+       "a3" = c("297mm","420mm"),
+       "a4" = c("210mm","297mm"),
+       "a5" = c("148mm","210mm"),
+       "a6" = c("105mm","148mm"),
+       "a7" = c("74mm","105mm"),
+       "a8" = c("52mm","74mm"),
+       "a9" = c("37mm","52mm"),
+       "a10" = c("26mm","37mm"),
+       "b0" = c("1000mm","1414mm"),
+       "b1" = c("707mm","1000mm"),
+       "b2" = c("500mm","707mm"),
+       "b3" = c("353mm","500mm"),
+       "b4" = c("250mm","353mm"),
+       "b5" = c("176mm","250mm"),
+       "b6" = c("125mm","176mm"),
+       "b7" = c("88mm","125mm"),
+       "b8" = c("62mm","88mm"),
+       "b9" = c("44mm","62mm"),
+       "b10" = c("31mm","44mm"),
+       "c0" = c("917mm","1297mm"),
+       "c1" = c("648mm","917mm"),
+       "c2" = c("458mm","648mm"),
+       "c3" = c("324mm","458mm"),
+       "c4" = c("229mm","324mm"),
+       "c5" = c("162mm","229mm"),
+       "c6" = c("114mm","162mm"),
+       "c7" = c("81mm","114mm"),
+       "c8" = c("57mm","81mm"),
+       "c9" = c("40mm","57mm"),
+       "c10" = c("28mm","40mm"),
+       "d1" = c("545mm","771mm"),
+       "d2" = c("385mm","545mm"),
+       "d3" = c("272mm","385mm"),
+       "d4" = c("192mm","272mm"),
+       "d5" = c("136mm","192mm"),
+       "d6" = c("96mm","136mm"),
+       "d7" = c("68mm","96mm"),
+       "e3" = c("400mm","560mm"),
+       "e4" = c("280mm","400mm"),
+       "e5" = c("200mm","280mm"),
+       "e6" = c("140mm","200mm"),
+       "us.#10.envelope" = c("41.in","9.5in"),
+       "dl.envelop" = c("110mm","220mm"),
+       "ledger.tabloid" = c("11in","17in"),
+       "card.iso7810" = c("54mm","85.6mm"),
+       "card.us" = c("2in","3.5in"),
+       "card.eu" = c("55mm","85mm"),
+       "arch.a" = c("9in","12in"),
+       "arch.b" = c("12in","18in"),
+       "arch.c" = c("18in","24in"),
+       "arch.d" = c("24in","36in"),
+       "arch.e" = c("36in","48in"),
+       "arch.e1" = c("30in","42in")
        )
 
 SVG.ListDimensions <- function() {
@@ -1004,13 +1015,13 @@ SVG.factory <- function(file,dims,landscape) {
       dims <- .SVG.STD.DIMS[[dims]]
     }
 
-    if(is.list(dims) && (length(dims) == 2)) {
+    if(is.vector(dims) && (length(dims) == 2)) {
       w <- dims[[1]]
       h <- dims[[2]]
       
     }
     else 
-      stop("invalid dimensions argument")
+      stop("invalid dimensions argument, it must be a 'vector(x,y)'")
     
   }
 
