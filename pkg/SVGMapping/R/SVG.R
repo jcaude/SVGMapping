@@ -811,7 +811,7 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    if(!is.null(target.node) && !is(target.node, "XMLInternalNode"))
                      stop("'target.node' must be a valid XMLInternalNode object")
                    if(!is.null(target.node) &&
-                      !(xmlRoot(target.node) != xmlRoot(.Object@svg)))
+                      !identical(xmlRoot(target.node),xmlRoot(.Object@svg)) )
                      stop("'target.node' must be a node of the current SVG object")
                    
                    ## check 'value'
