@@ -466,10 +466,11 @@ setReplaceMethod(f="SVG", signature="SVG",
                  )
 
 setMethod(f="uid", signature="SVG",
-          definition=function(object,prefix,n=1)
+          definition=function(object,prefix,n)
           {
             ## check
-            if(missing(prefix)) prefix <- ""
+            if(missing(prefix)) prefix <- "id"
+            if(missing(n)) n <- 1
 
             ## create random uid
             ids <- list()
@@ -495,6 +496,18 @@ setMethod(f="duplicate.node", signature="SVG",
             ## init.
             if(missing(prefix)) prefix <- ""
 
+            ## check node type (character)
+            if(is.character(node)) {
+              chk_id <- svg[node]
+              if(length(chk_id) == 0)
+                stop("'node' search attribute value not found in the current document")
+              node <- chk_id[[1]]
+            }
+
+            ## check node type (XMLNode)
+            if(!is(node,"XMLInternalNode"))
+              stop("'node' must be either an XMLInternalNode object or a search attribute (default:ID) value")
+            
             ## check
             attrs <- xmlAttrs(node)
             if(!("id" %in% names(attrs)))
@@ -813,7 +826,7 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    value.ids <- value["xpath:://*[@id]","id"]
                    value.ids <- data.frame(src=value.ids,new=value.ids)
                    object.ids <- .Object["xpath:://*[@id]","id"]
-                   dup.ids <- values.ids[values.ids$src %in% object.ids,]
+                   dup.ids <- value.ids[value.ids$src %in% object.ids,]
                    if(nrow(dup.ids) > 0) {
                      
                      ## 1.1) forge new IDs
@@ -824,11 +837,11 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
 
                      ## 1.2) fix Href references
                      href.nodes <- value["xpath:://*[@xlink:href]"]
-                     tmp <- sapply(href.nodes, .href_fix_id, ids=values.ids)
+                     tmp <- sapply(href.nodes, .href_fix_id, ids=value.ids)
 
                      ## 1.3) fix url(#..) references
                      url.nodes <- value["xpath:://*[contains(@*,'url(#')]"]
-                     tmp <- sapply(url.nodes, .node_fix_id, ids=values.ids)
+                     tmp <- sapply(url.nodes, .node_fix_id, ids=value.ids)
                      
                      ## 1.4) fix duplicated IDs
                      value[value.ids[,"src"],"id"] <- value.ids[,"new"]

@@ -101,7 +101,7 @@
 <icon BUILTIN="messagebox_warning"/>
 </node>
 </node>
-<node CREATED="1332175314289" FOLDED="true" ID="ID_1785900336" MODIFIED="1337672269801" TEXT="Setter">
+<node CREATED="1332175314289" ID="ID_1785900336" MODIFIED="1338300659453" TEXT="Setter">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1332255479644" ID="ID_1031201094" MODIFIED="1332325152070">
@@ -160,7 +160,7 @@
 <icon BUILTIN="full-4"/>
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1333466638750" ID="ID_1689415062" MODIFIED="1333467640642">
+<node CREATED="1333466638750" ID="ID_1689415062" MODIFIED="1338300687667">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -172,6 +172,20 @@
   </body>
 </html></richcontent>
 <icon BUILTIN="full-5"/>
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1333466692040" ID="ID_1157402775" MODIFIED="1338300703955">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <span style="color: #0000ff"><font color="#0000ff">Functionalities</font></span>
+    </p>
+  </body>
+</html></richcontent>
+<icon BUILTIN="full-6"/>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
@@ -757,8 +771,9 @@
 <node CREATED="1331888070352" ID="ID_1780518024" MODIFIED="1331892424926" TEXT="Merge">
 <icon BUILTIN="help"/>
 </node>
-<node CREATED="1332342596496" ID="ID_794000078" MODIFIED="1333101179865" TEXT="Getter/Setter">
+<node CREATED="1332342596496" ID="ID_794000078" MODIFIED="1338300624918" TEXT="Getter/Setter">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1331821649827" ID="ID_793707003" MODIFIED="1333466375742" TEXT="Nodes Attributes">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
@@ -1043,12 +1058,12 @@
 </node>
 </node>
 </node>
-<node CREATED="1332342624871" ID="ID_1552703913" MODIFIED="1334247404601" TEXT="Nodes Values">
+<node CREATED="1332342624871" ID="ID_1552703913" MODIFIED="1338300621776" TEXT="Nodes Values">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="button_ok"/>
-<node COLOR="#660066" CREATED="1334247406596" FOLDED="true" ID="ID_306375004" MODIFIED="1334247488689" TEXT="SVG[node,SVG.VALUE] and SVG[node,SVG.VALUE]&lt;-">
-<icon BUILTIN="button_ok"/>
-<node CREATED="1334246883351" ID="ID_1370190959" MODIFIED="1334247357076">
+<icon BUILTIN="messagebox_warning"/>
+<node COLOR="#660066" CREATED="1334247406596" ID="ID_306375004" MODIFIED="1338300616864" TEXT="SVG[node,SVG.VALUE] and SVG[node,SVG.VALUE]&lt;-">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1334246883351" ID="ID_1370190959" MODIFIED="1338300603736">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1068,8 +1083,60 @@
     </p>
   </body>
 </html></richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1334247368403" ID="ID_289211905" MODIFIED="1334247390131" TEXT="Only atomic mode is allowed"/>
+<node CREATED="1334247368403" ID="ID_289211905" MODIFIED="1338300605613" TEXT="Only atomic mode is allowed">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1338300050291" ID="ID_343467144" MODIFIED="1338300717597">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      We can think about node insertion using the SVG.VALUE tag.
+    </p>
+    <p>
+      For expample, <font face="Monaco">node=newXMLNode(...)</font>&#160;then the expression:
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="Monaco">&#160;SVG[&quot;xpath::/svg:svg&quot;,SVG.VALUE] &lt;- node</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      would 'insert' the node in the current tree at an arbitrary position, otherwise
+    </p>
+    <p>
+      things such as:
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <font face="Monaco">&#160;SVG[&quot;xpath::/svg:svg&quot;, SVG.VALUE] &lt;- .location(node,SVG.AFTER)</font>
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      The <font face="Monaco">.location()</font>&#160;function returns a special object (maybe we can use the SVGNode structure)
+    </p>
+    <p>
+      with fields set accordingly.
+    </p>
+  </body>
+</html>
+</richcontent>
+<font NAME="SansSerif" SIZE="10"/>
+<icon BUILTIN="full-6"/>
+<icon BUILTIN="messagebox_warning"/>
+</node>
 </node>
 </node>
 </node>
