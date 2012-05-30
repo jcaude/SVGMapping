@@ -61,7 +61,7 @@ setGenericVerif(name="jsAddScriptText", function(.Object,name,script) {standardG
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
-setGenericVerif(name="merge.SVG<-", function(.Object,target.node,value) {standardGeneric("merge.SVG<-")})
+setGenericVerif(name="merge.SVG<-", function(.Object,target.node,preserve.ratio,prefix,value) {standardGeneric("merge.SVG<-")})
 setGenericVerif(name="getDimensions", function(object) {standardGeneric("getDimensions")})
 setGenericVerif(name="mapping", function(object,op) {standardGeneric("mapping")})
 
@@ -762,7 +762,7 @@ setMethod(f="write.SVG", signature="SVG",
           )
 
 setReplaceMethod(f="merge.SVG", signature="SVG",
-                 definition=function(.Object,target.node,value)
+                 definition=function(.Object,target.node,preserve.ratio,prefix,value)
                  {
                    ## locals
                    .href_fix_id <- function(node,ids) {
@@ -804,14 +804,17 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      xmlAttrs(node) <- attrs
                      return(invisible())
                    }
+
+                   ## init.
+                   if(missing(preserve.ratio)) preserve.ratio <- FALSE
+                   if(missing(target.node)) target.node <- NULL
+                   if(missing(prefix)) prefix <- ""
                    
                    ## check 'target.node'
-                   if(missing(target.node))
-                     target.node <- NULL
                    if(!is.null(target.node) && !is(target.node, "XMLInternalNode"))
                      stop("'target.node' must be a valid XMLInternalNode object")
                    if(!is.null(target.node) &&
-                      !identical(xmlRoot(target.node),xmlRoot(.Object@svg)) )
+                      !identical(xmlRoot(target.node),xmlRoot(SVG(.Object))) )
                      stop("'target.node' must be a node of the current SVG object")
                    
                    ## check 'value'
@@ -822,30 +825,41 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      return(invisible(.Object))
                    }
 
-                   ## 1) Fix all IDs (duplication)
+                   ## 0) Init IDs renaming table
                    value.ids <- value["xpath:://*[@id]","id"]
-                   value.ids <- data.frame(src=value.ids,new=value.ids)
+                   value.ids <- data.frame(src=value.ids,
+                                           new=paste(prefix,value.ids,sep=""),
+                                           row.names=value.ids,
+                                           stringsAsFactors=FALSE)
+                     
+                   ## 1) Fix all IDs (duplication)
                    object.ids <- .Object["xpath:://*[@id]","id"]
-                   dup.ids <- value.ids[value.ids$src %in% object.ids,]
+                   dup.ids <- value.ids[value.ids$new %in% object.ids,]
                    if(nrow(dup.ids) > 0) {
                      
                      ## 1.1) forge new IDs
                      value.ser <- serialize(value@svg,connection=NULL)
-                     value.prefix <- paste(value.ser[sample(1:length(value.ser),size=4)],collapse="")
+                     value.prefix <- paste("ID",
+                                           paste(value.ser[sample(1:length(value.ser),size=4)],collapse=""),
+                                           sep="")
                      forge.ids <- uid(.Object,prefix=value.prefix,n=nrow(dup.ids))
-                     value.ids[dup.ids,"new"] <- forge.ids
+                     value.ids[dup.ids$src,"new"] <- unlist(forge.ids)
 
                      ## 1.2) fix Href references
-                     href.nodes <- value["xpath:://*[@xlink:href]"]
-                     tmp <- sapply(href.nodes, .href_fix_id, ids=value.ids)
+                     if("xlink" %in% names(xmlNamespaces(xmlRoot(SVG(value))))) {
+                       href.nodes <- value["xpath:://*[@xlink:href]"]
+                       tmp <- sapply(href.nodes, .href_fix_id, ids=value.ids)
+                     }
 
                      ## 1.3) fix url(#..) references
                      url.nodes <- value["xpath:://*[contains(@*,'url(#')]"]
                      tmp <- sapply(url.nodes, .node_fix_id, ids=value.ids)
                      
-                     ## 1.4) fix duplicated IDs
-                     value[value.ids[,"src"],"id"] <- value.ids[,"new"]
                    }
+                   
+                   ## 1.4) fix duplicated IDs
+                   changed.ids <- value.ids$src != value.ids$new
+                   value[value.ids[changed.ids,"src"],"id"] <- value.ids[changed.ids,"new"]
 
                    ## 2) Merge SVG structures
                    
@@ -867,25 +881,36 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    ## 2.2) Compute the 'transform' instruction
                    scale_w <- target.dim$width / value.dim$width
                    scale_h <- target.dim$height / value.dim$height
+                   delta_x <- 0
+                   delta_y <- 0
+                   if(preserve.ratio) {
+                     if(scale_w < scale_h) {
+                       scale_h <- scale_w
+                       delta_y <- round((target.dim$height - value.dim$height*scale_h)/2)
+                     } else  {
+                       scale_w <- scale_h
+                       delta_x <- round((target.dim$width - value.dim$width*scale_w)/2)
+                     }
+                   }                  
                    scale_op <- paste("scale(",scale_w,",",scale_h,")",sep="")
-                   translate_x <- target.dim$x - value.dim$x
-                   translate_y <- target.dim$y - value.dim$y
+                   translate_x <- target.dim$x - value.dim$x + delta_x
+                   translate_y <- target.dim$y - value.dim$y + delta_y
                    translate_op <- paste("translate(",translate_x,",",translate_y,")",sep="")
                    transform <- paste(target.transform,translate_op,scale_op)
 
                    ## 2.3) Create the new encapsulating layer
                    target.group <- newXMLNode("g",
                                               attrs=c(
-                                                id <- uid(.Object,prefix="group"),
-                                                transform <- transform
+                                                id = uid(.Object,prefix="group"),
+                                                transform = transform
                                                 )
                                               )
                    
                    ## 2.4) Add value to the layer & insert/replace target
-                   value.nodes <- xmlChildren(xmlRoot(value@svg))
+                   value.nodes <- xmlChildren(xmlRoot(SVG(value)))
                    tmp <- addChildren(target.group, value.nodes)
                    if(is.null(target.node)) {
-                     tmp <- addChildren(xmlRoot(target@svg), target.group)
+                     tmp <- addChildren(xmlRoot(SVG(.Object)), kids=list(target.group))
                    } else {
                      tmp <- replaceNodes(oldNode=target.node, newNode=target.group)
                    }
@@ -899,11 +924,11 @@ setMethod(f="getDimensions", signature="SVG",
           definition=function(object)
           {
             ## init.
-            viewBox <- object["xpath::/svg:svg","viewBox"]
-            root <- object["xpath::/svg:svg"]
+            root <- xmlRoot(SVG(object))
+            viewBox <- xmlGetAttr(root,"viewbox")
 
             ## dim. via viewbox
-            if(!is.null(viewBox)) {
+            if(!is.null(viewBox) ) {
               viewBox <- as.numeric(strsplit(viewBox, " ")[[1]])
               x <- viewBox[1]
               y <- viewBox[2]
