@@ -48,6 +48,7 @@ setClass("SVG",
 setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary")})
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
 setGenericVerif(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
+setGenericVerif(name="isChildren", function(object,node) {setGenericVerif("isChildren")})
 setGenericVerif(name="uid", function(object,prefix,n) {standardGeneric("uid")})
 setGenericVerif(name="duplicate.node", function(object,node,prefix) {standardGeneric("duplicate.node")})
 setGenericVerif(name="definitions", function(object) { standardGeneric("definitions")})
@@ -61,9 +62,12 @@ setGenericVerif(name="jsAddScriptText", function(.Object,name,script) {standardG
 setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
 setGenericVerif(name="read.SVG", function(object,file) {standardGeneric("read.SVG")})
 setGenericVerif(name="write.SVG", function(object,file) {standardGeneric("write.SVG")})
-setGenericVerif(name="merge.SVG<-", function(.Object,target.node,preserve.ratio,prefix,value) {standardGeneric("merge.SVG<-")})
+setGenericVerif(name="merge.SVG<-", function(.Object,target.node,preserve.ratio,prefix,value)
+                {standardGeneric("merge.SVG<-")})
 setGenericVerif(name="getDimensions", function(object) {standardGeneric("getDimensions")})
 setGenericVerif(name="mapping", function(object,op) {standardGeneric("mapping")})
+setGenericVerif(name="svgDevice", function(object,target.node,prefix,width,height,pointsize)
+                {standardGeneric("svgDevice")})
 
 setMethod(f="initialize", signature="SVG",
           definition=function(.Object,...)
@@ -465,6 +469,21 @@ setReplaceMethod(f="SVG", signature="SVG",
                  }
                  )
 
+setMethod(f="isChildren", signature="SVG",
+          definition=function(object,node)
+          {
+            ## verify if 'node' is a children of
+            ##  the current svg document
+
+            ## check
+            if(!is(node,"XMLInternalNode"))
+              return(FALSE)
+
+            ## test
+            return(identical(xmlRoot(SVG(object)),xmlRoot(node)))
+          }
+          )
+
 setMethod(f="uid", signature="SVG",
           definition=function(object,prefix,n)
           {
@@ -769,8 +788,10 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      href <- xmlGetAttr(node,"xlink:href")
                      if(grepl("^#", href)) {
                        href = substr(href,2, nchar(href))
-                       if(href %in% ids$src)
-                         xmlAttrs(node) <- c('xlink:href'=ids[ids$src==href,"new"])
+                       if(href %in% ids$src) {
+                         new.href <- c('xlink:href'=paste("#",ids[ids$src==href,"new"],sep=""))
+                         xmlAttrs(node) <- new.href
+                       }                           
                      }
                      return(invisible())
                    }
@@ -789,8 +810,8 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      urls <- regmatches(attr,hits)[[1]]
                      urls.new <- sapply(urls, .url_fix_id, ids=ids)
                      for(u in 1:length(urls)) {
-                       old.u <- urls[i]
-                       new.u <- urls.new[i]
+                       old.u <- urls[u]
+                       new.u <- urls.new[u]
                        new.attr <- gsub(old.u,new.u,attr)
                      }
                      return(new.attr)
@@ -813,8 +834,7 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    ## check 'target.node'
                    if(!is.null(target.node) && !is(target.node, "XMLInternalNode"))
                      stop("'target.node' must be a valid XMLInternalNode object")
-                   if(!is.null(target.node) &&
-                      !identical(xmlRoot(target.node),xmlRoot(SVG(.Object))) )
+                   if(!is.null(target.node) && !isChildren(.Object,target.node))
                      stop("'target.node' must be a node of the current SVG object")
                    
                    ## check 'value'
@@ -835,15 +855,17 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    ## 1) Fix all IDs (duplication)
                    object.ids <- .Object["xpath:://*[@id]","id"]
                    dup.ids <- value.ids[value.ids$new %in% object.ids,]
-                   if(nrow(dup.ids) > 0) {
+                   if((nrow(dup.ids) > 0) || (prefix != "")) {
                      
-                     ## 1.1) forge new IDs
-                     value.ser <- serialize(value@svg,connection=NULL)
-                     value.prefix <- paste("ID",
-                                           paste(value.ser[sample(1:length(value.ser),size=4)],collapse=""),
-                                           sep="")
-                     forge.ids <- uid(.Object,prefix=value.prefix,n=nrow(dup.ids))
-                     value.ids[dup.ids$src,"new"] <- unlist(forge.ids)
+                     ## 1.1) forge new IDs (duplication only)
+                     if(nrow(dup.ids) > 0) {
+                       value.ser <- serialize(value@svg,connection=NULL)
+                       value.prefix <- paste("ID",
+                                             paste(value.ser[sample(1:length(value.ser),size=4)],collapse=""),
+                                             sep="")
+                       forge.ids <- uid(.Object,prefix=value.prefix,n=nrow(dup.ids))
+                       value.ids[dup.ids$src,"new"] <- unlist(forge.ids)
+                     }
 
                      ## 1.2) fix Href references
                      if("xlink" %in% names(xmlNamespaces(xmlRoot(SVG(value))))) {
@@ -872,10 +894,10 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                             width = .toUserUnit(xmlGetAttr(target.node, "width", "0")),
                             height = .toUserUnit(xmlGetAttr(target.node, "height", "0"))
                             )
-                     target.transform <- xmlGetAttr(target.node, "transform", "")
+                     target.transform <- xmlGetAttr(target.node, "transform", character(0))
                    } else {
                      target.dim <- getDimensions(.Object)
-                     target.transform <- ""
+                     target.transform <- character(0)
                    }
 
                    ## 2.2) Compute the 'transform' instruction
@@ -896,24 +918,30 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                    translate_x <- target.dim$x - value.dim$x + delta_x
                    translate_y <- target.dim$y - value.dim$y + delta_y
                    translate_op <- paste("translate(",translate_x,",",translate_y,")",sep="")
-                   transform <- paste(target.transform,translate_op,scale_op)
+                   transform <- ifelse(length(target.transform)==0,
+                                       paste(translate_op,scale_op),
+                                       paste(target.transform,translate_op,scale_op))
 
                    ## 2.3) Create the new encapsulating layer
+                   group.id <- uid(.Object,prefix="group")
                    target.group <- newXMLNode("g",
+                                              doc=SVG(value),
                                               attrs=c(
-                                                id = uid(.Object,prefix="group"),
+                                                id = group.id,
                                                 transform = transform
-                                                )
+                                                ),
+                                              namespaceDefinitions=xmlNamespaces(xmlRoot(SVG(value)),simplify=TRUE)
                                               )
+                   value.content <- xmlChildren(xmlRoot(SVG(value)))
+                   tmp <- addChildren(xmlRoot(SVG(value)),target.group)
+                   tmp <- addChildren(target.group, value.content)
                    
                    ## 2.4) Add value to the layer & insert/replace target
-                   value.nodes <- xmlChildren(xmlRoot(SVG(value)))
-                   tmp <- addChildren(target.group, value.nodes)
                    if(is.null(target.node)) {
-                     tmp <- addChildren(xmlRoot(SVG(.Object)), kids=list(target.group))
+                     tmp <- addChildren(xmlRoot(SVG(.Object)), kids=list(xmlClone(target.group)))
                    } else {
-                     tmp <- replaceNodes(oldNode=target.node, newNode=target.group)
-                   }
+                     tmp <- replaceNodes(oldNode=target.node, newNode=xmlClone(target.group))
+                   }                   
 
                    ## eop
                    return(invisible(.Object))
@@ -954,6 +982,57 @@ setMethod(f="mapping", signature="SVG",
             ## apply mapping on the current svg
             exec(op,svg)
             return(invisible(op))
+          }
+          )
+
+setMethod(f="svgDevice", signature="SVG",
+          definition=function(object,target.node,prefix,width,height,pointsize)
+          {
+            ## check args
+            if(missing(prefix)) prefix <- "Rplot"
+            if(missing(pointsize)) pointsize <- 10
+            
+            ## check for Cairo capabilities
+            if(is.null(.get(".cairo")))
+              stop("No Cairo SVG driver installed...")
+
+            ## check target node
+            if(missing(target.node) || !is(target.node,"XMLInternalNode"))
+              stop("'target.node' must be specified as an 'XMLInternalNode' object")
+            if(!isChildren(object,target.node))
+              stop("'target.node' must be a children of the current document")
+            if(tolower(xmlName(target.node)) != "rect")
+              stop("'target.node' must be a rectangular shape ('rect')")
+
+            ## compute width/height if missing
+            if(missing(width) || missing(height)) {
+              target.w <- .toUserUnit(xmlGetAttr(target.node, "width", 10*90))
+              target.h <- .toUserUnit(xmlGetAttr(target.node, "height", 8*90))                                        
+              width <- target.w/90    # convert from default user units to inches
+              height <- target.h/90
+            }
+
+            ## init. SVG device
+            .dev.rplot <- paste(tempfile(pattern=prefix), ".svg", sep="")
+            if (.get(".cairo") == "cairoDevice") {
+              Cairo_svg(filename=path.expand(.dev.rplot),
+                        width=width, height=height, pointsize=pointsize)
+            } else {
+              svg(filename=path.expand(.dev.rplot),
+                  width=width, height=height, pointsize=pointsize)
+            }
+
+            ## update device info
+            devinfo <- list("SVG" = object,
+                            "target.node" = target.node,
+                            "prefix" = prefix,
+                            "rplot" = .dev.rplot
+                            )
+            devid <- dev.cur()
+            .addDeviceInfo(devid, devinfo)
+
+            ## return the device ID
+            return(invisible(devid))
           }
           )
 

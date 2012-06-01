@@ -4,7 +4,7 @@ library(SVGMapping)
 
 svg <- SVG.factory(file="svg/sample0.svg")
 
-cat("\nDUPLICATE.NODE TESTS\n\n")
+cat("\nMERGE TESTS\n\n")
 
 cat(">>> 1- Merge 'cows' in grid.1 rectangle'")
 readline("\nType <Return>\t to start : ")
