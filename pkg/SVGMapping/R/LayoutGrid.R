@@ -28,8 +28,8 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("LayoutGrid",
-         representation(grid.rows <- "vector",
-                        grid.columns <- "vector"
+         representation(grid.rows = "vector",
+                        grid.columns = "vector"
                         ),
          contains="Layout"
          )

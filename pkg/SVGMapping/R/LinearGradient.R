@@ -97,7 +97,7 @@ setMethod(f="show", signature="LinearGradient",
 setMethod(f="coords", signature="LinearGradient",
           definition=function(object)
           {
-            return(list(x1=object@x1,y1=object@y1,x2=object@x2,y2=objecty2))
+            return(list(x1=object@x1,y1=object@y1,x2=object@x2,y2=object@y2))
           }
           )
 

@@ -85,8 +85,11 @@ setReplaceMethod(f="id", signature="SVGNode",
 setMethod(f=".xml", signature="SVGNode",
           definition=function(object)
           {
+            ## init.
+            attr <- list()
+            
             ## return an attributes list
-            attr <- list(id=object@id)
+            if(length(id(object)) > 0) attr <- list(id=id(object))
             return(attr)
           }
           )
