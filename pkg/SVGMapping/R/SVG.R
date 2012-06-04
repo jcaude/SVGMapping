@@ -66,6 +66,7 @@ setGenericVerif(name="merge.SVG<-", function(.Object,target.node,preserve.ratio,
                 {standardGeneric("merge.SVG<-")})
 setGenericVerif(name="getDimensions", function(object) {standardGeneric("getDimensions")})
 setGenericVerif(name="mapping", function(object,op) {standardGeneric("mapping")})
+setGenericVerif(name="layout<-", function(.Object,target,value) {standardGeneric("layout<-")})
 setGenericVerif(name="svgDevice", function(object,target.node,prefix,width,height,pointsize)
                 {standardGeneric("svgDevice")})
 
@@ -980,10 +981,56 @@ setMethod(f="mapping", signature="SVG",
           definition=function(object,op)
           {
             ## apply mapping on the current svg
-            exec(op,svg)
+            exec(op,object)
             return(invisible(op))
           }
           )
+
+setReplaceMethod(f="layout", signature="SVG",
+                 definition=function(.Object,target,value)
+                 {
+                   ## init.
+                   if(missing(target)) target <- NULL
+                   
+                   ## check value
+                   if(!is.object(value) && !is(value,"Layout"))
+                     stop("'value' must be a valid 'Layout' object")
+
+                   ## check target
+                   if(!is.null(target) && !is(target, "XMLInternalNode"))
+                     stop("'target' must be a valid XMLInternalNode object")
+                   if(!is.null(target) && !isChildren(.Object,target))
+                     stop("'target' must be a node of the current SVG object")
+                   if(tolower(xmlName(target)) != "rect")
+                     stop("'target' must be a rectangle SVG object")
+
+                   ## get target dimensions & transform
+                   if(!is.null(target)) {
+                     target.dim <-
+                       list(x = .toUserUnit(xmlGetAttr(target, "x", "0")),
+                            y = .toUserUnit(xmlGetAttr(target, "y", "0")),
+                            width = .toUserUnit(xmlGetAttr(target, "width", "0")),
+                            height = .toUserUnit(xmlGetAttr(target, "height", "0"))
+                            )
+                     target.transform <- xmlGetAttr(target, "transform", character(0))
+                   } else {
+                     target.dim <- getDimensions(.Object)
+                     target.transform <- character(0)
+                   }
+
+                   ## update layout..
+                   dimensions(value) <- target.dim
+                   svg.transform(value) <- target.transform
+                   
+                   ## TODO check ID's
+
+                   ## Apply layout
+                   tmp <- replaceNodes(oldNode=target, newNode=xmlClone(.xml(value)))
+
+                   ## eop
+                   return(.Object)
+                 }
+                 )
 
 setMethod(f="svgDevice", signature="SVG",
           definition=function(object,target.node,prefix,width,height,pointsize)

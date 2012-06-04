@@ -28,11 +28,207 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("Layout",
-         representation("VIRTUAL"),
+         representation(opacity="numeric",
+                        x="numeric",
+                        y="numeric",
+                        width="numeric",
+                        height="numeric",
+                        transform="character",
+                        "VIRTUAL"),
          contains="SVGNode"
          )
 
+setGenericVerif(name="opacity", function(object) { standardGeneric("opacity") })
+setGenericVerif(name="opacity<-", function(.Object,value) { standardGeneric("opacity<-") })
+setGenericVerif(name="dimensions", function(object) { standardGeneric("dimensions") })
+setGenericVerif(name="dimensions<-", function(.Object,value) { standardGeneric("dimensions<-") })
+setGenericVerif(name="x", function(object) { standardGeneric("x") })
+setGenericVerif(name="x<-", function(.Object,value) { standardGeneric("x<-") })
+setGenericVerif(name="y", function(object) { standardGeneric("y") })
+setGenericVerif(name="y<-", function(.Object,value) { standardGeneric("y<-") })
+setGenericVerif(name="width", function(object) { standardGeneric("width") })
+setGenericVerif(name="width<-", function(.Object,value) { standardGeneric("width<-") })
+setGenericVerif(name="height", function(object) { standardGeneric("height") })
+setGenericVerif(name="height<-", function(.Object,value) { standardGeneric("height<-") })
+setGenericVerif(name="svg.transform", function(object) { standardGeneric("svg.transform") })
+setGenericVerif(name="svg.transform<-", function(.Object,value) { standardGeneric("svg.transform<-") })
 
+setMethod(f="initialize", signature="Layout",
+          definition=function(.Object,...)
+          {
+            ## - locals
+            .arg <- function(name,default.value) {
+              if(sum(grepl(paste("^",name,"$",sep=""), args.names)) > 0) {
+                v <- args[[grep(paste("^",name,"$",sep=""),args.names)]]
+                return(v)
+              }
+              else {
+                return(default.value)
+              }
+            }
 
+            ## super
+            .Object <- callNextMethod(.Object,...)
 
+            ## get args
+            args = list(...)
+            args.names = names(args)
+            if(is.null(args.names)) args.names <- list()
+
+            ## default init.
+            opacity(.Object) <- .arg("opacity",0.0)
+            dimensions(.Object) <- .arg("dimensions",list(x=0,y=0,width=100,height=100))
+            svg.transform(.Object) <- .arg("transform",character(0))
+
+            ## eop
+            return(.Object)         
+          }
+          )
+
+setMethod(f="opacity", signature="Layout",
+          definition=function(object)
+          {
+            return(object@opacity)
+          }
+          )
+
+setReplaceMethod(f="opacity", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.numeric(value))
+                     stop("'value' must be atomic and numeric")
+
+                   ## assign & eop
+                   .Object@opacity <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="dimensions", signature="Layout",
+          definition=function(object)
+          {
+            return(list(x=x(object),y=y(object),
+                        width=width(object),height=height(object)))
+          }
+          )
+
+setReplaceMethod(f="dimensions", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.list(value))
+                     stop("'value' must be a 'list()'")
+                   check <- names(value) %in% list("x","y","width","height")
+                   if(length(check[check == TRUE]) != 4)
+                     stop("'value' must at least contains 'x,y,width,height'")
+
+                   ## assign & eop
+                   x(.Object) <- as.numeric(value[["x"]])
+                   y(.Object) <- as.numeric(value[["y"]])
+                   width(.Object) <- as.numeric(value[["width"]])
+                   height(.Object) <- as.numeric(value[["height"]])
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="x", signature="Layout",
+          definition=function(object)
+          {
+            return(object@x)
+          }
+          )
+
+setReplaceMethod(f="x", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.numeric(value))
+                     stop("'value' must be atomic and numeric")
+
+                   ## assign & eop
+                   .Object@x <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="y", signature="Layout",
+          definition=function(object)
+          {
+            return(object@y)
+          }
+          )
+
+setReplaceMethod(f="y", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.numeric(value))
+                     stop("'value' must be atomic and numeric")
+
+                   ## assign & eop
+                   .Object@y <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="width", signature="Layout",
+          definition=function(object)
+          {
+            return(object@width)
+          }
+          )
+
+setReplaceMethod(f="width", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.numeric(value))
+                     stop("'value' must be atomic and numeric")
+
+                   ## assign & eop
+                   .Object@width <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="height", signature="Layout",
+          definition=function(object)
+          {
+            return(object@height)
+          }
+          )
+
+setReplaceMethod(f="height", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.numeric(value))
+                     stop("'value' must be atomic and numeric")
+
+                   ## assign & eop
+                   .Object@height <- value
+                   return(.Object)
+                 }
+                 )
+
+setMethod(f="svg.transform", signature="Layout",
+          definition=function(object)
+          {
+            return(object@transform)
+          }
+          )
+
+setReplaceMethod(f="svg.transform", signature="Layout",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.character(value))
+                     stop("'value' must be atomic and a string")
+
+                   ## assign & eop
+                   .Object@transform <- value
+                   return(.Object)
+                 }
+                 )
 

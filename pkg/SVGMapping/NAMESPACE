@@ -53,6 +53,22 @@ exportMethods("rx","rx<-")
 exportMethods("ry","ry<-")
 export("SVGRect.factory")
 
+exportClasses("SVGLine")
+exportMethods("x1","x1<-")
+exportMethods("y1","y1<-")
+exportMethods("x2","x2<-")
+exportMethods("y2","y2<-")
+export("SVGLine.factory")
+
+## from virtual Layout Class
+exportMethods("opacity","opacity<-")
+
+exportClasses("LayoutGrid")
+exportMethods("gridRows","gridRows<-")
+exportMethods("gridColumns","gridColumns<-")
+exportMethods("nbRows","nbColumns")
+export("FixGrid.factory")
+
 exportClasses("Mapping")
 exportMethods("targets", "targets<-")
 exportMethods("values", "values<-")

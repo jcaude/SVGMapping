@@ -22,38 +22,32 @@
 ## (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ## SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-## S V G R E C T
+## S V G L I N E
 ## --------------------------------------------------
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
-setClass("SVGRect",
-         representation(x="character",
-                        y="character",
-                        width="character",
-                        height="character",
-                        rx="character",
-                        ry="character"),
+setClass("SVGLine",
+         representation(x1="character",
+                        y1="character",
+                        x2="character",
+                        y2="character"),
          contains="SVGShape"
          )
 
 setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
-setGenericVerif(name="x", function(object) { standardGeneric("x") })
-setGenericVerif(name="x<-", function(.Object,value) { standardGeneric("x<-") })
-setGenericVerif(name="y", function(object) { standardGeneric("y") })
-setGenericVerif(name="y<-", function(.Object,value) { standardGeneric("y<-") })
-setGenericVerif(name="width", function(object) { standardGeneric("width") })
-setGenericVerif(name="width<-", function(.Object,value) { standardGeneric("width<-") })
-setGenericVerif(name="height", function(object) { standardGeneric("height") })
-setGenericVerif(name="height<-", function(.Object,value) { standardGeneric("height<-") })
-setGenericVerif(name="rx", function(object) { standardGeneric("rx") })
-setGenericVerif(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
-setGenericVerif(name="ry", function(object) { standardGeneric("ry") })
-setGenericVerif(name="ry<-", function(.Object,value) { standardGeneric("ry<-") })
+setGenericVerif(name="x1", function(object) { standardGeneric("x1") })
+setGenericVerif(name="x1<-", function(.Object,value) { standardGeneric("x1<-") })
+setGenericVerif(name="y1", function(object) { standardGeneric("y1") })
+setGenericVerif(name="y1<-", function(.Object,value) { standardGeneric("y1<-") })
+setGenericVerif(name="x2", function(object) { standardGeneric("x2") })
+setGenericVerif(name="x2<-", function(.Object,value) { standardGeneric("x2<-") })
+setGenericVerif(name="y2", function(object) { standardGeneric("y2") })
+setGenericVerif(name="y2<-", function(.Object,value) { standardGeneric("y2<-") })
 setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
-setMethod(f="initialize", signature="SVGRect",
+setMethod(f="initialize", signature="SVGLine",
           definition=function(.Object,...)
           {
             ## - locals
@@ -81,27 +75,25 @@ setMethod(f="initialize", signature="SVGRect",
             if(sum(grepl("^coords$", args.names)) > 0) {
               coords <- args[["coords"]]
               if( is.list(coords) &&
-                 (length(names(coords) %in% list("x","y","width","height"))==4) )
+                 (length(names(coords) %in% list("x1","y1","x2","y2"))==4) )
                 flag <- TRUE
             }
             if(flag) {
               coords(.Object) <- coords
             }
-            else {
-              x(.Object) <- .arg("x","0")
-              y(.Object) <- .arg("y","0")
-              width(.Object) <- .arg("width","0")
-              height(.Object) <- .arg("height","0")
+            else  {
+              x1(.Object) <- .arg("x1","0")
+              y1(.Object) <- .arg("y1","0")
+              x2(.Object) <- .arg("x2","0")
+              y2(.Object) <- .arg("y2","0")
             }
-            rx(.Object) <- .arg("rx",character(0))
-            ry(.Object) <- .arg("ry",character(0))
-
+            
             ## eop
             return(.Object)
           }
           )
 
-setMethod(f="print", signature="SVGRect",
+setMethod(f="print", signature="SVGLine",
           definition=function(x,...)
           {
             rect.node <- .xml(x)
@@ -109,41 +101,40 @@ setMethod(f="print", signature="SVGRect",
           }
           )
 
-setMethod(f="coords", signature="SVGRect",
+setMethod(f="coords", signature="SVGLine",
           definition=function(object)
           {
-            return(list(x=x(object),y=y(object),
-                        width=width(object),height=height(object)))
+            return(list(x1=x1(object),y1=y1(object),x2=x2(object),y2=y2(object)))
           }
           )
 
-setReplaceMethod(f="coords", signature="SVGRect",
+setReplaceMethod(f="coords", signature="SVGLine",
                  definition=function(.Object,value)
                  {
                    ## check
                    if(!is.list(value))
                      stop("'value' must be a 'list()'")
-                   check <- names(value) %in% list("x","y","width","height")
+                   check <- names(value) %in% list("x1","y1","x2","y2")
                    if(length(check[check == TRUE]) != 4)
-                     stop("'value' must at least contains 'x,y,width,height'")
+                     stop("'value' must at least contains 'x1,y1,x2,y2'")
 
                    ## assign & eop
-                   x(.Object) <- value[["x"]]
-                   y(.Object) <- value[["y"]]
-                   width(.Object) <- value[["width"]]
-                   height(.Object) <- value[["height"]]
+                   x1(.Object) <- value[["x1"]]
+                   y1(.Object) <- value[["y1"]]
+                   x2(.Object) <- value[["x2"]]
+                   y2(.Object) <- value[["y2"]]
                    return(.Object)
                  }
                  )
 
-setMethod(f="x", signature="SVGRect",
+setMethod(f="x1", signature="SVGLine",
           definition=function(object)
           {
-            return(object@x)
+            return(object@x1)
           }
           )
 
-setReplaceMethod(f="x", signature="SVGRect",
+setReplaceMethod(f="x1", signature="SVGLine",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -154,19 +145,19 @@ setReplaceMethod(f="x", signature="SVGRect",
                      stop("'value' must be an atomic string")
 
                    ## assign & eop
-                   .Object@x <- value
+                   .Object@x1 <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="y", signature="SVGRect",
+setMethod(f="y1", signature="SVGLine",
           definition=function(object)
           {
-            return(object@y)
+            return(object@y1)
           }
           )
 
-setReplaceMethod(f="y", signature="SVGRect",
+setReplaceMethod(f="y1", signature="SVGLine",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -177,19 +168,19 @@ setReplaceMethod(f="y", signature="SVGRect",
                      stop("'value' must be an atomic string")
 
                    ## assign & eop
-                   .Object@y <- value
+                   .Object@y1 <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="width", signature="SVGRect",
+setMethod(f="x2", signature="SVGLine",
           definition=function(object)
           {
-            return(object@width)
+            return(object@x2)
           }
           )
 
-setReplaceMethod(f="width", signature="SVGRect",
+setReplaceMethod(f="x2", signature="SVGLine",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -200,19 +191,19 @@ setReplaceMethod(f="width", signature="SVGRect",
                      stop("'value' must be an atomic string")
 
                    ## assign & eop
-                   .Object@width <- value
+                   .Object@x2 <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="height", signature="SVGRect",
+setMethod(f="y2", signature="SVGLine",
           definition=function(object)
           {
-            return(object@height)
+            return(object@y2)
           }
           )
 
-setReplaceMethod(f="height", signature="SVGRect",
+setReplaceMethod(f="y2", signature="SVGLine",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -223,99 +214,48 @@ setReplaceMethod(f="height", signature="SVGRect",
                      stop("'value' must be an atomic string")
 
                    ## assign & eop
-                   .Object@height <- value
+                   .Object@y2 <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="rx", signature="SVGRect",
-          definition=function(object)
-          {
-            return(object@rx)
-          }
-          )
-
-setReplaceMethod(f="rx", signature="SVGRect",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
-
-                   ## assign & eop
-                   .Object@rx <- value
-                   return(.Object)
-                 }
-                 )
-
-setMethod(f="ry", signature="SVGRect",
-          definition=function(object)
-          {
-            return(object@ry)
-          }
-          )
-
-setReplaceMethod(f="ry", signature="SVGRect",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
-
-                   ## assign & eop
-                   .Object@ry <- value
-                   return(.Object)
-                 }
-                 )
-
-setMethod(f=".xml", signature="SVGRect",
+setMethod(f=".xml", signature="SVGLine",
           definition=function(object)
           {
             ## init.
-            rect <- newXMLNode("rect")
+            line <- newXMLNode("line")
 
             ## core attributes
             attr <- callNextMethod(object)
 
             ## attributes
-            if(x(object) != "0") attr <- c(attr, x=x(object))
-            if(y(object) != "0") attr <- c(attr, y=y(object))
-            if(width(object) != "0") attr <- c(attr,width=width(object))
-            if(height(object) != "0") attr <- c(attr,height=height(object))
-            if(length(rx(object)) > 0) attr <- c(attr, rx=rx(object))
-            if(length(ry(object)) > 0) attr <- c(attr, ry=ry(object))
-            xmlAttrs(rect) <- attr
+            if(x1(object) != "0") attr <- c(attr, x1=x1(object))
+            if(y1(object) != "0") attr <- c(attr, y1=y1(object))
+            if(x2(object) != "0") attr <- c(attr, x2=x2(object))
+            if(y2(object) != "0") attr <- c(attr, y2=y2(object))
+            xmlAttrs(line) <- attr
 
             ## eop
-            return(rect)
+            return(line)
           }
           )
           
 ## F A C T O R Y
 ## --------------------------------------------------
-SVGRect.factory <- function(coords,x,y,width,height,rx,ry,class,style,transform) {
+SVGLine.factory <- function(coords,x1,y1,x2,y2,class,style,transform) {
 
   ## init.
-  args <- list("SVGRect")
+  args <- list("SVGLine")
   if(!missing(coords)) args <- c(args,coords=list(coords))
-  if(!missing(x)) args <- c(args,x=x)
-  if(!missing(y)) args <- c(args,y=y)
-  if(!missing(width)) args <- c(args,width=width)
-  if(!missing(height)) args <- c(args,height=height)
-  if(!missing(rx)) args <- c(args,rx=rx)
-  if(!missing(ry)) args <- c(args,ry=ry)
+  if(!missing(x1)) args <- c(args,x1=x1)
+  if(!missing(y1)) args <- c(args,y1=y1)
+  if(!missing(x2)) args <- c(args,x2=x2)
+  if(!missing(y2)) args <- c(args,y2=y2)
   if(!missing(class)) args <- c(args,class=class)
   if(!missing(style)) args <- c(args,style=style)
   if(!missing(transform)) args <- c(args,transform=transform)
-  rectangle <- do.call(new,args)
+  line <- do.call(new,args)
 
   ## eop
-  return(rectangle)
+  return(line)
 }
- 
