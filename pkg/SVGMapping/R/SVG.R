@@ -877,6 +877,21 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      ## 1.3) fix url(#..) references
                      url.nodes <- value["xpath:://*[contains(@*,'url(#')]"]
                      tmp <- sapply(url.nodes, .node_fix_id, ids=value.ids)
+
+                     ### DOESN'T WORKS.. HAVE TO USE THE 'ugly' WAY
+                     ##
+                     ## for (node in getNodeSet(rplot.svg, "//*")) {
+                     ##   attrs <- xmlAttrs(node, addNamespacePrefix = TRUE)
+                     ##   for (attname in names(attrs)) {
+                     ##     attval <- attrs[[attname]]
+                     ##     if (grepl("url\\(\\#.+\\)", attval)) {
+                     ##       attval <- gsub("url\\(\\#", paste("url(#", attribute.value, "_", sep=""), attval)
+                     ##       attrs[[attname]] <- attval
+                     ##       xmlAttrs(node, suppressNamespaceWarning = TRUE) <- attrs
+                     ##     }
+                     ##   }
+                     ## }
+
                      
                    }
                    
