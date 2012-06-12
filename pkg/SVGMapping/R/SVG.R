@@ -1016,7 +1016,7 @@ setReplaceMethod(f="layout", signature="SVG",
                      stop("'target' must be a valid XMLInternalNode object")
                    if(!is.null(target) && !isChildren(.Object,target))
                      stop("'target' must be a node of the current SVG object")
-                   if(tolower(xmlName(target)) != "rect")
+                   if(!is.null(target) && tolower(xmlName(target)) != "rect")
                      stop("'target' must be a rectangle SVG object")
 
                    ## get target dimensions & transform
@@ -1040,7 +1040,12 @@ setReplaceMethod(f="layout", signature="SVG",
                    ## TODO check ID's
 
                    ## Apply layout
-                   tmp <- replaceNodes(oldNode=target, newNode=xmlClone(.xml(value)))
+                   if(is.null(target)) {
+                     tmp <- addChildren(xmlRoot(SVG(.Object)), kids=list(xmlClone(.xml(value))))
+                   }
+                   else {
+                     tmp <- replaceNodes(oldNode=target, newNode=xmlClone(.xml(value)))
+                   }
 
                    ## eop
                    return(.Object)
@@ -1080,6 +1085,10 @@ setMethod(f="svgDevice", signature="SVG",
               Cairo_svg(filename=path.expand(.dev.rplot),
                         width=width, height=height, pointsize=pointsize)
             } else {
+              ## ISSUE WITH Cairo device..
+              ## size must be corrected into 'point' units
+              width <- width * 1.25
+              height <- height * 1.25
               svg(filename=path.expand(.dev.rplot),
                   width=width, height=height, pointsize=pointsize)
             }
@@ -1194,14 +1203,21 @@ SVG.factory <- function(file,dims,landscape) {
       dims <- .SVG.STD.DIMS[[dims]]
     }
 
+    ## set document dimensions
     if(is.vector(dims) && (length(dims) == 2)) {
-      w <- dims[[1]]
-      h <- dims[[2]]
-      
+      if(landscape) {
+        w <- dims[[2]]
+        h <- dims[[1]]
+      }
+      else {
+        w <- dims[[1]]
+        h <- dims[[2]]
+      }
+      svg["xpath::/svg:svg","width"] <- w
+      svg["xpath::/svg:svg","height"] <- h
     }
     else 
-      stop("invalid dimensions argument, it must be a 'vector(x,y)'")
-    
+      stop("invalid dimensions argument, it must be a 'vector(x,y)'")    
   }
 
   ## eop

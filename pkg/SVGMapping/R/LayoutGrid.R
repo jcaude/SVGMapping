@@ -235,7 +235,7 @@ setMethod(f=".xml", signature="LayoutGrid",
 
 ## F A C T O R Y
 ##----------------------------------------
-FixGrid.factory <- function(prefix="grid",nrows=1,ncols=1,opacity) {
+FixGrid.factory <- function(prefix="fixgrid",nrows=1,ncols=1,opacity) {
 
   ## init.
   args <- list("LayoutGrid")
@@ -249,4 +249,18 @@ FixGrid.factory <- function(prefix="grid",nrows=1,ncols=1,opacity) {
 
   ## eop
   return(layout)
+}
+
+VarGrid.factory <- function(prefix="vargrid",rows=c(0,1),cols=c(0,1),opacity) {
+
+  ## init.
+  args <- list("LayoutGrid")
+  args <- c(args,id=prefix)
+  args <- c(args,grid.rows=list(rows))
+  args <- c(args,grid.columns=list(cols))
+  if(!missing(opacity)) args <- c(args,opacity=opacity)
+  layout <- do.call(new,args)
+
+  ## eop
+  return(layout)  
 }

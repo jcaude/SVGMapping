@@ -37,6 +37,12 @@ dev.off <- function(which=dev.cur()) {
   ## check if we are plotting whithin a template?
   if(!is.null(devinfo)) {
     rplot <- SVG.factory(devinfo$rplot)
+
+    ## FIX ISSUE WITH THE CAIRO DEVICE (see the svgDEVICE methods)
+    if(.get(".cairo") == "builtin") {
+      rplot["xpath::/svg:svg","width"] <- as.character(.toUserUnit(rplot["xpath::/svg:svg","width"])/1.25)
+      rplot["xpath::/svg:svg","height"] <- as.character(.toUserUnit(rplot["xpath::/svg:svg","height"])/1.25)
+    }
     merge.SVG(devinfo$SVG,devinfo$target.node,prefix=devinfo$prefix) <- rplot
     
     ## free & unlink stuff
