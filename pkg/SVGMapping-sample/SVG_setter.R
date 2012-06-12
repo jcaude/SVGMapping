@@ -24,12 +24,12 @@ readline("\nType <Return>\t to continue : ")
 svg["circle.group.label","opacity"] <- 1.0
 show(svg)
 
-
-cat(">>> 3- Increasing circle stroke width'")
+cat(">>> 3- Increasing circle stroke width and make it blue'")
 readline("\nType <Return>\t to continue : ")
 
-for(i in 1:6)
-  svg[paste("circle.",LETTERS[i],sep=""),"style::stroke-width"] <- i*0.66
+circle.ids <- paste("circle.",LETTERS[1:6],sep="")
+svg[circle.ids,"style::stroke"] <- '#0000FF'
+svg[circle.ids,"style::stroke-width"] <- (1:6)*0.66
 show(svg)
 
 cat(">>> 4- Change Fill color (greyscale)'")
