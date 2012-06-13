@@ -162,7 +162,7 @@ setMethod(f="setFunction", signature="Mapping",
                   if(missing(fn.params)) fn.params <- list(min=0,max=1)
                   fnRandom(.Object,fn.params$min, fn.params$max)
                 }
-                else if(fn=="identity") fnIdentity(mapO)
+                else if(fn=="identity") fnIdentity(.Object)
                 else if(fn=="linear") {
                   if(missing(fn.params)) fn.params <- list(a=1,b=0)
                   fnLinear(.Object, fn.params$a, fn.params$b)

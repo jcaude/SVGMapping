@@ -813,7 +813,14 @@ setReplaceMethod(f="merge.SVG", signature="SVG",
                      for(u in 1:length(urls)) {
                        old.u <- urls[u]
                        new.u <- urls.new[u]
-                       new.attr <- gsub(old.u,new.u,attr)
+                       ## TODO why we have to do that, there's a bug here (SVG_layout-grid-userR2012)
+                       ## ---- okay, I got it.. if there's no hit the loop is still done
+                       ##      we must add a #hit test before
+                       ## Assign Issue #7
+                       if(length(old.u) != 0)  
+                         new.attr <- gsub(old.u,new.u,attr)
+                       else
+                         new.attr <- attr
                      }
                      return(new.attr)
                    }

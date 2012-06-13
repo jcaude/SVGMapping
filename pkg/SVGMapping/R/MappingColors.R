@@ -341,3 +341,53 @@ MappingColors.factory <- function(data,targets=rownames(data),
   ## eop
   return(mapC)
 }
+
+MappingFillColors.factory <- function(data,targets=rownames(data),
+                                      colors=microarrayColors,colors.range=c(-2,2),
+                                      gradient.type="linear", fill.angle=0,
+                                      fn="Identity", fn.parameters=list()) {
+  ## init.
+  mapC <- new("MappingColors")
+
+  ## fill mapping structure
+  values(mapC) <- data
+  targets(mapC) <- targets
+  mapColors(mapC) <- colors
+  colRange(mapC) <- colors.range
+  targetAttribute(mapC) <- "style::fill"
+  gradientType(mapC) <- gradient.type
+  fillAngle(mapC) <- fill.angle
+  if(missing(fn.parameters))
+    mapC <- setFunction(mapC,fn)
+  else
+    mapC <- setFunction(mapC,fn,fn.parameters)
+  
+  ## eop
+  return(mapC)
+  
+}
+
+MappingStrokeColors.factory <- function(data,targets=rownames(data),
+                                        colors=microarrayColors,colors.range=c(-2,2),
+                                        gradient.type="linear", fill.angle=0,
+                                        fn="Identity", fn.parameters=list()) {
+  ## init.
+  mapC <- new("MappingColors")
+
+  ## fill mapping structure
+  values(mapC) <- data
+  targets(mapC) <- targets
+  mapColors(mapC) <- colors
+  colRange(mapC) <- colors.range
+  targetAttribute(mapC) <- "style::stroke"
+  gradientType(mapC) <- gradient.type
+  fillAngle(mapC) <- fill.angle
+  if(missing(fn.parameters))
+    mapC <- setFunction(mapC,fn)
+  else
+    mapC <- setFunction(mapC,fn,fn.parameters)
+  
+  ## eop
+  return(mapC)
+  
+}

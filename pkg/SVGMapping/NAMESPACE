@@ -94,6 +94,8 @@ exportMethods("colRange.min", "colRange.min<-")
 exportMethods("colRange.max", "colRange.max<-")
 exportMethods("colRange", "colRange<-")
 export("MappingColors.factory")
+export("MappingFillColors.factory")
+export("MappingStrokeColors.factory")
 
 exportClasses("MappingValues")
 exportMethods("valuesUnit", "valuesUnit<-")
