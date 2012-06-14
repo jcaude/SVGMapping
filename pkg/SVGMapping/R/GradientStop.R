@@ -27,6 +27,9 @@
 
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
+#' This class is used by 
+#' @
+#' @export
 setClass("GradientStop",
          representation(offset="character",
                         stop.color="character",
