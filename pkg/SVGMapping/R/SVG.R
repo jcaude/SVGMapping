@@ -45,7 +45,8 @@ setClass("SVG",
                         .js_files="list")
          )
 
-setGenericVerif(name="summary", function(object, ...) {standardGeneric("summary")})
+setGenericVerif(name="summary.SVG", function(object, ...) {standardGeneric("summary.SVG")})
+setGenericVerif(name="print.SVG", function(x, ...) {standardGeneric("print.SVG")})
 setGenericVerif(name="SVG", function(object) {standardGeneric("SVG")})
 setGenericVerif(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
 setGenericVerif(name="isChildren", function(object,node) {setGenericVerif("isChildren")})
@@ -88,7 +89,7 @@ setMethod(f="initialize", signature="SVG",
           }
           )
 
-setMethod(f="summary", signature="SVG",
+setMethod(f="summary.SVG", signature="SVG",
           definition=function(object, ...)
           {
             ## init.
@@ -101,7 +102,7 @@ setMethod(f="summary", signature="SVG",
           }
           )
 
-setMethod(f="print", signature="SVG",
+setMethod(f="print.SVG", signature="SVG",
           definition=function(x,...)
           {
             ## init.

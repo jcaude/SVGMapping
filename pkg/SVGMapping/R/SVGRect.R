@@ -37,6 +37,7 @@ setClass("SVGRect",
          contains="SVGShape"
          )
 
+setGenericVerif(name="print.SVGRect", function(x,...) { standardGeneric("print.SVGRect") })
 setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
 setGenericVerif(name="x", function(object) { standardGeneric("x") })
@@ -101,7 +102,7 @@ setMethod(f="initialize", signature="SVGRect",
           }
           )
 
-setMethod(f="print", signature="SVGRect",
+setMethod(f="print.SVGRect", signature="SVGRect",
           definition=function(x,...)
           {
             rect.node <- .xml(x)

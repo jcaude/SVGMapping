@@ -35,6 +35,7 @@ setClass("SVGLine",
          contains="SVGShape"
          )
 
+setGenericVerif(name="print.SVGLine", function(x,...) { standardGeneric("print.SVGLine") })
 setGenericVerif(name="coords", function(object) { standardGeneric("coords") })
 setGenericVerif(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
 setGenericVerif(name="x1", function(object) { standardGeneric("x1") })
@@ -93,7 +94,7 @@ setMethod(f="initialize", signature="SVGLine",
           }
           )
 
-setMethod(f="print", signature="SVGLine",
+setMethod(f="print.SVGLine", signature="SVGLine",
           definition=function(x,...)
           {
             rect.node <- .xml(x)

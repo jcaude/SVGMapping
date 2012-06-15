@@ -28,8 +28,8 @@
 setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else{}}
 
 setClass("Gradient",
-         representation(units="character",
-                        transform="character",
+         representation(svg_units="character",
+                        svg_transform="character",
                         spread.method="character",
                         xlink.href="character",
                         stops="list",
@@ -38,10 +38,10 @@ setClass("Gradient",
          contains="SVGNode"
          )
 
-setGenericVerif(name="units", function(object) { standardGeneric("units") })
-setGenericVerif(name="units<-", function(.Object, value) { standardGeneric("units<-") })
-setGenericVerif(name="transform", function(object) { standardGeneric("transform") })
-setGenericVerif(name="transform<-", function(.Object, value) { standardGeneric("transform<-") })
+setGenericVerif(name="svgUnits", function(object) { standardGeneric("svgUnits") })
+setGenericVerif(name="svgUnits<-", function(.Object, value) { standardGeneric("svgUnits<-") })
+setGenericVerif(name="svgTransform", function(object) { standardGeneric("svgTransform") })
+setGenericVerif(name="svgTransform<-", function(.Object, value) { standardGeneric("svgTransform<-") })
 setGenericVerif(name="spreadMethod", function(object) { standardGeneric("spreadMethod") })
 setGenericVerif(name="spreadMethod<-", function(.Object, value) { standardGeneric("spreadMethod<-") })
 setGenericVerif(name="xlinkHref", function(object) { standardGeneric("xlinkHref") })
@@ -74,8 +74,8 @@ setMethod(f="initialize", signature="Gradient",
             if(is.null(args.names)) args.names <- list()
             
             ## default init.
-            .Object@units <- .arg("units","objectBoundingBox")
-            .Object@transform <- .arg("transform",character(0))
+            .Object@svg_units <- .arg("units","objectBoundingBox")
+            .Object@svg_transform <- .arg("transform",character(0))
             .Object@spread.method <- .arg("spread.method","pad")
             .Object@xlink.href <- .arg("xlink.href",character(0))
             .Object@stops <- .arg("stops",list())
@@ -85,14 +85,14 @@ setMethod(f="initialize", signature="Gradient",
           }
           )
 
-setMethod(f="units", signature="Gradient",
+setMethod(f="svgUnits", signature="Gradient",
           definition=function(object)
           {
-            return(object@units)
+            return(object@svg_units)
           }
           )
 
-setReplaceMethod(f="units", signature="Gradient",
+setReplaceMethod(f="svgUnits", signature="Gradient",
                  definition=function(.Object, value)
                  {
                    ## check
@@ -102,19 +102,19 @@ setReplaceMethod(f="units", signature="Gradient",
                      stop("'value' must be either 'userSpaceOnUse' or 'objectBoundingBox'")
 
                    ## assign & eop
-                   .Object@units <- value
+                   .Object@svg_units <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="transform", signature="Gradient",
+setMethod(f="svgTransform", signature="Gradient",
           definition=function(object)
           {
-            return(object@transform)
+            return(object@svg_transform)
           }
           )
 
-setReplaceMethod(f="transform", signature="Gradient",
+setReplaceMethod(f="svgTransform", signature="Gradient",
                  definition=function(.Object, value)
                  {
                    ## check
@@ -122,7 +122,7 @@ setReplaceMethod(f="transform", signature="Gradient",
                      stop("'value' must be a character string")
 
                    ## assign & eop
-                   .Object@transform <- value
+                   .Object@svg_transform <- value
                    return(.Object)
                  }
                  )
@@ -209,10 +209,10 @@ setMethod(f=".xml", signature="Gradient",
             attr <- callNextMethod(object)
             
             ## return a list of core attributes
-            if(object@units != "objectBoundingBox")
-              attr <- c(attr, gradientUnits=object@units)
-            if(length(object@transform) > 0)
-              attr <- c(attr, transform=object@transform)
+            if(object@svg_units != "objectBoundingBox")
+              attr <- c(attr, gradientUnits=object@svg_units)
+            if(length(object@svg_transform) > 0)
+              attr <- c(attr, transform=object@svg_transform)
             if(object@spread.method != "pad")
               attr <- c(attr, spreadMethod=object@spread.method)
             if(length(object@xlink.href) > 0)

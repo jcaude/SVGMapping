@@ -51,9 +51,9 @@ setGenericVerif(name="targets", function(object) { standardGeneric("targets") })
 setGenericVerif(name="targets<-", function(.Object,value) { standardGeneric("targets<-") })
 setGenericVerif(name="values", function(object) { standardGeneric("values") })
 setGenericVerif(name="values<-", function(.Object,value) { standardGeneric("values<-") })
-setGenericVerif(name="getFunction", function(object) { standardGeneric("getFunction") })
-setGenericVerif(name="getFunctionParams", function(object) { standardGeneric("getFunctionParams") })
-setGenericVerif(name="setFunction", function(.Object,fn,fn.params) { standardGeneric("setFunction") })
+setGenericVerif(name="getFn", function(object) { standardGeneric("getFn") })
+setGenericVerif(name="getFnParams", function(object) { standardGeneric("getFnParams") })
+setGenericVerif(name="setFn", function(.Object,fn,fn.params) { standardGeneric("setFn") })
 setGenericVerif(name="fnRandom", function(.Object,min,max) { standardGeneric("fnRandom") })
 setGenericVerif(name="fnIdentity", function(.Object) { standardGeneric("fnIdentity") })
 setGenericVerif(name="fnLinear", function(.Object,a,b) { standardGeneric("fnLinear") })
@@ -116,21 +116,21 @@ setReplaceMethod(f="values", signature="Mapping",
                  }
                  )
 
-setMethod(f="getFunction", signature="Mapping",
+setMethod(f="getFn", signature="Mapping",
           definition=function(object)
           {
             return(object@fn)
           }
           )
           
-setMethod(f="getFunctionParams", signature="Mapping",
+setMethod(f="getFnParams", signature="Mapping",
           definition=function(object)
           {
             return(object@fn.parameters)
           }
           )
 
-setMethod(f="setFunction", signature="Mapping",
+setMethod(f="setFn", signature="Mapping",
           definition=function(.Object,fn,fn.params)
           {
             ## init.
