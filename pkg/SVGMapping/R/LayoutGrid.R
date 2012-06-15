@@ -34,6 +34,7 @@ setClass("LayoutGrid",
          contains="Layout"
          )
 
+setGenericVerif(name="print.LayoutGrid", function(x,...) { standardGeneric("print.LayoutGrid") })
 setGenericVerif(name="gridRows", function(object) { standardGeneric("gridRows") })
 setGenericVerif(name="gridRows<-", function(.Object,value) { standardGeneric("gridRows<-") })
 setGenericVerif(name="nbRows", function(object) { standardGeneric("nbRows") })
@@ -96,7 +97,7 @@ setMethod(f="show", signature="LayoutGrid",
           }
           )
 
-setMethod(f="print", signature="LayoutGrid",
+setMethod(f="print.LayoutGrid", signature="LayoutGrid",
           definition=function(x,...)
           {
             cat("GridLayout: #",
