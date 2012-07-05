@@ -1,0 +1,33 @@
+Package: SVGMappingDevtools
+Type: Package
+Title: Map experimental data on custom-made SVG file
+Version: 2.0
+Date: 2012-01-03
+Author: Jean-Christophe AUDE, Raphael CHAMPEIMONT
+Maintainer: Jean-Christophe AUDE <jean-christophe.aude@cea.fr>
+Description: This is an SVGMapping that I try to make compatible with
+    devtools/roxygen2
+License: BSD
+LazyLoad: yes
+Depends:
+    R (>= 2.10.0),
+    rJava,
+    XML,
+    grDevices,
+    methods,
+    utils
+Suggests:
+    cairoDevice
+Collate:
+    'internals.R'
+    '0_SVGNode.R'
+    '0_CSS.R'
+    '0_Rectangle.R'
+    '0_Vector.R'
+    '0_Ellipse.R'
+    '1_SVGShape.R'
+    '1_Gradient.R'
+    '1_Layout.R'
+    'GradientStop.R'
+    'SVGLine.R'
+    'SVGRect.R'
