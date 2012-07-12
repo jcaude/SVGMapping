@@ -34,6 +34,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  
 #'  @seealso \code{\link{Gradient}} and \code{\link{Circle}}.
 #'  @exportClass "RadialGradient"
+#'  @aliases RadialGradient-class
 setClass("RadialGradient",
          representation(fx="character",
                         fy="character"),
@@ -60,8 +61,7 @@ setClass("RadialGradient",
 #' @rdname radialgradient.bbox-methods
 #' @exportMethod fx
 #' @docType methods
-NULL
-setGenericVerif(name="fx", function(object) { standardGeneric("fx") })
+setGeneric(name="fx", function(object) { standardGeneric("fx") })
 
 #' <title already defined>
 #' 
@@ -75,8 +75,7 @@ setGenericVerif(name="fx", function(object) { standardGeneric("fx") })
 #'  @rdname radialgradient.bbox-methods
 #'  @exportMethod fx<-
 #'  @docType methods  
-NULL
-setGenericVerif(name="fx<-", function(.Object,value) { standardGeneric("fx<-") })
+setGeneric(name="fx<-", function(.Object,value) { standardGeneric("fx<-") })
 
 #' Focal point definition of the Radial Gradient
 #' 
@@ -97,8 +96,7 @@ setGenericVerif(name="fx<-", function(.Object,value) { standardGeneric("fx<-") }
 #' @rdname radialgradient.bbox-methods
 #' @exportMethod fy
 #' @docType methods
-NULL
-setGenericVerif(name="fy", function(object) { standardGeneric("fy") })
+setGeneric(name="fy", function(object) { standardGeneric("fy") })
 
 #' <title already defined>
 #' 
@@ -112,10 +110,8 @@ setGenericVerif(name="fy", function(object) { standardGeneric("fy") })
 #'  @rdname radialgradient.bbox-methods
 #'  @exportMethod fy<-
 #'  @docType methods  
-NULL
-setGenericVerif(name="fy<-", function(.Object,value) { standardGeneric("fy<-") })
+setGeneric(name="fy<-", function(.Object,value) { standardGeneric("fy<-") })
 
-setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
 setMethod(f="initialize", signature="RadialGradient",
           definition=function(.Object,...)
@@ -151,8 +147,61 @@ setMethod(f="initialize", signature="RadialGradient",
           }
           )
 
+#' @rdname radialgradient.bbox-methods
+#' @aliases fx,RadialGradient-method
+setMethod(f="fx", signature="RadialGradient",
+          definition=function(object) 
+          {
+            return(object@fx) 
+          })
+
+#' @name fx<-,RadialGradient-method
+#' @rdname radialgradient.bbox-methods
+#' @aliases fx<-,RadialGradient-method
+setReplaceMethod(f="fx", signature="RadialGradient",
+                 definition=function(.Object,value) 
+                 {                   
+                   ## check
+                   if(!is.atomic(value))
+                     stop("'value' must be atomic")
+                   if(is.numeric(value)) value <- as.character(value)
+                   if(!is.character(value))
+                     stop("'value' must be an atomic string")
+                   
+                   ## assign & eop
+                   .Object@fx <- value                   
+                   return(.Object) 
+                 })
+
+#' @rdname radialgradient.bbox-methods
+#' @aliases fy,RadialGradient-method
+setMethod(f="fy", signature="RadialGradient",
+          definition=function(object) 
+          {
+            return(object@fy) 
+          })
+
+#' @name fy<-,RadialGradient-method
+#' @rdname radialgradient.bbox-methods
+#' @aliases fy<-,RadialGradient-method
+setReplaceMethod(f="fy", signature="RadialGradient",
+                 definition=function(.Object,value) 
+                 {                   
+                   ## check
+                   if(!is.atomic(value))
+                     stop("'value' must be atomic")
+                   if(is.numeric(value)) value <- as.character(value)
+                   if(!is.character(value))
+                     stop("'value' must be an atomic string")
+                   
+                   ## assign & eop
+                   .Object@fy <- value                   
+                   return(.Object) 
+                 })
+
 #' @name show,RadialGradient-method
 #' @rdname gradient.show-methods
+#' @aliases show,RadialGradient-method
 setMethod(f="show", signature="RadialGradient",
           definition=function(object)
           {
@@ -169,6 +218,7 @@ setMethod(f="show", signature="RadialGradient",
 
 #' @name .xml,RadialGradient-method
 #' @rdname svgnode.core-methods
+#' @aliases .xml,RadialGradient-method
 setMethod(f=".xml", signature="RadialGradient",
           definition=function(object)
           {

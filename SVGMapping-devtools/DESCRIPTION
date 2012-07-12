@@ -30,3 +30,5 @@ Collate:
     'GradientStop.R'
     'SVGLine.R'
     'SVGRect.R'
+    'LinearGradient.R'
+    'RadialGradient.R'

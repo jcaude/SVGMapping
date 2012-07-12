@@ -34,12 +34,11 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  
 #'  @seealso \code{\link{Gradient}} and \code{\link{Vector}}.
 #'  @exportClass "LinearGradient"
+#'  @aliases LinearGradient-class
 setClass("LinearGradient",
          representation(),
          contains=c("Gradient","Vector")
          )
-
-setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
 setMethod(f="initialize", signature="LinearGradient",
           definition=function(.Object,...)
@@ -57,6 +56,7 @@ setMethod(f="initialize", signature="LinearGradient",
 
 #' @name show,LinearGradient-method
 #' @rdname gradient.show-methods
+#' @aliases show,LinearGradient-method
 setMethod(f="show", signature="LinearGradient",
           definition=function(object)
           {
@@ -70,8 +70,8 @@ setMethod(f="show", signature="LinearGradient",
           }
           )
 
-#' @aliases .xml,LinearGradient-method
 #' @rdname svgnode.core-methods
+#' @aliases .xml,LinearGradient-method
 setMethod(f=".xml", signature="LinearGradient",
           definition=function(object)
           {
