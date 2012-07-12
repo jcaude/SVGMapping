@@ -34,6 +34,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #' @seealso Gradient
 #' @exportClass "GradientStop"
+#' @aliases GradientStop-class
 setClass("GradientStop",
          representation(offset="character",
                         color="character",
@@ -161,6 +162,7 @@ setMethod(f="initialize", signature="GradientStop",
           )
 
 #' @rdname gradientstop.core-methods
+#' @aliases offset,GradientStop-method
 setMethod(f="offset", signature="GradientStop",
           definition=function(object) {
             return(object@offset)  
@@ -169,6 +171,7 @@ setMethod(f="offset", signature="GradientStop",
 
 #' @name offset<-
 #' @rdname gradientstop.core-methods
+#' @aliases offset<-,GradientStop-method
 setReplaceMethod(f="offset", signature="GradientStop",
                  definition=function(.Object,value) 
                  {                   
@@ -186,6 +189,7 @@ setReplaceMethod(f="offset", signature="GradientStop",
                  )
 
 #' @rdname gradientstop.core-methods
+#' @aliases color,GradientStop-method
 setMethod(f="color", signature="GradientStop",
           definition=function(object) {
             return(object@color)  
@@ -194,6 +198,7 @@ setMethod(f="color", signature="GradientStop",
 
 #' @name color<-
 #' @rdname gradientstop.core-methods
+#' @aliases color<-,GradientStop-method
 setReplaceMethod(f="color", signature="GradientStop",
                  definition=function(.Object,value) 
                  {                   
@@ -210,14 +215,16 @@ setReplaceMethod(f="color", signature="GradientStop",
                  )
 
 #' @rdname gradientstop.core-methods
+#' @aliases opacity,GradientStop-method
 setMethod(f="opacity", signature="GradientStop",
           definition=function(object) {
             return(object@opacity)  
           }
           )
 
-#' @name opacity<-,GradientStop-method
+#' @name opacity<-
 #' @rdname gradientstop.core-methods
+#' @aliases opacity<-,GradientStop-method
 setReplaceMethod(f="opacity", signature="GradientStop",
                  definition=function(.Object,value) 
                  {                   
@@ -233,8 +240,8 @@ setReplaceMethod(f="opacity", signature="GradientStop",
                  }
                  )
 
-#' @aliases .xml,GradientStop
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,GradientStop-method
 setMethod(f=".xml", signature="GradientStop",
           definition=function(object)
           {

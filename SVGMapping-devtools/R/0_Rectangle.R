@@ -33,6 +33,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' This class can't be directly instantiate and must be derived. 
 #' 
 #' @exportClass "Rectangle"
+#' @aliases Rectangle-class
 setClass("Rectangle",
          representation(x="character",
                         y="character",
@@ -63,7 +64,8 @@ setClass("Rectangle",
 #' @rdname rectangle.bbox-methods
 #' @exportMethod bbox
 #' @docType methods
-setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
+NULL
+#setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 
 #' <title already defined>
 #' 
@@ -80,7 +82,8 @@ setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 #' @rdname rectangle.bbox-methods
 #' @exportMethod bbox<-
 #' @docType methods
-setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
+NULL
+#setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
 
 #' <title already defined>
 #' 
@@ -229,6 +232,7 @@ setMethod(f="initialize", signature="Rectangle",
 )
 
 #' @rdname rectangle.bbox-methods
+#' @aliases bbox,Rectangle-method
 setMethod(f="bbox", signature="Rectangle",
           definition=function(object)
           {
@@ -239,6 +243,7 @@ setMethod(f="bbox", signature="Rectangle",
 
 #' @name bbox<- 
 #' @rdname rectangle.bbox-methods
+#' @aliases bbox<-,Rectangle-method
 setReplaceMethod(f="bbox", signature="Rectangle",
                  definition=function(.Object,value)
                  {
@@ -258,6 +263,7 @@ setReplaceMethod(f="bbox", signature="Rectangle",
 )
 
 #' @rdname rectangle.bbox-methods
+#' @aliases x,Rectangle-method
 setMethod(f="x", signature="Rectangle",
           definition=function(object)
           {
@@ -267,6 +273,7 @@ setMethod(f="x", signature="Rectangle",
 
 #' @name x<-
 #' @rdname rectangle.bbox-methods
+#' @aliases x<-,Rectangle-method
 setReplaceMethod(f="x", signature="Rectangle",
                  definition=function(.Object,value)
                  {
@@ -284,6 +291,7 @@ setReplaceMethod(f="x", signature="Rectangle",
 )
 
 #' @rdname rectangle.bbox-methods
+#' @aliases y,Rectangle-method
 setMethod(f="y", signature="Rectangle",
           definition=function(object)
           {
@@ -293,6 +301,7 @@ setMethod(f="y", signature="Rectangle",
 
 #' @name y<- 
 #' @rdname rectangle.bbox-methods
+#' @aliases y<-,Rectangle-method
 setReplaceMethod(f="y", signature="Rectangle",
                  definition=function(.Object,value)
                  {
@@ -310,6 +319,7 @@ setReplaceMethod(f="y", signature="Rectangle",
 )
 
 #' @rdname rectangle.bbox-methods
+#' @aliases width,Rectangle-method
 setMethod(f="width", signature="Rectangle",
           definition=function(object)
           {
@@ -318,7 +328,8 @@ setMethod(f="width", signature="Rectangle",
 )
 
 #' @name width<-
-#' @rdname rectangle.bbox-methods 
+#' @rdname rectangle.bbox-methods
+#' @aliases width<-,Rectangle-method
 setReplaceMethod(f="width", signature="Rectangle",
                  definition=function(.Object,value)
                  {
@@ -337,6 +348,7 @@ setReplaceMethod(f="width", signature="Rectangle",
 )
 
 #' @rdname rectangle.bbox-methods
+#' @aliases height,Rectangle-method
 setMethod(f="height", signature="Rectangle",
           definition=function(object)
           {
@@ -346,6 +358,7 @@ setMethod(f="height", signature="Rectangle",
 
 #' @name height<- 
 #' @rdname rectangle.bbox-methods
+#' @aliases height<-,Rectangle-method
 setReplaceMethod(f="height", signature="Rectangle",
                  definition=function(.Object,value)
                  {
@@ -362,8 +375,8 @@ setReplaceMethod(f="height", signature="Rectangle",
                  }
 )
 
-#' @aliases .xml,Rectangle-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,Rectangle-method
 setMethod(f=".xml", signature="Rectangle",
           definition=function(object)
           {

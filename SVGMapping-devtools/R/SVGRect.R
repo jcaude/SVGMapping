@@ -34,6 +34,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  
 #'  @seealso \code{\link{SVGShape}} parent class.
 #'  @exportClass "SVGRect"
+#'  @aliases SVGRect-class
 setClass("SVGRect",
          representation(rx="character",
                         ry="character"),
@@ -47,7 +48,7 @@ setClass("SVGRect",
 #' @docType methods
 setGeneric(name="print.SVGRect", function(x,...) { standardGeneric("print.SVGRect") })
 
-#' Round Off Corners Accessors
+#' Rectangle round off Corners accessors
 #' 
 #' The methods get or set the round off corners of an SVG Shape.
 #' 
@@ -63,7 +64,8 @@ setGeneric(name="print.SVGRect", function(x,...) { standardGeneric("print.SVGRec
 #' @rdname svgrect.roundoff-methods
 #' @exportMethod rx
 #' @docType methods
-setGeneric(name="rx", function(object) { standardGeneric("rx") })
+NULL
+#setGeneric(name="rx", function(object) { standardGeneric("rx") })
 
 #' <title already defined>
 #' 
@@ -77,7 +79,8 @@ setGeneric(name="rx", function(object) { standardGeneric("rx") })
 #' @rdname svgrect.roundoff-methods
 #' @exportMethod rx<- 
 #' @docType methods
-setGeneric(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
+NULL
+#setGeneric(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
 
 #' <title already defined>
 #' 
@@ -91,7 +94,8 @@ setGeneric(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
 #' @rdname svgrect.roundoff-methods
 #' @exportMethod ry
 #' @docType methods
-setGeneric(name="ry", function(object) { standardGeneric("ry") })
+NULL
+#setGeneric(name="ry", function(object) { standardGeneric("ry") })
 
 #' <title already defined>
 #' 
@@ -105,7 +109,8 @@ setGeneric(name="ry", function(object) { standardGeneric("ry") })
 #' @rdname svgrect.roundoff-methods
 #' @exportMethod ry<- 
 #' @docType methods
-setGeneric(name="ry<-", function(.Object,value) { standardGeneric("ry<-") })
+NULL
+#setGeneric(name="ry<-", function(.Object,value) { standardGeneric("ry<-") })
 
 setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
@@ -144,6 +149,7 @@ setMethod(f="initialize", signature="SVGRect",
           )
 
 #' @rdname svgmapping.print-methods
+#' @aliases print.SVGRect,SVGRect-method
 setMethod(f="print.SVGRect", signature="SVGRect",
           definition=function(x,...)
           {
@@ -153,6 +159,7 @@ setMethod(f="print.SVGRect", signature="SVGRect",
           )
 
 #' @rdname svgrect.roundoff-methods
+#' @aliases rx,SVGRect-method
 setMethod(f="rx", signature="SVGRect",
           definition=function(object)
           {
@@ -162,6 +169,7 @@ setMethod(f="rx", signature="SVGRect",
 
 #' @name rx<- 
 #' @rdname svgrect.roundoff-methods
+#' @aliases rx<-,SVGRect-method
 setReplaceMethod(f="rx", signature="SVGRect",
                  definition=function(.Object,value)
                  {
@@ -179,6 +187,7 @@ setReplaceMethod(f="rx", signature="SVGRect",
                  )
 
 #' @rdname svgrect.roundoff-methods
+#' @aliases ry,SVGRect-method
 setMethod(f="ry", signature="SVGRect",
           definition=function(object)
           {
@@ -188,6 +197,7 @@ setMethod(f="ry", signature="SVGRect",
 
 #' @name ry<-
 #' @rdname svgrect.roundoff-methods
+#' @aliases ry<-,SVGRect-method
 setReplaceMethod(f="ry", signature="SVGRect",
                  definition=function(.Object,value)
                  {
@@ -205,6 +215,7 @@ setReplaceMethod(f="ry", signature="SVGRect",
                  )
 
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,SVGRect-method
 setMethod(f=".xml", signature="SVGRect",
           definition=function(object)
           {
@@ -260,8 +271,8 @@ setMethod(f=".xml", signature="SVGRect",
 #' @export SVGRect.factory
 #' 
 #' @examples
-#' ## Simple line
-#' rect <- SVGRect.factory(x="5cm",y="5cm",x2="60cm",y2="30cm")
+#' ## Simple rectangle
+#' rect <- SVGRect.factory(x="5cm",y="5cm",width="60cm",height="30cm")
 #' ## Create a rectangle using bounding-box list
 #' rect.bbox <- list(x="5px",y="5px",width="650px",height="315px")
 #' rect <- SVGRect.factory(bbox=rect.bbox)
@@ -270,15 +281,15 @@ setMethod(f=".xml", signature="SVGRect",
 #' ## A rectangle (0,0) translated of 10 to the right and 20 below, 
 #' ## new coordinates are (10,20)
 #' rect <- SVGRect.factory(x=0,y=0,width=60,height=30,transform="translate(10,20)")
-SVGRect.factory <- function(bbox,x,y,width,height,rx,ry,class,style,transform) {
+SVGRect.factory <- function(x,y,width,height,bbox,rx,ry,class,style,transform) {
 
   ## init.
   args <- list("SVGRect")
-  if(!missing(bbox)) args <- c(args,bbox=list(bbox))
   if(!missing(x)) args <- c(args,x=x)
   if(!missing(y)) args <- c(args,y=y)
   if(!missing(width)) args <- c(args,width=width)
   if(!missing(height)) args <- c(args,height=height)
+  if(!missing(bbox)) args <- c(args,bbox=list(bbox))
   if(!missing(rx)) args <- c(args,rx=rx)
   if(!missing(ry)) args <- c(args,ry=ry)
   if(!missing(class)) args <- c(args,class=class)

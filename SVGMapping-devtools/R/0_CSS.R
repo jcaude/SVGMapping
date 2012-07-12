@@ -38,6 +38,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' prototype field in the class defintion.
 #' 
 #' @exportClass "CSS"
+#' @aliases CSS-class
 setClass("CSS",
          representation(css.class="character",
                         css.style="character",
@@ -147,6 +148,7 @@ setMethod(f="initialize", signature="CSS",
           )
 
 #' @rdname css.core-methods
+#' @aliases cssClass,CSS-method
 setMethod(f="cssClass", signature="CSS",
           definition=function(object)
           {
@@ -156,6 +158,7 @@ setMethod(f="cssClass", signature="CSS",
 
 #' @name cssClass<- 
 #' @rdname css.core-methods
+#' @aliases cssClass<-,CSS-method 
 setReplaceMethod(f="cssClass", signature="CSS",
                  definition=function(.Object,value)
                  {
@@ -170,6 +173,7 @@ setReplaceMethod(f="cssClass", signature="CSS",
 )
 
 #' @rdname css.core-methods
+#' @aliases cssStyle,CSS-method
 setMethod(f="cssStyle", signature="CSS",
           definition=function(object)
           {
@@ -179,6 +183,7 @@ setMethod(f="cssStyle", signature="CSS",
 
 #' @name cssStyle<- 
 #' @rdname css.core-methods
+#' @aliases cssStyle<-,CSS-method
 setReplaceMethod(f="cssStyle", signature="CSS",
                  definition=function(.Object,value)
                  {
@@ -192,8 +197,8 @@ setReplaceMethod(f="cssStyle", signature="CSS",
                  }
 )
 
-#' @aliases .xml,CSS-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,CSS-method
 setMethod(f=".xml", signature="CSS",
           definition=function(object)
           {

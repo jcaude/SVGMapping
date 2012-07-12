@@ -34,6 +34,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  
 #'  @seealso \code{\link{SVGShape}} parent class.
 #'  @exportClass "SVGLine"
+#'  @aliases SVGLine-class
 setClass("SVGLine",
          representation(),
          contains=c("SVGShape","Vector")
@@ -70,6 +71,7 @@ setMethod(f="initialize", signature="SVGLine",
           )
 
 #' @rdname svgmapping.print-methods
+#' @aliases print.SVGLine,SVGLine-method
 setMethod(f="print.SVGLine", signature="SVGLine",
           definition=function(x,...)
           {
@@ -79,8 +81,8 @@ setMethod(f="print.SVGLine", signature="SVGLine",
           }
           )
 
-#' @aliases .xml,SVGLine-method
 #' @rdname svgnode.core-methods
+#' @aliases .xml,SVGLine-method
 setMethod(f=".xml", signature="SVGLine",
           definition=function(object)
           {
@@ -133,19 +135,19 @@ setMethod(f=".xml", signature="SVGLine",
 #' ## Create a line using a list of coordinates
 #' line.coords <- list(x1="5px",y1="10px",x2="650px",y2="315px")
 #' ## A line with some CSS
-#' line2 <- SVGLine.factory(coords=line2.coords,class="mylines",style="stroke-width:15cm")
+#' line2 <- SVGLine.factory(bbox=line.coords,class="mylines",style="stroke-width:15cm")
 #' ## A line (0,0,10,10) translated of 10 to the right and 20 below, 
 #' ## new coordinates are (10,20,20,30)
 #' line3 <- SVGLine.factory(0,0,10,10,transform="translate(10,20)")
-SVGLine.factory <- function(bbox,x1,y1,x2,y2,class,style,transform) {
+SVGLine.factory <- function(x1,y1,x2,y2,bbox,class,style,transform) {
 
   ## init.
   args <- list("SVGLine")
-  if(!missing(bbox)) args <- c(args,bbox=list(bbox))
   if(!missing(x1)) args <- c(args,x1=x1)
   if(!missing(y1)) args <- c(args,y1=y1)
   if(!missing(x2)) args <- c(args,x2=x2)
   if(!missing(y2)) args <- c(args,y2=y2)
+  if(!missing(bbox)) args <- c(args,bbox=list(bbox))
   if(!missing(class)) args <- c(args,class=class)
   if(!missing(style)) args <- c(args,style=style)
   if(!missing(transform)) args <- c(args,transform=transform)

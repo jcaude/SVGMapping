@@ -36,6 +36,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  
 #'  @seealso \code{\link{Circle}} the parent class
 #'  @exportClass "Circle"
+#'  @aliases Circle-class
 setClass("Circle",
          representation("VIRTUAL"),
          contains="Ellipse"
@@ -63,7 +64,7 @@ setClass("Circle",
 #' @exportMethod bbox
 #' @docType methods
 NULL
-setGenericVerif(name="bbox", function(object) { standardGeneric("bbox") })
+#setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 
 #' <title already defined>
 #' 
@@ -81,7 +82,7 @@ setGenericVerif(name="bbox", function(object) { standardGeneric("bbox") })
 #'  @exportMethod bbox<-
 #'  @docType methods  
 NULL
-setGenericVerif(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
+#setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
 
 #' <title already defined>
 #' 
@@ -94,8 +95,7 @@ setGenericVerif(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-
 #' @rdname circle.bbox-methods
 #' @exportMethod r
 #' @docType methods
-NULL
-setGenericVerif(name="r", function(object) { standardGeneric("r") })
+setGeneric(name="r", function(object) { standardGeneric("r") })
 
 #' <title already defined>
 #' 
@@ -109,8 +109,7 @@ setGenericVerif(name="r", function(object) { standardGeneric("r") })
 #'  @rdname circle.bbox-methods
 #'  @exportMethod r<-
 #'  @docType methods  
-NULL
-setGenericVerif(name="r<-", function(.Object,value) { standardGeneric("r<-") })
+setGeneric(name="r<-", function(.Object,value) { standardGeneric("r<-") })
 
 setMethod(f="initialize", signature="Circle",
           definition=function(.Object,...)
@@ -159,6 +158,7 @@ setMethod(f="initialize", signature="Circle",
 )
 
 #' @rdname circle.bbox-methods
+#' @aliases bbox,Circle-method
 setMethod(f="bbox", signature="Circle",
           definition=function(object)
           {
@@ -168,6 +168,7 @@ setMethod(f="bbox", signature="Circle",
 
 #' @name bbox<- 
 #' @rdname circle.bbox-methods
+#' @aliases bbox<-,Circle-method
 setReplaceMethod(f="bbox", signature="Circle",
                  definition=function(.Object,value)
                  {
@@ -186,6 +187,7 @@ setReplaceMethod(f="bbox", signature="Circle",
 )
 
 #' @rdname circle.bbox-methods
+#' @aliases r,Circle-method
 setMethod(f="r", signature="Circle",
           definition=function(object)
           {
@@ -195,6 +197,7 @@ setMethod(f="r", signature="Circle",
 
 #' @name r<-
 #' @rdname circle.bbox-methods
+#' @aliases r<-,Circle-method
 setReplaceMethod(f="r", signature="Circle",
                  definition=function(.Object,value)
                  {
@@ -212,8 +215,8 @@ setReplaceMethod(f="r", signature="Circle",
                  }
 )
 
-#' @aliases .xml,Circle-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,Circle-method
 setMethod(f=".xml", signature="Circle",
           definition=function(object)
           {

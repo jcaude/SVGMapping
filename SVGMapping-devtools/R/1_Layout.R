@@ -34,6 +34,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #' @seealso \code{\link{SVGNode}} and \code{\link{Rectangle}} classes
 #' @exportClass "Layout"
+#' @aliases Layout-class
 setClass("Layout",
          representation(opacity="numeric",
                         "VIRTUAL"),
@@ -108,6 +109,7 @@ setMethod(f="initialize", signature="Layout",
           )
 
 #' @rdname layout.opacity-methods
+#' @aliases opacity,Layout-method
 setMethod(f="opacity", signature="Layout",
           definition=function(object)
           {
@@ -117,6 +119,7 @@ setMethod(f="opacity", signature="Layout",
 
 #' @name opacity<- 
 #' @rdname layout.opacity-methods
+#' @aliases opacity<-,Layout-method
 setReplaceMethod(f="opacity", signature="Layout",
                  definition=function(.Object,value)
                  {
@@ -130,8 +133,8 @@ setReplaceMethod(f="opacity", signature="Layout",
                  }
                  )
 
-#' @aliases .xml,Layout-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,Layout-method
 setMethod(f=".xml", signature="Layout",
           definition=function(object)
           {

@@ -10,24 +10,23 @@ Description: This is an SVGMapping that I try to make compatible with
 License: BSD
 LazyLoad: yes
 Depends:
-    R (>= 2.10.0),
+    R (>= 2.15.0),
     rJava,
     XML,
     grDevices,
     methods,
     utils
-Suggests:
-    cairoDevice
 Collate:
     'internals.R'
     '0_SVGNode.R'
     '0_CSS.R'
-    '0_Rectangle.R'
     '0_Vector.R'
     '0_Ellipse.R'
+    '0_Rectangle.R'
     '1_SVGShape.R'
     '1_Gradient.R'
     '1_Layout.R'
+    '1_Circle.R'
     'GradientStop.R'
     'SVGLine.R'
     'SVGRect.R'

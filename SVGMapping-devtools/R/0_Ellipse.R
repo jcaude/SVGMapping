@@ -33,6 +33,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' This class can't be directly instantiate and must be derived. 
 #' 
 #'  @exportClass "Ellipse"
+#'  @aliases Ellipse-class
 setClass("Ellipse",
          representation(cx="character",
                         cy="character",
@@ -238,6 +239,7 @@ setMethod(f="initialize", signature="Ellipse",
 )
 
 #' @rdname ellipse.bbox-methods
+#' @aliases bbox,Ellipse-method
 setMethod(f="bbox", signature="Ellipse",
           definition=function(object)
           {
@@ -247,6 +249,7 @@ setMethod(f="bbox", signature="Ellipse",
 
 #' @name bbox<- 
 #' @rdname ellipse.bbox-methods
+#' @aliases bbox<-,Ellipse-method
 setReplaceMethod(f="bbox", signature="Ellipse",
                  definition=function(.Object,value)
                  {
@@ -266,6 +269,7 @@ setReplaceMethod(f="bbox", signature="Ellipse",
 )
 
 #' @rdname ellipse.bbox-methods
+#' @aliases cx,Ellipse-method
 setMethod(f="cx", signature="Ellipse",
           definition=function(object)
           {
@@ -275,6 +279,7 @@ setMethod(f="cx", signature="Ellipse",
 
 #' @name cx<-
 #' @rdname ellipse.bbox-methods
+#' @aliases cx<-,Ellipse-method
 setReplaceMethod(f="cx", signature="Ellipse",
                  definition=function(.Object,value)
                  {
@@ -292,6 +297,7 @@ setReplaceMethod(f="cx", signature="Ellipse",
 )
 
 #' @rdname ellipse.bbox-methods
+#' @aliases cy,Ellipse-method
 setMethod(f="cy", signature="Ellipse",
           definition=function(object)
           {
@@ -301,6 +307,7 @@ setMethod(f="cy", signature="Ellipse",
 
 #' @name cy<-
 #' @rdname ellipse.bbox-methods
+#' @aliases cy<-,Ellipse-method
 setReplaceMethod(f="cy", signature="Ellipse",
                  definition=function(.Object,value)
                  {
@@ -318,6 +325,7 @@ setReplaceMethod(f="cy", signature="Ellipse",
 )
 
 #' @rdname ellipse.bbox-methods
+#' @aliases rx,Ellipse-method
 setMethod(f="rx", signature="Ellipse",
           definition=function(object)
           {
@@ -327,6 +335,7 @@ setMethod(f="rx", signature="Ellipse",
 
 #' @name rx<-
 #' @rdname ellipse.bbox-methods
+#' @aliases rx<-,Ellipse-method
 setReplaceMethod(f="rx", signature="Ellipse",
                  definition=function(.Object,value)
                  {
@@ -344,6 +353,7 @@ setReplaceMethod(f="rx", signature="Ellipse",
 )
 
 #' @rdname ellipse.bbox-methods
+#' @aliases ry,Ellipse-method
 setMethod(f="ry", signature="Ellipse",
           definition=function(object)
           {
@@ -353,6 +363,7 @@ setMethod(f="ry", signature="Ellipse",
 
 #' @name ry<-
 #' @rdname ellipse.bbox-methods
+#' @aliases ry<-,Ellipse-method
 setReplaceMethod(f="ry", signature="Ellipse",
                  definition=function(.Object,value)
                  {
@@ -369,8 +380,8 @@ setReplaceMethod(f="ry", signature="Ellipse",
                  }
 )
 
-#' @aliases .xml,Ellipse-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,Ellipse-method
 setMethod(f=".xml", signature="Ellipse",
           definition=function(object)
           {

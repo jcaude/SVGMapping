@@ -35,6 +35,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #' @seealso \link{SVGNode}
 #' @exportClass "SVGShape"
+#' @aliases SVGShape-class
 setClass("SVGShape",
          representation("VIRTUAL"),
          contains=c("SVGNode","CSS")
@@ -67,8 +68,8 @@ setMethod(f="initialize", signature="SVGShape",
           }
           )
 
-#' @aliases .xml,SVGShape-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,SVGShape-method
 setMethod(f=".xml", signature="SVGShape",
           definition=function(object)
           {

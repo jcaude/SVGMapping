@@ -33,6 +33,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' This class can't be directly instantiate and must be derived. 
 #'  
 #'  @exportClass "Vector"
+#'  @aliases Vector-class
 setClass("Vector",
          representation(x1="character",
                         y1="character",
@@ -63,8 +64,7 @@ setClass("Vector",
 #' @rdname vector.bbox-methods
 #' @exportMethod bbox
 #' @docType methods
-NULL
-#setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
+setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 
 #' <title already defined>
 #' 
@@ -79,8 +79,7 @@ NULL
 #'  @rdname vector.bbox-methods
 #'  @exportMethod bbox<-
 #'  @docType methods  
-NULL
-#setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
+setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
 
 #' <title already defined>
 #' 
@@ -217,8 +216,9 @@ setMethod(f="initialize", signature="Vector",
               if( is.list(bbox) &&
                   all(list("x1","y1","x2","y2") %in% names(bbox)) )
                 flag <- TRUE
-              else
+              else {
                 stop("invalid 'bbox' argument")
+              }
             }
             if(flag) {
               bbox(.Object) <- bbox
@@ -236,6 +236,7 @@ setMethod(f="initialize", signature="Vector",
 )
 
 #' @rdname vector.bbox-methods
+#' @aliases bbox,Vector-method
 setMethod(f="bbox", signature="Vector",
           definition=function(object)
           {
@@ -245,6 +246,7 @@ setMethod(f="bbox", signature="Vector",
 
 #' @name bbox<- 
 #' @rdname vector.bbox-methods
+#' @aliases bbox<-,Vector-method
 setReplaceMethod(f="bbox", signature="Vector",
                  definition=function(.Object,value)
                  {
@@ -264,6 +266,7 @@ setReplaceMethod(f="bbox", signature="Vector",
 )
 
 #' @rdname vector.bbox-methods
+#' @aliases x1,Vector-method
 setMethod(f="x1", signature="Vector",
           definition=function(object)
           {
@@ -273,6 +276,7 @@ setMethod(f="x1", signature="Vector",
 
 #' @name x1<-
 #' @rdname vector.bbox-methods
+#' @aliases x1<-,Vector-method
 setReplaceMethod(f="x1", signature="Vector",
                  definition=function(.Object,value)
                  {
@@ -290,6 +294,7 @@ setReplaceMethod(f="x1", signature="Vector",
 )
 
 #' @rdname vector.bbox-methods
+#' @aliases y1,Vector-method
 setMethod(f="y1", signature="Vector",
           definition=function(object)
           {
@@ -299,6 +304,7 @@ setMethod(f="y1", signature="Vector",
 
 #' @name y1<-
 #' @rdname vector.bbox-methods
+#' @aliases y1<-,Vector-method
 setReplaceMethod(f="y1", signature="Vector",
                  definition=function(.Object,value)
                  {
@@ -316,6 +322,7 @@ setReplaceMethod(f="y1", signature="Vector",
 )
 
 #' @rdname vector.bbox-methods
+#' @aliases x2,Vector-method
 setMethod(f="x2", signature="Vector",
           definition=function(object)
           {
@@ -325,6 +332,7 @@ setMethod(f="x2", signature="Vector",
 
 #' @name x2<-
 #' @rdname vector.bbox-methods
+#' @aliases x2<-,Vector-method
 setReplaceMethod(f="x2", signature="Vector",
                  definition=function(.Object,value)
                  {
@@ -342,6 +350,7 @@ setReplaceMethod(f="x2", signature="Vector",
 )
 
 #' @rdname vector.bbox-methods
+#' @aliases y2,Vector-method
 setMethod(f="y2", signature="Vector",
           definition=function(object)
           {
@@ -351,6 +360,7 @@ setMethod(f="y2", signature="Vector",
 
 #' @name y2<-
 #' @rdname vector.bbox-methods
+#' @aliases y2<-,Vector-method
 setReplaceMethod(f="y2", signature="Vector",
                  definition=function(.Object,value)
                  {
@@ -367,8 +377,8 @@ setReplaceMethod(f="y2", signature="Vector",
                  }
 )
 
-#' @aliases .xml,Vector-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,Vector-method
 setMethod(f=".xml", signature="Vector",
           definition=function(object)
           {

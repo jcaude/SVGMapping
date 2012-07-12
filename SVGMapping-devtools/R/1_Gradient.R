@@ -34,6 +34,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #' @seealso \code{\link{SVGNode}} the parent class
 #' @exportClass "Gradient"
+#' @aliases Gradient-class
 setClass("Gradient",
          representation(svg_units="character",
                         spread.method="character",
@@ -239,6 +240,7 @@ setMethod(f="initialize", signature="Gradient",
           )
 
 #' @rdname gradient.core-methods
+#' @aliases svgUnits,Gradient-method
 setMethod(f="svgUnits", signature="Gradient",
           definition=function(object)
           {
@@ -248,6 +250,7 @@ setMethod(f="svgUnits", signature="Gradient",
 
 #' @name svgUnits<- 
 #' @rdname gradient.core-methods
+#' @aliases svgUnits<-,Gradient-method
 setReplaceMethod(f="svgUnits", signature="Gradient",
                  definition=function(.Object, value)
                  {
@@ -264,6 +267,7 @@ setReplaceMethod(f="svgUnits", signature="Gradient",
                  )
 
 #' @rdname gradient.core-methods
+#' @aliases spreadMethod,Gradient-method
 setMethod(f="spreadMethod", signature="Gradient",
           definition=function(object)
           {
@@ -273,6 +277,7 @@ setMethod(f="spreadMethod", signature="Gradient",
 
 #' @name spreadMethod<- 
 #' @rdname gradient.core-methods
+#' @aliases spreadMethod<-,Gradient-method
 setReplaceMethod(f="spreadMethod", signature="Gradient",
                  definition=function(.Object, value)
                  {
@@ -290,6 +295,7 @@ setReplaceMethod(f="spreadMethod", signature="Gradient",
                  )
 
 #' @rdname gradient.core-methods
+#' @aliases xlinkHref,Gradient-method
 setMethod(f="xlinkHref", signature="Gradient",
           definition=function(object)
           {
@@ -299,6 +305,7 @@ setMethod(f="xlinkHref", signature="Gradient",
 
 #' @name xlinkHref<- 
 #' @rdname gradient.core-methods
+#' @aliases xlinkHref<-,Gradient-method
 setReplaceMethod(f="xlinkHref", signature="Gradient",
                  definition=function(.Object, value)
                  {
@@ -313,6 +320,7 @@ setReplaceMethod(f="xlinkHref", signature="Gradient",
                  )
 
 #' @rdname gradient.stops-methods
+#' @aliases stops,Gradient-method
 setMethod(f="stops", signature="Gradient",
           definition=function(object)
           {
@@ -322,6 +330,7 @@ setMethod(f="stops", signature="Gradient",
 
 #' @name stops<- 
 #' @rdname gradient.stops-methods
+#' @aliases stops<-,Gradient-method
 setReplaceMethod(f="stops", signature="Gradient",
                  definition=function(.Object, value)
                  {
@@ -348,8 +357,8 @@ setReplaceMethod(f="stops", signature="Gradient",
                  }
                  )
 
-#' @aliases .xml,Gradient-method
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,Gradient-method
 setMethod(f=".xml", signature="Gradient",
           definition=function(object)
           {
@@ -368,6 +377,7 @@ setMethod(f=".xml", signature="Gradient",
           )
 
 #' @rdname gradient.url-methods
+#' @aliases URL,Gradient-method
 setMethod(f="URL", signature="Gradient",
           definition=function(object)
           {

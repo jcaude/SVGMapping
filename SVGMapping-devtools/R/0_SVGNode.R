@@ -33,6 +33,7 @@
 #' This class can't be directly instantiate and must be derived. 
 #'
 #' @exportClass "SVGNode"
+#' @aliases SVGNode-class
 setClass("SVGNode",
          representation(id="character",
                         svg.transform="character",
@@ -149,6 +150,7 @@ setMethod(f="initialize", signature="SVGNode",
           )
 
 #' @rdname svgnode.id-methods
+#' @aliases id,SVGNode-method
 setMethod(f="id", signature="SVGNode",
           definition=function(object)
           {
@@ -158,6 +160,7 @@ setMethod(f="id", signature="SVGNode",
 
 #' @name id<-
 #' @rdname svgnode.id-methods
+#' @aliases id<-,SVGNode-method
 setReplaceMethod(f="id", signature="SVGNode",
                  definition=function(.Object,value)
                  {
@@ -172,6 +175,7 @@ setReplaceMethod(f="id", signature="SVGNode",
                  )
 
 #' @rdname svgnode.core-methods
+#' @aliases svgTransform,SVGNode-method
 setMethod(f="svgTransform", signature="SVGNode",
           definition=function(object)
           {
@@ -181,6 +185,7 @@ setMethod(f="svgTransform", signature="SVGNode",
 
 #' @name svgTransform<- 
 #' @rdname svgnode.core-methods
+#' @aliases svgTransform<-,SVGNode-method
 setReplaceMethod(f="svgTransform", signature="SVGNode",
                  definition=function(.Object,value)
                  {
@@ -195,6 +200,7 @@ setReplaceMethod(f="svgTransform", signature="SVGNode",
 )
 
 #' @rdname svgnode.xml-methods
+#' @aliases .xml,SVGNode-method
 setMethod(f=".xml", signature="SVGNode",
           definition=function(object)
           {
