@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Layout")
 
 test_that("get/set Locations attributes", {

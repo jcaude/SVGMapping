@@ -41,21 +41,25 @@ setClass("Layout",
          contains=c("SVGNode","Rectangle")
          )
 
-#' Layout Opacity level
+#' Opacity level
 #'
-#' By default layout are invisible to the user. But one can control the opacity level
-#' of a layout using the methods presented here.
+#' The methods presented here allows to control the opacity or transparency 
+#' level of a visual shape. This level is defined as a numerical value in the
+#' range [0,1].
+#'
+#' \bold{Layout:} by default layout are invisible to the user. But one can 
+#' control the opacity level of a layout using the methods presented here.
 #' 
-#' Layout can be preview using the \code{\link{show}} method. The opacity method determines 
-#' the visibility level of the layout borders.
+#' Layout can be preview using the \code{\link{show}} method. The opacity 
+#' method determines the visibility level of the layout borders.
 #'
 #' @name opacity
 #' 
-#' @param object a Layout object
+#' @param object an object with opacity attribute
 #' 
 #' @return the opacity level as a numeric value in the range [0,1]
 #' 
-#' @rdname layout.opacity-methods
+#' @rdname svgmapping.opacity-methods
 #' @exportMethod opacity
 #' @docType methods
 setGeneric(name="opacity", function(object) { standardGeneric("opacity") })
@@ -64,12 +68,13 @@ setGeneric(name="opacity", function(object) { standardGeneric("opacity") })
 #' 
 #' 
 #' 
-#' The \code{opacity(object)<-value} method can be used to set the opacity level of 
-#' the layout. The opacity \bold{value} paramter must be in the range [0,1]. 
+#' \bold{Layout:} the \code{opacity(object)<-value} method can be used to set 
+#' the opacity level of the layout. The opacity \bold{value} paramter must be 
+#' in the range [0,1]. 
 #' 
 #' @name opacity<-
 #' 
-#' @rdname layout.opacity-methods
+#' @rdname svgmapping.opacity-methods
 #' @exportMethod opacity<-
 #' @docType methods 
 setGeneric(name="opacity<-", function(.Object,value) { standardGeneric("opacity<-") })
@@ -108,7 +113,7 @@ setMethod(f="initialize", signature="Layout",
           }
           )
 
-#' @rdname layout.opacity-methods
+#' @rdname svgmapping.opacity-methods
 #' @aliases opacity,Layout-method
 setMethod(f="opacity", signature="Layout",
           definition=function(object)
@@ -118,7 +123,7 @@ setMethod(f="opacity", signature="Layout",
           )
 
 #' @name opacity<- 
-#' @rdname layout.opacity-methods
+#' @rdname svgmapping.opacity-methods
 #' @aliases opacity<-,Layout-method
 setReplaceMethod(f="opacity", signature="Layout",
                  definition=function(.Object,value)

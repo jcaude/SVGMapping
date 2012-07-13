@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Ellipse")
 
 test_that("Accessors", {

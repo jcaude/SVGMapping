@@ -70,7 +70,7 @@ setMethod(f="show", signature="LinearGradient",
           }
           )
 
-#' @rdname svgnode.core-methods
+#' @rdname svgnode.xml-methods
 #' @aliases .xml,LinearGradient-method
 setMethod(f=".xml", signature="LinearGradient",
           definition=function(object)

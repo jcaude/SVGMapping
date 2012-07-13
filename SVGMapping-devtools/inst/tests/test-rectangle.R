@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Rectangle")
 
 test_that("Accessors", {

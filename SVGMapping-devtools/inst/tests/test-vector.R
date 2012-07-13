@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Vector")
 
 test_that("Accessors", {

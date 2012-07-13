@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Gradient")
 
 myClass <- setClass("myClass.Gradient",

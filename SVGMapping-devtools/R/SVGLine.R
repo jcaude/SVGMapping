@@ -81,7 +81,7 @@ setMethod(f="print.SVGLine", signature="SVGLine",
           }
           )
 
-#' @rdname svgnode.core-methods
+#' @rdname svgnode.xml-methods
 #' @aliases .xml,SVGLine-method
 setMethod(f=".xml", signature="SVGLine",
           definition=function(object)

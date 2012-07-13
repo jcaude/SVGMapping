@@ -1,3 +1,5 @@
+require(testthat)
+
 context("SVGNode")
 
 test_that("get/set IDs", {

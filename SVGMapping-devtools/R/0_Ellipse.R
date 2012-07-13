@@ -43,49 +43,39 @@ setClass("Ellipse",
          prototype(cx="0",cy="0",rx="0",ry="0")
 )
 
+#' <title already defined>
+#' 
+#' 
+#' 
+#' \bold{Ellipse:} the method \code{bbox(object)} return the bounding box 
+#' \code{list(cx,cy,rx,ry)} of the ellipse object.
+#' 
+#' @name bbox
+#' 
+#' @rdname svgmapping.bbox-methods
+#' @exportMethod bbox
+#' @docType methods
+NULL
+
+#' <title already defined>
+#'
+#'
+#'  
+#' \bold{Ellipse:} the \code{bbox{object} <- value} method sets the center and 
+#' radius length of an ellipse object. It is expected that \code{value} is a 
+#' list containing the four named values \code{list(cx,cy,rx,ry)}.
+#' 
+#' @name bbox<-
+#' 
+#' @rdname svgmapping.bbox-methods
+#' @exportMethod bbox<-
+#' @docType methods  
+NULL
+
 #' Coordinates of the Ellipse object
 #' 
 #' These methods are accessors to the center and radius of an Ellipse
 #' object.
-#' 
-#' The method \code{bbox(object)} return the bounding box (cx,cy,rx,ry) of 
-#' the ellipse object.
-#' 
-#' Coordinates or radius length are given as values compliant with the SVG 1.1
-#' specifications
-#' 
-#' @name bbox
-#' 
-#' @param object an ellipse object
-#' 
-#' @return \code{bbox()}: a named list (\code{list(cx,cy,rx,ry)}) of values 
-#' for the complete bounding-box given as strings.
-#' 
-#' @rdname ellipse.bbox-methods
-#' @exportMethod bbox
-#' @docType methods
-NULL
-#setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
-
-#' <title already defined>
-#' 
-#' 
-#' 
-#' The \code{bbox{object} <- value} method sets the center and radius length 
-#' of an ellipse object. It is expected that \code{value} is a list containing 
-#' the four named values \code{(cx,cy,rx,ry)}.
-#' 
-#' @name bbox<-
-#' 
-#' @rdname ellipse.bbox-methods
-#' @exportMethod bbox<-
-#' @docType methods  
-NULL
-#setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
-
-#' <title already defined>
-#' 
-#' 
 #' 
 #' The \code{cx(object)} method returns the X-axis center of the ellipse.
 #' 
@@ -238,7 +228,7 @@ setMethod(f="initialize", signature="Ellipse",
           }
 )
 
-#' @rdname ellipse.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox,Ellipse-method
 setMethod(f="bbox", signature="Ellipse",
           definition=function(object)
@@ -248,7 +238,7 @@ setMethod(f="bbox", signature="Ellipse",
 )
 
 #' @name bbox<- 
-#' @rdname ellipse.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox<-,Ellipse-method
 setReplaceMethod(f="bbox", signature="Ellipse",
                  definition=function(.Object,value)

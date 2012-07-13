@@ -43,50 +43,40 @@ setClass("Rectangle",
          prototype(x="0",y="0",width="0",height="0")
 )
 
+#' <title already defined> 
+#' 
+#' 
+#' 
+#' \bold{Rectangle:} the method \code{bbox(object)} return the bounding box 
+#' \code{list(x,y,width,height)} of the rectangular object.
+#' 
+#' @name bbox
+#' 
+#' @rdname svgmapping.bbox-methods
+#' @exportMethod bbox
+#' @docType methods
+NULL
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' \bold{Rectangle:} the \code{bbox(object)<-value} method can be used to set 
+#' the bounding-box of a rectangular object. In this case the \code{value} 
+#' argument is expected to be a named list (\code{list(x=,y=,width=,heigh=)})
+#' 
+#' @name bbox<-
+#' 
+#' @rdname svgmapping.bbox-methods
+#' @exportMethod bbox<-
+#' @docType methods
+NULL
+
 #' Dimensions of the Rectangular object
 #' 
 #' These methods are accessors to the location and dimension of a Rectangular
 #' object.
-#' 
-#' The method \code{bbox(object)} return the bounding box (x,y,width,height) of 
-#' the rectangular object.
-#' 
-#' Coordinates or dimensions are given as values compliant with the SVG 1.1
-#' specifications
-#' 
-#' @name bbox
-#' 
-#' @param object a rectangular object
-#' 
-#' @return \code{bbox()}: a named list (\code{list(x=,y=,width=,height=)}) of 
-#' values for the complete bounding-box given as strings.
-#' 
-#' @rdname rectangle.bbox-methods
-#' @exportMethod bbox
-#' @docType methods
-NULL
-#setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
-
-#' <title already defined>
-#' 
-#' 
-#' 
-#' The \code{bbox(object)<-value} method can be used to set the bounding-box of
-#' a rectangular object. In this case the \code{value} argument is expected 
-#' to be a named list (\code{list(x=,y=,width=,heigh=)})
-#' 
-#' @name bbox<-
-#' 
-#' @return \code{bbox()<-}: the rectangular object as invisible
-#' 
-#' @rdname rectangle.bbox-methods
-#' @exportMethod bbox<-
-#' @docType methods
-NULL
-#setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
-
-#' <title already defined>
-#' 
+#'
 #' The method \code{x(object)} return the location on the \emph{X-axis} of the 
 #' rectangular object.
 #' 
@@ -231,7 +221,7 @@ setMethod(f="initialize", signature="Rectangle",
           }
 )
 
-#' @rdname rectangle.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox,Rectangle-method
 setMethod(f="bbox", signature="Rectangle",
           definition=function(object)
@@ -242,7 +232,7 @@ setMethod(f="bbox", signature="Rectangle",
 )
 
 #' @name bbox<- 
-#' @rdname rectangle.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox<-,Rectangle-method
 setReplaceMethod(f="bbox", signature="Rectangle",
                  definition=function(.Object,value)

@@ -36,8 +36,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "SVGRect"
 #'  @aliases SVGRect-class
 setClass("SVGRect",
-         representation(rx="character",
-                        ry="character"),
+         representation(roundx="character",
+                        roundy="character"),
          contains=c("SVGShape","Rectangle")
          )
 
@@ -52,65 +52,61 @@ setGeneric(name="print.SVGRect", function(x,...) { standardGeneric("print.SVGRec
 #' 
 #' The methods get or set the round off corners of an SVG Shape.
 #' 
-#' The \code{rx(object)} method returns the \emph{X-axis} radius of the ellipse 
+#' The \code{roundx(object)} method returns the \emph{X-axis} radius of the ellipse 
 #' used to round off the corners of the shape.
 #' 
-#' @name rx
+#' @name roundx
 #'  
 #' @param object the SVG shape instance
 #' 
 #' @return the length in SVG units  
 #' 
 #' @rdname svgrect.roundoff-methods
-#' @exportMethod rx
+#' @exportMethod roundx
 #' @docType methods
-NULL
-#setGeneric(name="rx", function(object) { standardGeneric("rx") })
+setGeneric(name="roundx", function(object) { standardGeneric("roundx") })
 
 #' <title already defined>
 #' 
 #' 
 #' 
-#' The \code{rx(object) <- value} method can be used to set the \emph{X-axis} 
+#' The \code{roundx(object) <- value} method can be used to set the \emph{X-axis} 
 #' radius of the ellipse used to round off the corners of the shape.
 #' 
-#' @name rx<- 
+#' @name roundx<- 
 #' 
 #' @rdname svgrect.roundoff-methods
-#' @exportMethod rx<- 
+#' @exportMethod roundx<- 
 #' @docType methods
-NULL
-#setGeneric(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
+setGeneric(name="roundx<-", function(.Object,value) { standardGeneric("roundx<-") })
 
 #' <title already defined>
 #' 
 #' 
 #' 
-#' The \code{ry(object)} method returns the \emph{Y-axis} radius of the ellipse 
+#' The \code{roundy(object)} method returns the \emph{Y-axis} radius of the ellipse 
 #' used to round off the corners of the shape.
 #' 
-#' @name ry
+#' @name roundy
 #' 
 #' @rdname svgrect.roundoff-methods
-#' @exportMethod ry
+#' @exportMethod roundy
 #' @docType methods
-NULL
-#setGeneric(name="ry", function(object) { standardGeneric("ry") })
+setGeneric(name="roundy", function(object) { standardGeneric("roundy") })
 
 #' <title already defined>
 #' 
 #' 
 #' 
-#' The \code{ry(object) <- value} method can be used to set the \emph{Y-axis} 
+#' The \code{roundy(object) <- value} method can be used to set the \emph{Y-axis} 
 #' radius of the ellipse used to round off the corners of the shape.
 #' 
-#' @name ry<- 
+#' @name roundy<- 
 #' 
 #' @rdname svgrect.roundoff-methods
-#' @exportMethod ry<- 
+#' @exportMethod roundy<- 
 #' @docType methods
-NULL
-#setGeneric(name="ry<-", function(.Object,value) { standardGeneric("ry<-") })
+setGeneric(name="roundy<-", function(.Object,value) { standardGeneric("roundy<-") })
 
 setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
@@ -140,8 +136,8 @@ setMethod(f="initialize", signature="SVGRect",
             if(is.null(args.names)) args.names <- list()
 
             ## default init.
-            rx(.Object) <- .arg("rx",character(0))
-            ry(.Object) <- .arg("ry",character(0))
+            roundx(.Object) <- .arg("roundx",character(0))
+            roundy(.Object) <- .arg("roundy",character(0))
 
             ## eop
             return(.Object)
@@ -159,18 +155,18 @@ setMethod(f="print.SVGRect", signature="SVGRect",
           )
 
 #' @rdname svgrect.roundoff-methods
-#' @aliases rx,SVGRect-method
-setMethod(f="rx", signature="SVGRect",
+#' @aliases roundx,SVGRect-method
+setMethod(f="roundx", signature="SVGRect",
           definition=function(object)
           {
-            return(object@rx)
+            return(object@roundx)
           }
           )
 
-#' @name rx<- 
+#' @name roundx<- 
 #' @rdname svgrect.roundoff-methods
-#' @aliases rx<-,SVGRect-method
-setReplaceMethod(f="rx", signature="SVGRect",
+#' @aliases roundx<-,SVGRect-method
+setReplaceMethod(f="roundx", signature="SVGRect",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -181,24 +177,24 @@ setReplaceMethod(f="rx", signature="SVGRect",
                      stop("'value' must be an atomic string")
 
                    ## assign & eop
-                   .Object@rx <- value
+                   .Object@roundx <- value
                    return(.Object)
                  }
                  )
 
 #' @rdname svgrect.roundoff-methods
-#' @aliases ry,SVGRect-method
-setMethod(f="ry", signature="SVGRect",
+#' @aliases roundy,SVGRect-method
+setMethod(f="roundy", signature="SVGRect",
           definition=function(object)
           {
-            return(object@ry)
+            return(object@roundy)
           }
           )
 
-#' @name ry<-
+#' @name roundy<-
 #' @rdname svgrect.roundoff-methods
-#' @aliases ry<-,SVGRect-method
-setReplaceMethod(f="ry", signature="SVGRect",
+#' @aliases roundy<-,SVGRect-method
+setReplaceMethod(f="roundy", signature="SVGRect",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -209,7 +205,7 @@ setReplaceMethod(f="ry", signature="SVGRect",
                      stop("'value' must be an atomic string")
 
                    ## assign & eop
-                   .Object@ry <- value
+                   .Object@roundy <- value
                    return(.Object)
                  }
                  )
@@ -229,8 +225,8 @@ setMethod(f=".xml", signature="SVGRect",
             attr <- c(attr,.callMethod(".xml", "Rectangle",object))
 
             ## attributes
-            if(length(rx(object)) > 0) attr <- c(attr, rx=rx(object))
-            if(length(ry(object)) > 0) attr <- c(attr, ry=ry(object))
+            if(length(roundx(object)) > 0) attr <- c(attr, rx=roundx(object))
+            if(length(roundy(object)) > 0) attr <- c(attr, ry=roundy(object))
             xmlAttrs(rect) <- attr
 
             ## eop
@@ -259,20 +255,22 @@ setMethod(f=".xml", signature="SVGRect",
 #' @param y the Y-axis coordinate of the upper left corner
 #' @param width the horizontal length of the rectangle
 #' @param height the vertical length of the rectangle
+#' @param roundx the X-avis corner round-off length
+#' @param roundy the Y-axis corner round-off length
 #' @param class the CSS class name
 #' @param style the CSS style description
 #' @param transform the geometric transformation to apply to the coordinates
 #' 
 #' @return an \code{\link{SVGRect}} instance
 #' 
-#' @seealso The \code{\link{SVGRect}} class definition; the \code{\link{rx}} 
-#' and \code{\link{ry}} methods to set the round off corners length.
+#' @seealso The \code{\link{SVGRect}} class definition; the \code{\link{roundx}} 
+#' and \code{\link{roundy}} methods to set the round off corners length.
 #' 
 #' @export SVGRect.factory
 #' 
 #' @examples
 #' ## Simple rectangle
-#' rect <- SVGRect.factory(x="5cm",y="5cm",width="60cm",height="30cm")
+#' rect <- SVGRect.factory(x="5cm",y="5cm",width="60cm",height="30cm",roundx="2px", roundy="1px")
 #' ## Create a rectangle using bounding-box list
 #' rect.bbox <- list(x="5px",y="5px",width="650px",height="315px")
 #' rect <- SVGRect.factory(bbox=rect.bbox)
@@ -281,7 +279,7 @@ setMethod(f=".xml", signature="SVGRect",
 #' ## A rectangle (0,0) translated of 10 to the right and 20 below, 
 #' ## new coordinates are (10,20)
 #' rect <- SVGRect.factory(x=0,y=0,width=60,height=30,transform="translate(10,20)")
-SVGRect.factory <- function(x,y,width,height,bbox,rx,ry,class,style,transform) {
+SVGRect.factory <- function(x,y,width,height,bbox,roundx,roundy,class,style,transform) {
 
   ## init.
   args <- list("SVGRect")
@@ -290,8 +288,8 @@ SVGRect.factory <- function(x,y,width,height,bbox,rx,ry,class,style,transform) {
   if(!missing(width)) args <- c(args,width=width)
   if(!missing(height)) args <- c(args,height=height)
   if(!missing(bbox)) args <- c(args,bbox=list(bbox))
-  if(!missing(rx)) args <- c(args,rx=rx)
-  if(!missing(ry)) args <- c(args,ry=ry)
+  if(!missing(roundx)) args <- c(args,roundx=roundx)
+  if(!missing(roundy)) args <- c(args,roundy=roundy)
   if(!missing(class)) args <- c(args,class=class)
   if(!missing(style)) args <- c(args,style=style)
   if(!missing(transform)) args <- c(args,transform=transform)

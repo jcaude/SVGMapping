@@ -108,12 +108,12 @@ setGeneric("color<-", function(.Object,value) {standardGeneric("color<-")})
 #' 
 #' 
 #' 
-#' The \code{opacity(object)} method returns the opacity leve of 
-#' a Gradient stop.
+#' \bold{GradientStop:} the \code{opacity(object)} method returns the opacity 
+#' leve of a Gradient stop.
 #' 
 #' @name opacity,GradientStop-method
 #' 
-#' @rdname gradientstop.core-methods
+#' @rdname svgmapping.opacity-methods
 #' @exportMethod opacity
 #' @docType methods
 NULL
@@ -122,12 +122,12 @@ NULL
 #' 
 #' 
 #' 
-#' The \code{opacity(object) <- value} method set the opacity level of a
-#' Gradient stop. This value must be in the range [0,1].
+#' \bold{GradientStop:} the \code{opacity(object) <- value} method set the 
+#' opacity level of a Gradient stop. This value must be in the range [0,1].
 #' 
 #' @name opacity<-,GradientStop-method
 #' 
-#' @rdname gradientstop.core-methods
+#' @rdname svgmapping.opacity-methods
 #' @exportMethod opacity<-
 #' @docType methods
 NULL
@@ -214,7 +214,7 @@ setReplaceMethod(f="color", signature="GradientStop",
                  }
                  )
 
-#' @rdname gradientstop.core-methods
+#' @rdname svgmapping.opacity-methods
 #' @aliases opacity,GradientStop-method
 setMethod(f="opacity", signature="GradientStop",
           definition=function(object) {
@@ -223,7 +223,7 @@ setMethod(f="opacity", signature="GradientStop",
           )
 
 #' @name opacity<-
-#' @rdname gradientstop.core-methods
+#' @rdname svgmapping.opacity-methods
 #' @aliases opacity<-,GradientStop-method
 setReplaceMethod(f="opacity", signature="GradientStop",
                  definition=function(.Object,value) 

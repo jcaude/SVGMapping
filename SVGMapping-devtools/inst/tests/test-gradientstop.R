@@ -1,3 +1,5 @@
+require(testthat)
+
 context("Gradient Stop")
 
 test_that("Factory, get/set", {

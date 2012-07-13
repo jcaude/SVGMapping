@@ -1,3 +1,5 @@
+require(testthat)
+
 context("SVG Line")
 
 test_that("Accessors", {

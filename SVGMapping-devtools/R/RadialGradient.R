@@ -217,7 +217,7 @@ setMethod(f="show", signature="RadialGradient",
           )
 
 #' @name .xml,RadialGradient-method
-#' @rdname svgnode.core-methods
+#' @rdname svgnode.xml-methods
 #' @aliases .xml,RadialGradient-method
 setMethod(f=".xml", signature="RadialGradient",
           definition=function(object)

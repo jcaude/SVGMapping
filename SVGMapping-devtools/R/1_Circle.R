@@ -42,51 +42,39 @@ setClass("Circle",
          contains="Ellipse"
 )
 
+#' <title already define>
+#' 
+#' 
+#' 
+#' \bold{Circle:} the method \code{bbox(object)} return the bounding box 
+#' \code{list(cx,cy,r)} of the circle object.
+#' 
+#' @name bbox
+#' 
+#' @rdname svgmapping.bbox-methods
+#' @exportMethod bbox
+#' @docType methods
+NULL
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' \bold{Circle:} the \code{bbox{object} <- value} method sets the center and 
+#' radius length of a circle object. It is expected that \code{value} is a 
+#' list containing the four named values \code{list(cx,cy,r)}.
+#' 
+#' @name bbox<-
+#' 
+#'  @rdname svgmapping.bbox-methods
+#'  @exportMethod bbox<-
+#'  @docType methods  
+NULL
+
 #' Coordinates of the Circle object
 #' 
 #' These methods are accessors to the center and radius of a Circle
 #' object.
-#' 
-#' The method \code{bbox(object)} return the bounding box (cx,cy,r) of 
-#' the circle object.
-#' 
-#' Coordinates or radius length are given as values compliant with the SVG 1.1
-#' specifications
-#' 
-#' @name bbox
-#' 
-#' @param object an circle object
-#' 
-#' @return \code{bbox()}: a named list (\code{list(cx,cy,r)}) of values 
-#' for the complete bounding-box given as strings.
-#' 
-#' @rdname circle.bbox-methods
-#' @exportMethod bbox
-#' @docType methods
-NULL
-#setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
-
-#' <title already defined>
-#' 
-#' 
-#' 
-#' The \code{bbox{object} <- value} method sets the center and radius length 
-#' of a circle object. It is expected that \code{value} is a list containing 
-#' the four named values \code{(cx,cy,r)}.
-#' 
-#' @name bbox<-
-#' 
-#' @seealso \code{\link{cx}} and \code{\link{cy}} method to set the center of 
-#' the circle
-#'  @rdname circle.bbox-methods
-#'  @exportMethod bbox<-
-#'  @docType methods  
-NULL
-#setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
-
-#' <title already defined>
-#' 
-#' 
 #' 
 #' The \code{r(object)} method returns the radius length of the circle.
 #' 
@@ -157,7 +145,7 @@ setMethod(f="initialize", signature="Circle",
           }
 )
 
-#' @rdname circle.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox,Circle-method
 setMethod(f="bbox", signature="Circle",
           definition=function(object)
@@ -167,7 +155,7 @@ setMethod(f="bbox", signature="Circle",
 )
 
 #' @name bbox<- 
-#' @rdname circle.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox<-,Circle-method
 setReplaceMethod(f="bbox", signature="Circle",
                  definition=function(.Object,value)

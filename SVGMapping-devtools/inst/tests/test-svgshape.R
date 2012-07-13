@@ -1,3 +1,5 @@
+require(testthat)
+
 context("SVGShape")
 
 test_that("get/set CORE attributes", {

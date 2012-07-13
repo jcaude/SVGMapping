@@ -1,3 +1,5 @@
+require(testthat)
+
 context("CSS")
 
 test_that("Accessors", {

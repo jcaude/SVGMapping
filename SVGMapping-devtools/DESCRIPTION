@@ -15,7 +15,8 @@ Depends:
     XML,
     grDevices,
     methods,
-    utils
+    utils,
+    testthat
 Collate:
     'internals.R'
     '0_SVGNode.R'

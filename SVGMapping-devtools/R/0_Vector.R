@@ -43,25 +43,24 @@ setClass("Vector",
          prototype(x1="0",y1="0",x2="0",y2="0")
 )
 
-#' Coordinates of the Vector object
+#' Named list of coordinates and dimensions 
 #' 
-#' These methods are accessors to the location and direction of a Vector
-#' object.
+#' \code{bbox} methods are accessors to the coordinates and dimensions of 
+#' a geometrical shape.
 #' 
-#' The method \code{bbox(object)} return the bounding box (x1,y1,x2,y2) of 
-#' the vector object.
+#' \bold{Vector:} the method \code{bbox(object)} returns 
+#' the bounding box \code{list(x1,y1,x2,y2)} of the vector object.
 #' 
-#' Coordinates or direction are given as values compliant with the SVG 1.1
+#' @note coordinates or length are given as values compliant with the SVG 1.1
 #' specifications
 #' 
 #' @name bbox
 #' 
-#' @param object a vector object
+#' @param object a geometrical object
 #' 
-#' @return \code{bbox()}: a named list (\code{list(x1,y1,x2,y2)}) of values 
-#' for the complete bounding-box given as strings.
+#' @return \code{bbox()}: a named list of coordinates and dimensions 
 #' 
-#' @rdname vector.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @exportMethod bbox
 #' @docType methods
 setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
@@ -70,20 +69,21 @@ setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 #' 
 #' 
 #' 
-#' The \code{bbox{object} <- value} method sets the coordinates and direction 
-#' of a vector object. It is expected that \code{value} is a list containing the
-#'  four named values \code{(x1,y1,x2,y2)}.
+#' \bold{Vector:} The \code{bbox{object} <- value} method sets the coordinates 
+#' and direction of a vector object. It is expected that \code{value} is a 
+#' list containing the four named values \code{list(x1,y1,x2,y2)}.
 #' 
 #' @name bbox<-
 #' 
-#'  @rdname vector.bbox-methods
+#'  @rdname svgmapping.bbox-methods
 #'  @exportMethod bbox<-
 #'  @docType methods  
 setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
 
-#' <title already defined>
+#' Coordinates of the Vector object
 #' 
-#' 
+#' These methods are accessors to the location and direction of a \code{Vector}
+#' object
 #' 
 #' The \code{x1(object)} method returns the X-axis coordinate of the vector.
 #' 
@@ -235,7 +235,7 @@ setMethod(f="initialize", signature="Vector",
           }
 )
 
-#' @rdname vector.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox,Vector-method
 setMethod(f="bbox", signature="Vector",
           definition=function(object)
@@ -245,7 +245,7 @@ setMethod(f="bbox", signature="Vector",
 )
 
 #' @name bbox<- 
-#' @rdname vector.bbox-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox<-,Vector-method
 setReplaceMethod(f="bbox", signature="Vector",
                  definition=function(.Object,value)
