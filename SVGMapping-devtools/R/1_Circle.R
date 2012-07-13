@@ -113,16 +113,21 @@ setMethod(f="initialize", signature="Circle",
               }
             }
             
-            ## super (ELLIPSE)
-            .Object <- callNextMethod(.Object,...)
-            
             ## get args
             args = list(...)
             args.names = names(args)
             if(is.null(args.names)) args.names <- list()
             
+            ## super (ELLIPSE) w/o arguments
+            if(length(args) == 0)
+              .Object <- .callMethod("initialize","Ellipse",.Object)
+            else {
+              ellipse.args <- args[!args.names %in% "bbox"]
+              .Object <- .callMethod("initialize","Ellipse",.Object,ellipse.args)
+            }
+            
             ## default init.
-            ## -- we overide bbox, but not regular super (cx,cy) methods
+            ## -- we overide all ellipse initialization coords. methods
             flag <- FALSE
             bbox <- list()
             if(sum(grepl("^bbox$", args.names)) > 0) {
