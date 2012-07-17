@@ -284,7 +284,7 @@ setMethod(f=".xml", signature="RadialGradient",
 #' blue <- GradientStop.factory(color="blue")
 #' red.50 <- GradientStop.factory(offset="1",color="red",opacity=0.5) 
 #' ## Radial blue-red Linear Gradient with a radius of 40%
-#' gradient <- LinearGradient.factory(stops=c(blue,red.50), bbox=list(cx="0",cy="0",r="40%"))
+#' gradient <- RadialGradient.factory(stops=c(blue,red.50), bbox=list(cx="0",cy="0",r="40%"))
 #' ## add the gradient to the document definition
 #' ## definition(svg) <- gradient
 #' ## retrieve the gradient url
