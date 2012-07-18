@@ -24,6 +24,7 @@ Collate:
     '0_Vector.R'
     '0_Ellipse.R'
     '0_Rectangle.R'
+    '0_Mapping.R'
     '1_SVGShape.R'
     '1_Gradient.R'
     '1_Layout.R'
@@ -33,4 +34,4 @@ Collate:
     'SVGRect.R'
     'LinearGradient.R'
     'RadialGradient.R'
-    'Mapping.R'
+
