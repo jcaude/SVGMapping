@@ -58,6 +58,7 @@ MAPPING.Random <- function(x,p) { return(runif(1,min=p$min, max=p$max)) }
 #' \code{MAPPING.Identity} returns the input value without doing any 
 #' modification.
 #' 
+#' @name MAPPING.Identity
 #' @rdname mapping.transform-functions
 #' @export
 MAPPING.Identity <- function(x,p) { return(x) }
@@ -66,9 +67,10 @@ MAPPING.Identity <- function(x,p) { return(x) }
 #' 
 #' 
 #' 
-#' \code{MAPPING.Linear} is used to apply a linear transformation, 
-#' \deqn{y=p_a \time x+p_b}{y=p$a*x+p$b}.
+#' \code{MAPPING.Linear} is used to apply the linear transformation:
+#' \deqn{y=p_a x+p_b}{y=p$a*x+p$b}
 #' 
+#' @name MAPPING.Linear
 #' @rdname mapping.transform-functions
 #' @export
 MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
@@ -77,14 +79,12 @@ MAPPING.Linear <- function(x,p) { return(p$a*x+p$b) }
 #' 
 #' 
 #' 
-#' \code{MAPPING.RangeLinear} is used to apply a bound linear transformation.
-#' \deqn{y = \begin{cases} 
-#'              p_{min} & \text{if $(p_a x+b) \leq p_{min}$} \\
-#'              p_{max} & \text{if $(p_a x+b) \geq p_{max}$} \\
-#'              p_a x+b & \text{otherwise}
-#'            \end{cases}
-#'     }{y = p$min (if ax+b<p$min) ; p$max (if ax+b>p$max); ax+b (otherwise)}
+#' \code{MAPPING.RangeLinear} is used to apply a bound linear transformation:
+#' \deqn{y = p_a x+b }{y = p$a*x+p$b} If \eqn{y}{y} is not is the range 
+#' \eqn{[p_{min},p_{max}]}{[p$min,p$max]} then:
+#' \deqn{y = \max(p_{min},\min(p_{max},y))}{y=max(p$min,min(p$max,y))}
 #' 
+#' @name MAPPING.RangeLinear
 #' @rdname mapping.transform-functions
 #' @export
 MAPPING.RangeLinear <- function(x,p) {return(min(p$max, max(p$min,p$a*x+p$b))) } 
@@ -93,10 +93,10 @@ MAPPING.RangeLinear <- function(x,p) {return(min(p$max, max(p$min,p$a*x+p$b))) }
 #' 
 #' 
 #' 
-#' \code{MAPPING.Logistic} is used to apply a logistic transformation.
-#' \deqn{ y = \frac{p_k}{1+p_a \exp^{-p_r x}}
-#' } {y = p$k / (1 + p$a * exp(-p$r * x))}
+#' \code{MAPPING.Logistic} is used to apply the logistic transformation:
+#' \deqn{ y = \frac{p_k}{1+p_a \exp^{-p_r x}}}{y = p$k / (1 + p$a * exp(-p$r * x))}
 #' 
+#' @name MAPPING.Logistic
 #' @rdname mapping.transform-functions
 #' @export
 MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
@@ -105,10 +105,10 @@ MAPPING.Logistic <- function(x,p) { return(p$K/(1+p$a*exp(-p$r*x))) }
 #' 
 #' 
 #' 
-#' \code{MAPPING.Sigmoid} is used to apply a sigmoid transformation.
-#' \deqn{ y = \frac{1}{1+p_a \exp^{-p_r x}}
-#' } {y = 1 / (1 + p$a * exp(-p$r * x))}
+#' \code{MAPPING.Sigmoid} is used to apply the sigmoid transformation:
+#' \deqn{ y = \frac{1}{1+p_a \exp^{-p_r x}}}{y = 1 / (1 + p$a * exp(-p$r * x))}
 #' 
+#' @name MAPPING.Sigmoid
 #' @rdname mapping.transform-functions
 #' @export
 MAPPING.Sigmoid <- function(x,p) { return(1/(1+exp(-p$r*x))) }
@@ -119,13 +119,13 @@ MAPPING.Sigmoid <- function(x,p) { return(1/(1+exp(-p$r*x))) }
 #' 
 #' \code{MAPPING.Log2FC} is a transformation function specifically design for
 #' microarrays analysis. It can be used to transform log based 2 expression 
-#' ratios into fold-change.
-#' \deqn{y = \begin{cases} 
-#'              \exp(x \log(2)) & \text{if $x \geq 0$} \\
-#'              \frac{-1}{\exp(x \log(2))} & \text{otherwise}
-#'            \end{cases}
-#'     }{y = exp(x * log(2)) (if x>0) ; -1/(exp(x*log(2))) (otherwise)}
+#' ratios into fold-change. The transformation formula depends on the sign of 
+#' the expression ratio. If this ratio is positive, the transformation is: 
+#' \deqn{y = \exp(x \log(2))}{exp(x * log(2))}
+#' And if the ratio is negative, the transformation formula is:
+#' \deqn{y= \frac{-1}{\exp(x \log(2))}}{-1/(exp(x*log(2)))}
 #' 
+#' @name MAPPING.Log2FC
 #' @rdname mapping.transform-functions
 #' @export
 MAPPING.Log2FC <- function(x,p) { return(ifelse(x>=0,exp(x*log(2)),-1/exp(x*log(2)))) }
@@ -353,7 +353,7 @@ setGeneric(name="fnRangeLinear", function(.Object,a,b,min,max) { standardGeneric
 #' 
 #' 
 #' The \code{fnLogistic(.Object,K,a,r)} method assigns the
-#' \code{\link{MAPPING.Logistic(.Object,K,a,r)}} transformation function to
+#' \code{\link{MAPPING.Logistic}(.Object,K,a,r)} transformation function to
 #' the current mapping instance.
 #' 
 #' @name fnLogistic
@@ -424,15 +424,36 @@ setGeneric(name="fnUser", function(.Object,fn,fn.params) { standardGeneric("fnUs
 #' @docType methods
 setGeneric(name="fnNone", function(.Object) { standardGeneric("fnNone") })
 
-
-setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
+#' Mapping Process Execution
+#'
+#' Each mapping class must have an \code{exec(.Object,svg)} method, and called
+#' the parent class method. The super class \code{exec} method is responsible 
+#' for the data values transformation. All class that derived from the 
+#' \code{Mapping} super class must implement an \code{exec} method that will
+#' perform the mapping operation on the template (\code{svg} parameter).
+#' 
+#' Transformed values are stored in the \code{.values} fields. Thus, 
+#' one can still access the original values using the \code{values(object)}
+#' method.
+#' 
+#' @name exec
+#' 
+#' @param .Object the mapping instance
+#' @param svg the template object reference
+#' 
+#' @return the mapping object as invisible
+#' 
+#' @rdname mapping.exec-methods
+#' @exportMethod exec
+#' @docType methods
+setGeneric(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="Mapping",
           definition=function(.Object,...)
           {
             ## default init.
             targets(.Object) <- NULL
-            .Object@values <- NULL
+            values(.Object) <- NULL
             transFunction(.Object) <- NULL
             transParameters(.Object) <- list()
             .Object@animation <- logical()
@@ -740,6 +761,8 @@ setMethod(f="fnNone", signature="Mapping",
           }
           )
 
+#' @rdname mapping.exec-methods
+#' @aliases exec,Mapping-method
 setMethod(f="exec", signature="Mapping",
           definition=function(.Object,svg)
           {
