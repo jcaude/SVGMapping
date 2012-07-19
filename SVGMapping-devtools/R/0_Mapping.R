@@ -151,7 +151,7 @@ setClass("Mapping",
                         values="ANY",
                         fn="ANY",
                         fn.parameters="list",
-                        animation="logical",
+                        animations="logical",
                         .values="ANY",
                         "VIRTUAL"
                         )
@@ -448,15 +448,62 @@ setGeneric(name="fnNone", function(.Object) { standardGeneric("fnNone") })
 #' @docType methods
 setGeneric(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
+#' Animation Flag
+#' 
+#' In some cases, mapping operations can be animated (\emph{eg} opacity fading).
+#' At the super class level this functionality is enable (or disable) using the
+#' animation flag.
+#' 
+#' The \code{animations(object)} method retrieves the animation flag
+#' 
+#' @name animations
+#' 
+#' @param object the mapping instance
+#' @return a boolean, \code{TRUE} if animation is enable and \code{FALSE} 
+#' otherwise
+#' 
+#' @rdname mapping.animations-methods
+#' @exportMethod animations
+#' @docType methods
+setGeneric(name="animations", function(object) { standardGeneric("animations")})
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{animations(object) <- value} method sets the animation flag
+#' 
+#' @name animations<-
+#' @rdname mapping.animations-methods
+#' @exportMethod animations<-
+#' @docType methods
+setGeneric(name="animations<-", function(.Object,value) { standardGeneric("animations<-")})
+
 setMethod(f="initialize", signature="Mapping",
           definition=function(.Object,...)
           {
+            ## - locals
+            .arg <- function(name,default.value) {
+              if(sum(grepl(paste("^",name,"$",sep=""), args.names)) > 0) {
+                v <- args[[grep(paste("^",name,"$",sep=""),args.names)]]
+                return(v)
+              }
+              else {
+                return(default.value)
+              }
+            }
+            
+            ## get args
+            args = list(...)
+            args.names = names(args)
+            if(is.null(args.names)) args.names <- list()
+            
             ## default init.
-            targets(.Object) <- NULL
-            values(.Object) <- NULL
-            transFunction(.Object) <- NULL
-            transParameters(.Object) <- list()
-            .Object@animation <- logical()
+            targets(.Object) <- .arg("targets",NULL)
+            values(.Object) <- .arg("values",NULL)
+            transFunction(.Object) <- .arg("trans.function",NULL)
+            transParameters(.Object) <- .arg("trans.parameters", list())
+            animations(.Object) <- .arg("animations", FALSE)
             
             ## eop
             return(.Object)
@@ -760,6 +807,31 @@ setMethod(f="fnNone", signature="Mapping",
             return(invisible(.Object))            
           }
           )
+
+#' @rdname mapping.animations-methods
+#' @aliases animations,Mapping-method
+setMethod(f="animations", signature="Mapping",
+          definition=function(object)
+          {
+            return(object@animations)  
+          }
+          )
+
+#' @name animatiosn<-
+#' @rdname mapping.animations-methods
+#' @aliases animations<-,Mapping-method
+setReplaceMethod(f="animations", signature="Mapping",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.logical(value) && length(value) > 0)
+                     stop("invalid 'value' argument, must be either TRUE or FALSE")
+                   
+                   ## assign & eop
+                   .Object@animations = value
+                   return(.Object)
+                 }
+                 )
 
 #' @rdname mapping.exec-methods
 #' @aliases exec,Mapping-method
