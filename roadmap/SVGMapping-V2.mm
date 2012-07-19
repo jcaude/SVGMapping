@@ -749,6 +749,18 @@
 </node>
 </node>
 </node>
+<node CREATED="1342212942618" ID="ID_1452419319" MODIFIED="1342213344737" TEXT="Units">
+<icon BUILTIN="edit"/>
+<node CREATED="1342212988725" ID="ID_6299497" MODIFIED="1342212991783" TEXT="fields"/>
+<node CREATED="1342212992068" ID="ID_866959047" MODIFIED="1342212993723" TEXT="methods"/>
+<node CREATED="1342212950141" ID="ID_1263564435" MODIFIED="1342212960080" TEXT="class">
+<node CREATED="1342212961205" ID="ID_641155671" MODIFIED="1342212963509" TEXT="Length"/>
+<node CREATED="1342212963821" ID="ID_1573798815" MODIFIED="1342212968403" TEXT="Coordinates"/>
+<node CREATED="1342212968804" ID="ID_1445739732" MODIFIED="1342213005716" TEXT="Angle">
+<icon BUILTIN="help"/>
+</node>
+</node>
+</node>
 </node>
 <node CREATED="1332425097294" ID="ID_1262260591" MODIFIED="1338538753942" TEXT="Mapping*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
@@ -994,7 +1006,7 @@
 </node>
 <node COLOR="#0000ff" CREATED="1331820165038" ID="ID_1249655687" MODIFIED="1331892642058" POSITION="left" TEXT="Functionalities">
 <font NAME="Andale Mono" SIZE="14"/>
-<node CREATED="1331820177214" ID="ID_679514348" MODIFIED="1332342596545" TEXT="SVG">
+<node CREATED="1331820177214" ID="ID_679514348" MODIFIED="1342213182373" TEXT="SVG">
 <node CREATED="1331821811210" ID="ID_1555623083" MODIFIED="1331892415422" TEXT="New">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1331821813834" ID="ID_1850571207" MODIFIED="1331892422830" TEXT=" canvas size">
@@ -1378,6 +1390,69 @@
 </node>
 </node>
 </node>
+<node CREATED="1342213021707" ID="ID_1954957652" MODIFIED="1342213356167" TEXT="Units">
+<icon BUILTIN="edit"/>
+<icon BUILTIN="up"/>
+<node CREATED="1342213024955" ID="ID_1053632002" MODIFIED="1342213148432">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      In the current version we handle all units as&#160;
+    </p>
+    <p>
+      characters .. but we can think of implementing
+    </p>
+    <p>
+      a better 'units' system using our own class. This
+    </p>
+    <p>
+      will allows units transformations ...
+    </p>
+    <p>
+      The latter is a mandatory if we want to move
+    </p>
+    <p>
+      to more complex operations like bounding-box
+    </p>
+    <p>
+      calculation
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
+<node CREATED="1342213150094" ID="ID_1102121977" MODIFIED="1342213338092" TEXT="Transform">
+<icon BUILTIN="edit"/>
+<node CREATED="1342213154390" ID="ID_609798674" MODIFIED="1342213173795" TEXT="Transform operations can be handle for bbox calculation"/>
+</node>
+<node CREATED="1342213175437" ID="ID_1565011940" MODIFIED="1342213338840" TEXT="Bbox">
+<icon BUILTIN="smily_bad"/>
+<icon BUILTIN="edit"/>
+<node CREATED="1342213186966" ID="ID_1148676924" MODIFIED="1342213287176">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      .. a real bbox calculation. As a side effect it will create
+    </p>
+    <p>
+      a big mess in the geom. class (vector, rectangle..) since they
+    </p>
+    <p>
+      use the bbox() methods .. anyway it will be great because we
+    </p>
+    <p>
+      won't need anymore to use a rendering engine (batik in our case).
+    </p>
+  </body>
+</html></richcontent>
+</node>
+</node>
 </node>
 <node CREATED="1331821079345" ID="ID_1708593696" MODIFIED="1333447536358" TEXT="Mapping">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
@@ -1439,7 +1514,7 @@
 <node CREATED="1331821492579" ID="ID_374254980" MODIFIED="1337611785233" TEXT="Mask Fill">
 <icon BUILTIN="messagebox_warning"/>
 </node>
-<node CREATED="1331821340844" ID="ID_95615391" MODIFIED="1331821348441" TEXT="Geometric Modification">
+<node CREATED="1331821340844" ID="ID_95615391" MODIFIED="1342718416696" TEXT="Geometric Modification">
 <node CREATED="1331821349013" ID="ID_799563844" MODIFIED="1331821351930" TEXT="Scale"/>
 <node CREATED="1331821353173" ID="ID_372365465" MODIFIED="1331821355666" TEXT="Rotation"/>
 <node CREATED="1331821357013" ID="ID_813811202" MODIFIED="1331821359546" TEXT="Translation"/>
@@ -1520,10 +1595,52 @@
 <node CREATED="1331826497646" ID="ID_1988171309" MODIFIED="1331826523877" TEXT="LCD Display"/>
 <node CREATED="1331826524463" ID="ID_458133774" MODIFIED="1331826547846" TEXT="Horizontal/Vertical Scaler"/>
 </node>
-<node CREATED="1331821910615" FOLDED="true" ID="ID_1280287846" MODIFIED="1332335944572" TEXT="Animation Engine">
+<node CREATED="1331821910615" FOLDED="true" ID="ID_1280287846" MODIFIED="1342718436288" TEXT="Animation Engine">
+<icon BUILTIN="yes"/>
 <node CREATED="1331826819061" ID="ID_1687242455" MODIFIED="1331826840100" TEXT="Circular pie"/>
 <node CREATED="1331826840894" ID="ID_1750047908" MODIFIED="1331826846532" TEXT="Vertical Filling"/>
 <node CREATED="1331826848174" ID="ID_1466804843" MODIFIED="1331826849788" TEXT="Fading"/>
+<node CREATED="1342718221004" ID="ID_1835175842" MODIFIED="1342718423098">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Maybe animations mustn't be tightly linked
+    </p>
+    <p>
+      with mapping operations.. I mean directly encapsulated
+    </p>
+    <p>
+      within the same class. We can think of a separated architecture
+    </p>
+    <p>
+      where animations are classes of their own and (loosely) &quot;linked&quot;
+    </p>
+    <p>
+      with the mapping class. There is some advantages with this strategy:
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      - animations can be defined/coded later one
+    </p>
+    <p>
+      - animations can be user-defined
+    </p>
+    <p>
+      - animations can be factorized
+    </p>
+    <p>
+      - we have a better controlled over the animation stack
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="edit"/>
+</node>
 </node>
 </node>
 </node>
