@@ -525,7 +525,10 @@ setMethod(f="targets", signature="Mapping",
 setReplaceMethod(f="targets", signature="Mapping",
                  definition=function(.Object,value)
                  {
-                   ## !!!!! CHECKING ??
+                   ## check
+                   if(!(is.null(value) || is.character(value) || is.list(value)))
+                     stop("invalid 'value' argument, must be NULL, a string or a list")
+                   
                    ## eop
                    .Object@targets <- value
                    return(.Object)
@@ -598,9 +601,14 @@ setReplaceMethod(f="transParameters", signature="Mapping",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.list(value) && 
-                     !(length(names(value)) == length(value)))
-                     stop("Invalid 'value' argument, must be a named list")
+                   if(!is.list(value))
+                     stop("Invalid 'value' argument, must be a list")                   
+                   if(length(value) > 0) {
+                     if(is.null(names(value)))
+                       stop("Invalid 'value' argument, must be a named list")
+                     if(!all(names(value) != ""))
+                       stop("Invalid 'value' argument, all list items must be named")
+                   }
                    
                    ## eop
                    .Object@fn.parameters <- value
