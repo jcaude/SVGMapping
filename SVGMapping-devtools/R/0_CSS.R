@@ -46,18 +46,6 @@ setClass("CSS",
          prototype=c(character(0),character(0))
          )
 
-## 0) .. THINK IF WE WANT TO SPLIT THE CLASS-TREE in NODE/RNODE OR
-##    .. USE THE SAME MULTIPLE-INHER FOR RECTANGLE COMMON DEFINITIONS
-##    .. Thus,  SVGNode
-##    ..        LAYOUT = SVGNode + Rectangle
-##    ..        SVGShape = SVGNode + CSS (requiered ? can we share with SVG here ?)
-##    ..        SVGRect = SVGShape + Rectangle
-##    ..        Mask = SVGNode + Rectangle
-##    ..        SVGLine = SVGNode + Vector (x1,y1,x2,y2)
-
-## 1) IMPLEMENT GET/SET + SUB-GET/SET FOR STYLE (see what we have in SVG.R)
-## 2) USE THIS CLASS TO COMPLETE SVGSHAPE + SVGRSHAPE
-
 #' CSS Attributes Accessors
 #'
 #' These methods are accessors to the \emph{CSS} attributes of an
