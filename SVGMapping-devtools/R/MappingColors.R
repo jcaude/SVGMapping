@@ -44,6 +44,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  use a \emph{transformation} function. This function must convert \emph{value}
 #'  to a linear scale that will be suitable for the color mapping operation.
 #'  
+#'  
+#'  
 #'  @exportClass "MappingColors"
 #'  @aliases MappingColors-class
 setClass("MappingColors",
@@ -57,16 +59,156 @@ setClass("MappingColors",
          contains="Mapping"
          )
 
+#' Target Style Attribute Accessors
+#' 
+#' Given the set of \emph{targets}, to apply the \code{MappingColors} operation
+#' one as to provide the name of the \emph{style} attribute to change. The 
+#' methods described here allow to specify this attribute.
+#' 
+#' The \code{targetAttribute(object)} method retrieves the current target style 
+#' attribute value.
+#' 
+#' @name targetAttribute
+#' 
+#' @param object the mapping colors instance object
+#' 
+#' @return a CSS style attribute name
+#' 
+#' @rdname mappingcolors.styleattr-methods
+#' @exportMethod targetAttribute
+#' @docType methods
 setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{targetAttribute(object) <- value} method sets the target style 
+#' attribute of the \code{object} mapping instance
+#' 
+#' @rdname mappingcolors.styleattr-methods
+#' @exportMethod targetAttribute<-
+#' @docType methods
 setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
+
+#' Mapping Colors vector accessors
+#' 
+#' These methods allow to get/set the list of colors that will be used by
+#' the \code{MappingColors} operation. 
+#' 
+#' The list of colors must be a vector of single color definition as a string. 
+#' Each color must be compliant with the SVG color definition standard. 
+#' A good practice is to give color as string using the \code{#RRGGBB} format.
+#' 
+#' The \code{mapColors(object)} method retrieve the current list of mapping 
+#' colors.
+#' 
+#' @name mapColors
+#' 
+#' @param object the mapping colors instance object
+#' 
+#' @return a vector of color definition (each as a string)
+#' 
+#' @rdname mappingcolors.mapcolors-methods
+#' @exportMethod mapColors
+#' @docType methods
 setGenericVerif(name="mapColors", function(object) { standardGeneric("mapColors") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{mapColors(objec) <- value} method sets the list of mapping colors
+#' of the \code{object} mapping instance.
+#' 
+#' @rdname mappingcolors.mapcolors-methods
+#' @exportMethod mapColors<-
+#' @docType methods
 setGenericVerif(name="mapColors<-", function(.Object,value) { standardGeneric("mapColors<-") })
-setGenericVerif(name="colRange.min", function(object) { standardGeneric("colRange.min") })
-setGenericVerif(name="colRange.min<-", function(.Object,value) { standardGeneric("colRange.min<-") })
-setGenericVerif(name="colRange.max", function(object) { standardGeneric("colRange.max") })
-setGenericVerif(name="colRange.max<-", function(.Object,value) { standardGeneric("colRange.max<-") })
-setGenericVerif(name="colRange", function(object) { standardGeneric("colRange") })
-setGenericVerif(name="colRange<-", function(.Object,value) { standardGeneric("colRange<-") })
+
+#' Mapping Input Range Accessors
+#' 
+#' \code{MappingColors} operation consists of a linear mapping between 
+#' \emph{values}, in a given range, and a list of colors. The following methods
+#' let get/set the input range of the (linear) mapping.
+#' 
+#' The mapping range is given as a numeric interval with lower and upper bounds. 
+#' If input \emph{values} are not included in the mapping range, then they are
+#' automatically bounded to this range. Thus, values outside of the input range
+#' are mapped to the first or last mapping colors. 
+#' 
+#' The \code{mapRange.min(object)} method returns the lower bound of the 
+#' mapping range.
+#' 
+#' @name mapRange.min
+#' 
+#' @param object the mapping colors instance object
+#' 
+#' @rdname mappingcolors.maprange-methods
+#' @exportMethod mapRange.min
+#' @docType methods
+setGenericVerif(name="mapRange.min", function(object) { standardGeneric("colRange.min") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{mapRange.min(object) <- value} method sets the lower bound of a 
+#' mapping range instance.
+#' 
+#' @rdname mappingcolors.maprange-methods
+#' @exportMethod mapRange.min<-
+#' @docType methods
+setGenericVerif(name="mapRange.min<-", function(.Object,value) { standardGeneric("colRange.min<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{mapRange.max(object)} method returns the upper bound of the 
+#' mapping range.
+#' 
+#' @rdname mappingcolors.maprange-methods
+#' @exportMethod mapRange.max
+#' @docType methods
+setGenericVerif(name="mapRange.max", function(object) { standardGeneric("colRange.max") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{mapRange.max(object) <- value} method sets the upper bound of a 
+#' mapping range instance.
+#' 
+#' @rdname mappingcolors.maprange-methods
+#' @exportMethod mapRange.max<- 
+#' @docType methods
+setGenericVerif(name="mapRange.max<-", function(.Object,value) { standardGeneric("colRange.max<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{mapRange(object)} methods returns, as a vector, the lower and upper 
+#' bounds of the mapping range.
+#' 
+#' @rdname mappingcolors.maprange-methods
+#' @exportMethod mapRange
+#' @docType methods
+setGenericVerif(name="mapRange", function(object) { standardGeneric("colRange") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{mapRange(object) <- value} methods sets the lower and upper bounds,
+#' stored in the vector \emph{value}, of a mapping colors instance. 
+#' 
+#' @rdname mappingcolors.maprange-methods
+#' @exportMethod mapRange<-
+#' @docType methods
+setGenericVerif(name="mapRange<-", function(.Object,value) { standardGeneric("colRange<-") })
+
 setGenericVerif(name="gradientType", function(object) { standardGeneric("gradientType") })
 setGenericVerif(name="gradientType<-", function(.Object,value) { standardGeneric("gradientType<-") })
 setGenericVerif(name="fillAngle", function(object) { standardGeneric("fillAngle") })

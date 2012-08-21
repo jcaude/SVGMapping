@@ -230,7 +230,7 @@ setGeneric(name="values<-", function(.Object,value) { standardGeneric("values<-"
 #' value and \code{p} a set of parameters given as a list. A complete example
 #' of a user transformation function is given in the example section
 #' 
-#' The \code{transFunction(object)} retrieve the current transformation 
+#' The \code{transFunction(object)} method retrieves the current transformation 
 #' function
 #' 
 #' @name transFunction
@@ -249,7 +249,7 @@ setGeneric(name="transFunction", function(object) { standardGeneric("transFuncti
 #' 
 #' 
 #' 
-#' The \code{transFunction(object) <- value} set the transformation function
+#' The \code{transFunction(object) <- value} method sets the transformation function
 #' for the \code{object} mapping instance
 #' 
 #' @rdname mapping.transfunc-methods
