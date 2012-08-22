@@ -35,7 +35,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #'  The conversion between \emph{values} and \emph{colors} use a linear mapping. 
 #'  To perform this operation we make several assumptions. First, we consider 
-#'  that \emph{values} are in the range [\code{colrange.min},\code{colrange.max}], 
+#'  that \emph{values} are in the range [\code{maprange.min},\code{maprange.max}], 
 #'  if  \emph{values} are rounded to these bounds. Second, \emph{colors} must
 #'  be given as a list using the following string format: \code{#RRGGBB}. Giving
 #'  many intermediate colors will usually result in smoother rendering. At this
@@ -44,15 +44,24 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  use a \emph{transformation} function. This function must convert \emph{value}
 #'  to a linear scale that will be suitable for the color mapping operation.
 #'  
+#'  The MappingColors operation can be operate using either \emph{univariate} 
+#'  dataset (ie. one numerical value for each \emph{target}) or 
+#'  \emph{multivariate} (ie. at leat two values per \emph{target}) datasets. In
+#'  the univariate case the the single numerical value is converted into an SVG 
+#'  color specification that is applied to the specified attribute. In the 
+#'  multivariate case, each numerical value is converted into a color 
+#'  specification using the same process previously described. Then, this set
+#'  is converted into a linear or radial gradient with a given angle (as 
+#'  specified in the mapping colors instance).
 #'  
-#'  
+#'  @name MappingColors
 #'  @exportClass "MappingColors"
 #'  @aliases MappingColors-class
 setClass("MappingColors",
          representation(target.attribute="character",
                         map.colors="vector",
-                        colrange.min="numeric",
-                        colrange.max="numeric",
+                        maprange.min="numeric",
+                        maprange.max="numeric",
                         gradient.type="character",
                         fill.angle="numeric"
                         ),
@@ -74,7 +83,7 @@ setClass("MappingColors",
 #' 
 #' @return a CSS style attribute name
 #' 
-#' @rdname mappingcolors.styleattr-methods
+#' @rdname mappingcolors.targetattr-methods
 #' @exportMethod targetAttribute
 #' @docType methods
 setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
@@ -86,7 +95,7 @@ setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targ
 #' The \code{targetAttribute(object) <- value} method sets the target style 
 #' attribute of the \code{object} mapping instance
 #' 
-#' @rdname mappingcolors.styleattr-methods
+#' @rdname mappingcolors.targetattr-methods
 #' @exportMethod targetAttribute<-
 #' @docType methods
 setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
@@ -147,7 +156,7 @@ setGenericVerif(name="mapColors<-", function(.Object,value) { standardGeneric("m
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.min
 #' @docType methods
-setGenericVerif(name="mapRange.min", function(object) { standardGeneric("colRange.min") })
+setGenericVerif(name="mapRange.min", function(object) { standardGeneric("mapRange.min") })
 
 #' <title already defined>
 #' 
@@ -156,10 +165,11 @@ setGenericVerif(name="mapRange.min", function(object) { standardGeneric("colRang
 #' The \code{mapRange.min(object) <- value} method sets the lower bound of a 
 #' mapping range instance.
 #' 
+#' @name mapRange.min<-
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.min<-
 #' @docType methods
-setGenericVerif(name="mapRange.min<-", function(.Object,value) { standardGeneric("colRange.min<-") })
+setGenericVerif(name="mapRange.min<-", function(.Object,value) { standardGeneric("mapRange.min<-") })
 
 #' <title already defined>
 #' 
@@ -168,10 +178,11 @@ setGenericVerif(name="mapRange.min<-", function(.Object,value) { standardGeneric
 #' The \code{mapRange.max(object)} method returns the upper bound of the 
 #' mapping range.
 #' 
+#' @name mapRange.max
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.max
 #' @docType methods
-setGenericVerif(name="mapRange.max", function(object) { standardGeneric("colRange.max") })
+setGenericVerif(name="mapRange.max", function(object) { standardGeneric("mapRange.max") })
 
 #' <title already defined>
 #' 
@@ -180,10 +191,11 @@ setGenericVerif(name="mapRange.max", function(object) { standardGeneric("colRang
 #' The \code{mapRange.max(object) <- value} method sets the upper bound of a 
 #' mapping range instance.
 #' 
+#' @name mapRange.max<-
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.max<- 
 #' @docType methods
-setGenericVerif(name="mapRange.max<-", function(.Object,value) { standardGeneric("colRange.max<-") })
+setGenericVerif(name="mapRange.max<-", function(.Object,value) { standardGeneric("mapRange.max<-") })
 
 #' <title already defined>
 #' 
@@ -192,10 +204,11 @@ setGenericVerif(name="mapRange.max<-", function(.Object,value) { standardGeneric
 #' The \code{mapRange(object)} methods returns, as a vector, the lower and upper 
 #' bounds of the mapping range.
 #' 
+#' @name mapRange
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange
 #' @docType methods
-setGenericVerif(name="mapRange", function(object) { standardGeneric("colRange") })
+setGenericVerif(name="mapRange", function(object) { standardGeneric("mapRange") })
 
 #' <title already defined>
 #' 
@@ -204,36 +217,121 @@ setGenericVerif(name="mapRange", function(object) { standardGeneric("colRange") 
 #' The \code{mapRange(object) <- value} methods sets the lower and upper bounds,
 #' stored in the vector \emph{value}, of a mapping colors instance. 
 #' 
+#' @name mapRange<-
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange<-
 #' @docType methods
-setGenericVerif(name="mapRange<-", function(.Object,value) { standardGeneric("colRange<-") })
+setGenericVerif(name="mapRange<-", function(.Object,value) { standardGeneric("mapRange<-") })
 
+#' Gradient Specification Accessors
+#' 
+#' When using multivariate input values (see the \code{\link{MappingColors}} 
+#' class definition) the mapping operation results in the assignment of a 
+#' gradient to the target style attribute. The methods described here allow to
+#' specify the type of gradient (either linear or radial) and the filling 
+#' angle.
+#' 
+#' The \code{gradientType(object)} method returns the type of gradient, 
+#' either \emph{linear} or \emph{radial}, generated.
+#' 
+#' @name gradientType
+#' @rdname mappingcolors.gradient-methods
+#' @exportMethod gradientType
+#' @docType methods
 setGenericVerif(name="gradientType", function(object) { standardGeneric("gradientType") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{gradientType(object) <- value} method sets the type of gradient, 
+#' here \emph{value} must be either \code{'linear'} or \code{'radial'}, to 
+#' generate.
+#' 
+#' @name gradientType<-
+#' @rdname mappingcolors.gradient-methods
+#' @exportMethod gradientType<-
+#' @docType methods 
 setGenericVerif(name="gradientType<-", function(.Object,value) { standardGeneric("gradientType<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{fillAngle(object)} method returns the filling angle of the 
+#' gradient.
+#' 
+#' @name fillAngle
+#' @rdname mappingcolors.gradient-methods
+#' @exportMethod fillAngle
+#' @docType methods
 setGenericVerif(name="fillAngle", function(object) { standardGeneric("fillAngle") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{fillAngle(object) <- value} method sets the filling angle value 
+#' of the gradient to generate.
+#' 
+#' @name fillAngle<-
+#' @rdname mappingcolors.gradient-methods
+#' @exportMethod fillAngle<-
+#' @docType methods
 setGenericVerif(name="fillAngle<-", function(.Object,value) { standardGeneric("fillAngle<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{exec(object,svg)} method is called to process the input \emph{svg}
+#' document with the current \emph{object} mapping colors instance.
+#' 
+#'  @name exec
+#'  @rdname mapping.exec-methods
+#'  @exportMethod exec
+#'  @docType methods 
 setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingColors",
           definition=function(.Object,...)
           {            
+            ## - locals
+            .arg <- function(name,default.value) {
+              if(sum(grepl(paste("^",name,"$",sep=""), args.names)) > 0) {
+                v <- args[[grep(paste("^",name,"$",sep=""),args.names)]]
+                return(v)
+              }
+              else {
+                return(default.value)
+              }
+            }
+            
             ## super
-            .Object <- callNextMethod()
+            .Object <- callNextMethod(.Object,...)
 
+            ## get args
+            args = list(...)
+            args.names = names(args)
+            if(is.null(args.names)) args.names <- list()
+            
             ## detault init.
-            .Object@map.colors <- vector()
-            .Object@colrange.min <- 0
-            .Object@colrange.max <- 1
-            .Object@target.attribute <- character()
-            .Object@fill.angle <- 0
-            .Object@gradient.type <- "linear"
+            targetAttribute(.Object) <- .arg("target.attribute",character())
+            mapColors(.Object) <- .arg("map.colors", vector())
+            mapRange(.Object) <- .arg("map.range",c(0,1))
+            mapRange.min(.Object) <- .arg("map.range.min",0)
+            mapRange.max(.Object) <- .arg("map.range.max",1)
+            gradientType(.Object) <- .arg("gradient.type","linear")
+            fillAngle(.Object) <- .arg("fill.angle", 0)
 
             ## eop
             return(.Object)
           }
           )
 
+
+#' @aliases targetAttribute,MappingColors-method
+#' @rdname mappingcolors.targetattr-methods
 setMethod(f="targetAttribute", signature="MappingColors",
           definition=function(object)
           {
@@ -241,6 +339,9 @@ setMethod(f="targetAttribute", signature="MappingColors",
           }
           )
 
+#' @name targetAttribute<-
+#' @aliases targetAttribute<-,MappingColors-method
+#' @rdname mappingcolors.targetattr-methods
 setReplaceMethod(f="targetAttribute", signature="MappingColors",
                  definition=function(.Object,value)
                  {
@@ -254,6 +355,8 @@ setReplaceMethod(f="targetAttribute", signature="MappingColors",
                  }
                  )
 
+#' @aliases mapColors,MappingColors-method
+#' @rdname mappingcolors.mapcolors-methods
 setMethod(f="mapColors", signature="MappingColors",
           definition=function(object)
           {
@@ -261,6 +364,9 @@ setMethod(f="mapColors", signature="MappingColors",
           }
           )
 
+#' @name mapColors<-
+#' @aliases mapColors<-,MappingColors-method
+#' @rdname mappingcolors.mapcolors-methods
 setReplaceMethod(f="mapColors", signature="MappingColors",
                  definition=function(.Object,value)
                  {
@@ -274,68 +380,85 @@ setReplaceMethod(f="mapColors", signature="MappingColors",
                  }
                  )
 
-setMethod(f="colRange.min", signature="MappingColors",
+#' @aliases mapRange.min,MappingColors-method
+#' @rdname mappingcolors.maprange-methods
+setMethod(f="mapRange.min", signature="MappingColors",
           definition=function(object)
           {
-            return(object@colrange.min)
+            return(object@maprange.min)
           }
           )
 
-setReplaceMethod(f="colRange.min", signature="MappingColors",
+#' @name mapRange.min<-
+#' @aliases mapRange.min<-,MappingColors-method
+#' @rdname mappingcolors.maprange-methods
+setReplaceMethod(f="mapRange.min", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
                    if(!is.numeric(value))
-                     stop("Minimum Color Range 'value' must be numeric")
+                     stop("Mapping Range minimum 'value' must be numeric")
 
                    ## init.
-                   .Object@colrange.min <- value
+                   .Object@maprange.min <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="colRange.max", signature="MappingColors",
+#' @aliases mapRange.max,MappingColors-method
+#' @rdname mappingcolors.maprange-methods
+setMethod(f="mapRange.max", signature="MappingColors",
           definition=function(object)
           {
-            return(object@colrange.max)
+            return(object@maprange.max)
           }
           )
 
-setReplaceMethod(f="colRange.max", signature="MappingColors",
+#' @name mapRange.max<-
+#' @aliases mapRange.max<-,MappingColors-method
+#' @rdname mappingcolors.maprange-methods
+setReplaceMethod(f="mapRange.max", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
                    if(!is.numeric(value))
-                     stop("Maximum Color Range 'value' must be numeric")
+                     stop("Mapping Range maximum 'value' must be numeric")
 
                    ## init.
-                   .Object@colrange.max <- value
+                   .Object@maprange.max <- value
                    return(.Object)
                  }
                  )
 
-setMethod(f="colRange", signature="MappingColors",
+#' @aliases mapRange,MappingColors-method
+#' @rdname mappingcolors.maprange-methods
+setMethod(f="mapRange", signature="MappingColors",
           definition=function(object)
           {
-            return(c(object@colrange.min,object@colrange.max))
+            return(c(object@maprange.min,object@maprange.max))
           }
           )
 
-setReplaceMethod(f="colRange", signature="MappingColors",
+#' @name mapRange<-
+#' @aliases mapRange<-,MappingColors-method
+#' @rdname mappingcolors.maprange-methods
+setReplaceMethod(f="mapRange", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
                    if(!is.vector(value) && (length(value) != 2))
-                     stop("Colors Range 'value' must be a vector such as: c(min,max)")
+                     stop("Mapping Range 'value' must be a vector such as: c(min,max)")
 
                    ## init.
                    value <- unlist(value)
-                   .Object@colrange.min <- value[[1]]
-                   .Object@colrange.max <- value[[2]]
+                   mapRange.min(.Object) <- value[[1]]
+                   mapRange.max(.Object) <- value[[2]]
                    return(.Object)
                  }
                  )
 
+#' @aliases gradientType,MappingColors-method
+#' @rdname mappingcolors.gradient-methods
 setMethod(f="gradientType", signature="MappingColors",
           definition=function(object)
           {
@@ -343,6 +466,9 @@ setMethod(f="gradientType", signature="MappingColors",
           }
           )
 
+#' @name gradientType<-
+#' @aliases gradientType<-,MappingColors-method
+#' @rdname mappingcolors.gradient-methods
 setReplaceMethod(f="gradientType", signature="MappingColors",
                  definition=function(.Object,value)
                  {
@@ -357,6 +483,8 @@ setReplaceMethod(f="gradientType", signature="MappingColors",
                  }
                  )
 
+#' @aliases fillAngle,MappingColors-method
+#' @rdname mappingcolors.gradient-methods
 setMethod(f="fillAngle", signature="MappingColors",
           definition=function(object)
           {
@@ -364,6 +492,9 @@ setMethod(f="fillAngle", signature="MappingColors",
           }
           )
 
+#' @name fillAngle<-
+#' @aliases fillAngle<-,MappingColors-method
+#' @rdname mappingcolors.gradient-methods
 setReplaceMethod(f="fillAngle", signature="MappingColors",
                  definition=function(.Object,value)
                  {
@@ -378,6 +509,8 @@ setReplaceMethod(f="fillAngle", signature="MappingColors",
                  }
                  )
 
+#' @aliases exec,MappingColors-method
+#' @rdname mapping.exec-methods
 setMethod(f="exec", signature="MappingColors",
           definition=function(.Object, svg)
           {
@@ -442,8 +575,8 @@ setMethod(f="exec", signature="MappingColors",
             ## init.
             colors <- .Object@map.colors
             clen <- length(colors)
-            cmin <- .Object@colrange.min
-            cscale <- (clen-1) / (.Object@colrange.max - cmin)
+            cmin <- .Object@maprange.min
+            cscale <- (clen-1) / (.Object@maprange.max - cmin)
             ncond <- ncol(.Object@values)
             if(is.null(ncond)) ncond <- 1
             angle <- .Object@fill.angle
@@ -490,7 +623,7 @@ MappingColors.factory <- function(data,targets=rownames(data),
   values(mapC) <- data
   targets(mapC) <- targets
   mapColors(mapC) <- colors
-  colRange(mapC) <- colors.range
+  mapRange(mapC) <- colors.range
   targetAttribute(mapC) <- attribute
   gradientType(mapC) <- gradient.type
   fillAngle(mapC) <- fill.angle
@@ -514,7 +647,7 @@ MappingFillColors.factory <- function(data,targets=rownames(data),
   values(mapC) <- data
   targets(mapC) <- targets
   mapColors(mapC) <- colors
-  colRange(mapC) <- colors.range
+  mapRange(mapC) <- colors.range
   targetAttribute(mapC) <- "style::fill"
   gradientType(mapC) <- gradient.type
   fillAngle(mapC) <- fill.angle
@@ -539,7 +672,7 @@ MappingStrokeColors.factory <- function(data,targets=rownames(data),
   values(mapC) <- data
   targets(mapC) <- targets
   mapColors(mapC) <- colors
-  colRange(mapC) <- colors.range
+  mapRange(mapC) <- colors.range
   targetAttribute(mapC) <- "style::stroke"
   gradientType(mapC) <- gradient.type
   fillAngle(mapC) <- fill.angle
