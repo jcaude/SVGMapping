@@ -611,9 +611,72 @@ setMethod(f="exec", signature="MappingColors",
 
 ## F A C T O R Y
 ##--------------
+
+## generated using the colorRamps package and 'cat(deparse(blue2red(50)))'
+.default_mapping_colors <- c("#0000FF", "#000BFF", "#0015FF", "#0020FF", 
+                             "#002BFF", "#0035FF", "#0040FF", "#004AFF", 
+                             "#0055FF", "#0060FF", "#006AFF", "#0075FF",  
+                             "#0080FF", "#008AFF", "#0095FF", "#009FFF", 
+                             "#00AAFF", "#00B5FF", "#00BFFF", "#00CAFF", 
+                             "#00D4FF", "#00DFFF", "#00EAFF", "#00F4FF",  
+                             "#00FFFF", "#FFF500", "#FFEB00", "#FFE000", 
+                             "#FFD600", "#FFCC00", "#FFC200", "#FFB800", 
+                             "#FFAD00", "#FFA300", "#FF9900", "#FF8F00",  
+                             "#FF8500", "#FF7A00", "#FF7000", "#FF6600", 
+                             "#FF5C00", "#FF5200", "#FF4700", "#FF3D00", 
+                             "#FF3300", "#FF2900", "#FF1F00", "#FF1400",  
+                             "#FF0A00", "#FF0000")
+
+#' Mapping Colors Factory
+#' 
+#' This function returns a \code{\link{MappingColors}} instance that will change
+#' the filling and stroke colors of a template according to input values.
+#' 
+#' Once defined a \code{MappingColors} instance can be applied to the template 
+#' using the \code{mapping} function.
+#' 
+#' @name MappingColors.factory
+#'   
+#' @param data is the input datasets to use for this mapping
+#'   
+#' @param targets is the list of template node targets to alter. This can be a 
+#'   list of SVG nodes identifiers or any node selection expression. By default 
+#'   the targets are the row names of the input data variable.
+#'   
+#' @param target.attribute
+#'   
+#' @param map.colors to use by the mapping operations. The default value is a 
+#'   color map that runs from blue to red, with 50 intermediates levels. This 
+#'   color map has been generated using the \code{blue2red} function from the 
+#'   \strong{colorRamps} package.
+#'   
+#' @param map.range is a vector that contains the bounds of the linear 
+#'   transformation used to convert numerical values into colors. The default 
+#'   range value is \eqn{[0,1]}{[0,1]}. Outliers are converted to the closest 
+#'   bound of this range. For more details about map ranges see the 
+#'   \code{\link{mapRange}} method.
+#'   
+#' @param gradient.type defines the kind of gradient (\emph{linear} or 
+#'   \emph{radial}) to use when dealing with multivariate input datasets. By 
+#'   default a \emph{linear} gradient is selected.
+#'   
+#' @param fill.angle is the filling angle of the gradient. The default value for
+#'   this parameter is 0.
+#'   
+#' @param fn is the transformation function that is applied onto the data, prior
+#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
+#'   By default the \emph{identity} function, which do not transformed the input
+#'   data, is assigned to the newly created instance.
+#'   
+#' @param fn.parameters is the list of parameters values associated with the 
+#'   transformation function.
+#'   
+#' @return a \code{\link{MappingColors}} object
+#'  
+#' @export MappingColors.factory 
 MappingColors.factory <- function(data,targets=rownames(data),
-                                  colors=microarrayColors,colors.range=c(-2,2),
-                                  attribute="style::fill",
+                                  target.attribute="style::fill",
+                                  map.colors=microarrayColors,map.range=c(-2,2),
                                   gradient.type="linear", fill.angle=0,
                                   fn="Identity", fn.parameters=list()) {
   ## init.
