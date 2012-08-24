@@ -673,7 +673,39 @@ setMethod(f="exec", signature="MappingColors",
 #'   
 #' @return a \code{\link{MappingColors}} object
 #'  
-#' @export MappingColors.factory 
+#' @export MappingColors.factory
+#' 
+#' @examples
+#' ## load 'basic-sample.svg' a demo SVG template. 
+#' ## template <- SVG.factory(file=system.file("extdata/basic-sample.svg",package="SVGMapping))
+#' 
+#' ## In this demo template, the top six circles are identified with the 
+#' ## 'circle.A' ... 'circle.F' svg ID attributes. We will generate a list that
+#' ## contains such identifiers..
+#' circles <- paste("circle.",LETTERS[1:6],sep="")
+#' 
+#' ## Then, we will use the following dummy dataset. This data.frame contains 
+#' ## three columns named x,y and z. Row names are the circles identifiers.
+#' dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+#'                    y=rep(3,times=6),
+#'                    z=runif(6,min=-5,max=5),
+#'                    row.names=circles)
+#'                    
+#' ## ----- MappingColors example 1
+#' ## First, let's create a MappingColors instance using the default factory
+#' ## function. Then, we apply this mapping object to the template, and show
+#' ## it in the default browser.
+#' color.map <- MappingColors.factory(data[,"x",drop=FALSE])
+#' ## mapping(template,color.map)
+#' ## show(template)
+#'
+#' ## ----- MappingColors example 2
+#' ## This time we will create a new instance with different colors, and use
+#' ## a dedicated transformation function to simulate a three states filter.
+#' ## data values inferior to 2 are colored in red, in the range [2,4] in 
+#' ## orange and above 4 in green.
+#' cust.colors <- c("#FF0000","#FFA500","#0000FF")
+#'  
 MappingColors.factory <- function(data,targets=rownames(data),
                                   target.attribute="style::fill",
                                   map.colors=microarrayColors,map.range=c(-2,2),
