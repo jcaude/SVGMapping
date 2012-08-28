@@ -612,25 +612,42 @@ setMethod(f="exec", signature="MappingColors",
 ## F A C T O R Y
 ##--------------
 
-## generated using the colorRamps package and 'cat(deparse(blue2red(50)))'
-.default_mapping_colors <- c("#0000FF", "#000BFF", "#0015FF", "#0020FF", 
-                             "#002BFF", "#0035FF", "#0040FF", "#004AFF", 
-                             "#0055FF", "#0060FF", "#006AFF", "#0075FF",  
-                             "#0080FF", "#008AFF", "#0095FF", "#009FFF", 
-                             "#00AAFF", "#00B5FF", "#00BFFF", "#00CAFF", 
-                             "#00D4FF", "#00DFFF", "#00EAFF", "#00F4FF",  
-                             "#00FFFF", "#FFF500", "#FFEB00", "#FFE000", 
-                             "#FFD600", "#FFCC00", "#FFC200", "#FFB800", 
-                             "#FFAD00", "#FFA300", "#FF9900", "#FF8F00",  
-                             "#FF8500", "#FF7A00", "#FF7000", "#FF6600", 
-                             "#FF5C00", "#FF5200", "#FF4700", "#FF3D00", 
-                             "#FF3300", "#FF2900", "#FF1F00", "#FF1400",  
-                             "#FF0A00", "#FF0000")
+## generated using the colorRamps package and 'cat(deparse(blue2red(100)))'
+.default_mapping_colors <- c("#0000FF", "#0005FF", "#000AFF", "#000FFF", 
+                             "#0014FF", "#001AFF", "#001FFF", "#0024FF", 
+                             "#0029FF", "#002EFF", "#0033FF", "#0038FF",  
+                             "#003DFF", "#0042FF", "#0047FF", "#004DFF", 
+                             "#0052FF", "#0057FF", "#005CFF", "#0061FF", 
+                             "#0066FF", "#006BFF", "#0070FF", "#0075FF",  
+                             "#007AFF", "#0080FF", "#0085FF", "#008AFF", 
+                             "#008FFF", "#0094FF", "#0099FF", "#009EFF", 
+                             "#00A3FF", "#00A8FF", "#00ADFF", "#00B3FF",  
+                             "#00B8FF", "#00BDFF", "#00C2FF", "#00C7FF",
+                             "#00CCFF", "#00D1FF", "#00D6FF", "#00DBFF",
+                             "#00E0FF", "#00E6FF", "#00EBFF", "#00F0FF", 
+                             "#00F5FF", "#00FAFF", "#00FFFF", "#FFFA00", 
+                             "#FFF500", "#FFEF00", "#FFEA00", "#FFE500",
+                             "#FFE000", "#FFDB00", "#FFD500", "#FFD000", 
+                             "#FFCB00", "#FFC600", "#FFC100", "#FFBB00",
+                             "#FFB600", "#FFB100", "#FFAC00", "#FFA700",
+                             "#FFA100", "#FF9C00", "#FF9700", "#FF9200", 
+                             "#FF8D00", "#FF8700", "#FF8200", "#FF7D00",
+                             "#FF7800", "#FF7200", "#FF6D00", "#FF6800",
+                             "#FF6300", "#FF5E00", "#FF5800", "#FF5300",  
+                             "#FF4E00", "#FF4900", "#FF4400", "#FF3E00", 
+                             "#FF3900", "#FF3400", "#FF2F00", "#FF2A00",
+                             "#FF2400", "#FF1F00", "#FF1A00", "#FF1500",  
+                             "#FF1000", "#FF0A00", "#FF0500", "#FF0000")
+
+## an hand made gradient tailored for microarrays. It goes from green to red 
+## with a white band at the center. This gradient has 1,000 levels.
+.microarrays_mapping_colors <- load(system.file("inst/extdata/microarrayColors.rda",
+                                                package="SVGMappingDevtools"))
 
 #' Mapping Colors Factory
 #' 
 #' This function returns a \code{\link{MappingColors}} instance that will change
-#' the filling and stroke colors of a template according to input values.
+#' the filling and stroke colors of template targets according to input values.
 #' 
 #' Once defined a \code{MappingColors} instance can be applied to the template 
 #' using the \code{mapping} function.
@@ -646,7 +663,7 @@ setMethod(f="exec", signature="MappingColors",
 #' @param target.attribute
 #'   
 #' @param map.colors to use by the mapping operations. The default value is a 
-#'   color map that runs from blue to red, with 50 intermediates levels. This 
+#'   color map that runs from blue to red, with 100 intermediates levels. This 
 #'   color map has been generated using the \code{blue2red} function from the 
 #'   \strong{colorRamps} package.
 #'   
@@ -704,79 +721,285 @@ setMethod(f="exec", signature="MappingColors",
 #' ## a dedicated transformation function to simulate a three states filter.
 #' ## data values inferior to 2 are colored in red, in the range [2,4] in 
 #' ## orange and above 4 in green.
+#' 
+#' ## dummy data
+#' data <- data.frame(state=runif(6,min=0,max=5),
+#'                    row.names=circles)
+#' 
+#' ## colors vector 
 #' cust.colors <- c("#FF0000","#FFA500","#0000FF")
-#'  
-MappingColors.factory <- function(data,targets=rownames(data),
-                                  target.attribute="style::fill",
-                                  map.colors=microarrayColors,map.range=c(-2,2),
-                                  gradient.type="linear", fill.angle=0,
-                                  fn="Identity", fn.parameters=list()) {
+#' 
+#' ## user transformation function
+#' cut.fn <- function(x,p) {return(ifelse(x<2,0,ifelse(x>4,2,1)))}
+#' 
+#' ## create & init. the mapping color operation
+#' traffic.map <- MappingColors.factory(data[,"x",drop=FALSE])
+#' mapColors(traffic.map) <- colors
+#' mapRange(traffic.map) <- c(0,2)
+#' fnUser(traffic.map,cut.fn,list())
+#' 
+#' ## apply & show mapping results
+#' ## mapping(template,traffic.map)
+#' ## show(template)
+MappingColors.factory <- function(data,targets,target.attribute,
+                                  map.colors,map.range,
+                                  gradient.type, fill.angle,
+                                  fn, fn.parameters) {
   ## init.
-  mapC <- new("MappingColors")
-
+  args <- list("MappingColors")
+  args <- c(args,target.attribute=c("style::fill","style::stroke"))
+  
   ## fill mapping structure
-  values(mapC) <- data
-  targets(mapC) <- targets
-  mapColors(mapC) <- colors
-  mapRange(mapC) <- colors.range
-  targetAttribute(mapC) <- attribute
-  gradientType(mapC) <- gradient.type
-  fillAngle(mapC) <- fill.angle
-  if(missing(fn.parameters))
-    mapC <- setFunction(mapC,fn)
-  else
-    mapC <- setFunction(mapC,fn,fn.parameters)
+  if(!missing(data)) args <- c(args,values=data)
+  args <- c(args,targets=ifelse(missing("targets",row.names(data),targets)))
+  if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
+  if(!missing(map.range)) args <- c(args,map.range=map.range)
+  if(!missing(gradient.type)) args <- c(args,gradient.type)
+  if(!missing(fill.ange)) args <- c(args,fill.ange=fill.angle)
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapC <- do.call(new,args)
   
   ## eop
   return(mapC)
 }
 
-MappingFillColors.factory <- function(data,targets=rownames(data),
-                                      colors=microarrayColors,colors.range=c(-2,2),
-                                      gradient.type="linear", fill.angle=0,
-                                      fn="Identity", fn.parameters=list()) {
+#' Mapping Filling Colors Factory
+#' 
+#' This function returns a \code{\link{MappingColors}} instance that will change
+#' the \strong{filling} colors of template targets according to input values.
+#' 
+#' For more details about Mapping Colors factory function see the 
+#' \code{\link{MappingColors.factory}} function documentation.
+#' 
+#' @name MappingFillColors.factory
+#'   
+#' @param data is the input datasets to use for this mapping
+#'   
+#' @param targets is the list of template node targets to alter. This can be a 
+#'   list of SVG nodes identifiers or any node selection expression. By default 
+#'   the targets are the row names of the input data variable.
+#'   
+#' @param target.attribute
+#'   
+#' @param map.colors to use by the mapping operations. The default value is a 
+#'   color map that runs from blue to red, with 100 intermediates levels. This 
+#'   color map has been generated using the \code{blue2red} function from the 
+#'   \strong{colorRamps} package.
+#'   
+#' @param map.range is a vector that contains the bounds of the linear 
+#'   transformation used to convert numerical values into colors. The default 
+#'   range value is \eqn{[0,1]}{[0,1]}. Outliers are converted to the closest 
+#'   bound of this range. For more details about map ranges see the 
+#'   \code{\link{mapRange}} method.
+#'   
+#' @param gradient.type defines the kind of gradient (\emph{linear} or 
+#'   \emph{radial}) to use when dealing with multivariate input datasets. By 
+#'   default a \emph{linear} gradient is selected.
+#'   
+#' @param fill.angle is the filling angle of the gradient. The default value for
+#'   this parameter is 0.
+#'   
+#' @param fn is the transformation function that is applied onto the data, prior
+#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
+#'   By default the \emph{identity} function, which do not transformed the input
+#'   data, is assigned to the newly created instance.
+#'   
+#' @param fn.parameters is the list of parameters values associated with the 
+#'   transformation function.
+#'   
+#' @return a \code{\link{MappingColors}} object
+#'   
+#' @export MappingFillColors.factory
+#' @seealso \code{\link{MappingColors.factory}} function and 
+#'   \code{\link{MappingColors}} class definition
+#'   
+#' @examples
+#' ## see also the manpage of MappingColors.factory for additional examples. 
+#' 
+#' ## load 'basic-sample.svg' a demo SVG template. 
+#' ## template <- SVG.factory(file=system.file("extdata/basic-sample.svg",package="SVGMapping))
+#' 
+#' ## In this demo template, the top six circles are identified with the 
+#' ## 'circle.A' ... 'circle.F' svg ID attributes. We will generate a list that
+#' ## contains such identifiers..
+#' circles <- paste("circle.",LETTERS[1:6],sep="")
+#' 
+#' ## Then, we will use the following dummy dataset. This data.frame contains 
+#' ## three columns named x,y and z. Row names are the circles identifiers.
+#' dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+#'                    row.names=circles)
+#'                    
+#' ## ----- Mapping Filling Colors example 
+#' ## First, let's create a MappingColors instance using the factory
+#' ## function. Then, we apply this mapping object to the template, and show
+#' ## it in the default browser.
+#' color.map <- MappingFillColors.factory(data[,"x",drop=FALSE])
+#' ## mapping(template,color.map)
+#' ## show(template)
+MappingFillColors.factory <- function(data,targets,target.attribute,
+                                      map.colors,map.range,
+                                      gradient.type, fill.angle,
+                                      fn, fn.parameters) {
   ## init.
-  mapC <- new("MappingColors")
-
+  args <- list("MappingColors")
+  args <- c(args,target.attribute="style::fill")
+  
   ## fill mapping structure
-  values(mapC) <- data
-  targets(mapC) <- targets
-  mapColors(mapC) <- colors
-  mapRange(mapC) <- colors.range
-  targetAttribute(mapC) <- "style::fill"
-  gradientType(mapC) <- gradient.type
-  fillAngle(mapC) <- fill.angle
-  if(missing(fn.parameters))
-    mapC <- setFunction(mapC,fn)
-  else
-    mapC <- setFunction(mapC,fn,fn.parameters)
+  if(!missing(data)) args <- c(args,values=data)
+  args <- c(args,targets=ifelse(missing("targets",row.names(data),targets)))
+  if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
+  if(!missing(map.range)) args <- c(args,map.range=map.range)
+  if(!missing(gradient.type)) args <- c(args,gradient.type)
+  if(!missing(fill.ange)) args <- c(args,fill.ange=fill.angle)
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapC <- do.call(new,args)
   
   ## eop
   return(mapC)
-  
 }
 
-MappingStrokeColors.factory <- function(data,targets=rownames(data),
-                                        colors=microarrayColors,colors.range=c(-2,2),
-                                        gradient.type="linear", fill.angle=0,
-                                        fn="Identity", fn.parameters=list()) {
+#' Mapping Stroke Colors Factory
+#' 
+#' This function returns a \code{\link{MappingColors}} instance that will change
+#' the \strong{stroke} colors of template targets according to input values.
+#' 
+#' For more details about Mapping Colors factory function see the 
+#' \code{\link{MappingColors.factory}} function documentation.
+#' 
+#' @name MappingStrokeColors.factory
+#'   
+#' @param data is the input datasets to use for this mapping
+#'   
+#' @param targets is the list of template node targets to alter. This can be a 
+#'   list of SVG nodes identifiers or any node selection expression. By default 
+#'   the targets are the row names of the input data variable.
+#'   
+#' @param target.attribute
+#'   
+#' @param map.colors to use by the mapping operations. The default value is a 
+#'   color map that runs from blue to red, with 100 intermediates levels. This 
+#'   color map has been generated using the \code{blue2red} function from the 
+#'   \strong{colorRamps} package.
+#'   
+#' @param map.range is a vector that contains the bounds of the linear 
+#'   transformation used to convert numerical values into colors. The default 
+#'   range value is \eqn{[0,1]}{[0,1]}. Outliers are converted to the closest 
+#'   bound of this range. For more details about map ranges see the 
+#'   \code{\link{mapRange}} method.
+#'   
+#' @param gradient.type defines the kind of gradient (\emph{linear} or 
+#'   \emph{radial}) to use when dealing with multivariate input datasets. By 
+#'   default a \emph{linear} gradient is selected.
+#'   
+#' @param fill.angle is the filling angle of the gradient. The default value for
+#'   this parameter is 0.
+#'   
+#' @param fn is the transformation function that is applied onto the data, prior
+#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
+#'   By default the \emph{identity} function, which do not transformed the input
+#'   data, is assigned to the newly created instance.
+#'   
+#' @param fn.parameters is the list of parameters values associated with the 
+#'   transformation function.
+#'   
+#' @return a \code{\link{MappingColors}} object
+#'   
+#' @export MappingStrokeColors.factory
+#' @seealso \code{\link{MappingColors.factory}} function and 
+#'   \code{\link{MappingColors}} class definition
+#'   
+#' @examples
+#' ## see also the manpage of MappingColors.factory for additional examples. 
+#' 
+#' ## load 'basic-sample.svg' a demo SVG template. 
+#' ## template <- SVG.factory(file=system.file("extdata/basic-sample.svg",package="SVGMapping))
+#' 
+#' ## In this demo template, the top six circles are identified with the 
+#' ## 'circle.A' ... 'circle.F' svg ID attributes. We will generate a list that
+#' ## contains such identifiers..
+#' circles <- paste("circle.",LETTERS[1:6],sep="")
+#' 
+#' ## Then, we will use the following dummy dataset. This data.frame contains 
+#' ## three columns named x,y and z. Row names are the circles identifiers.
+#' dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+#'                    row.names=circles)
+#'                    
+#' ## ----- Mapping Stroke Colors example 
+#' ## First, let's create a MappingColors instance using the factory
+#' ## function. Then, we apply this mapping object to the template, and show
+#' ## it in the default browser.
+#' color.map <- MappingStrokeColors.factory(data[,"x",drop=FALSE])
+#' ## mapping(template,color.map)
+#' ## show(template)
+MappingStrokeColors.factory <- function(data,targets,target.attribute,
+                                        map.colors,map.range,
+                                        gradient.type, fill.angle,
+                                        fn, fn.parameters) {
   ## init.
-  mapC <- new("MappingColors")
-
+  args <- list("MappingColors")
+  args <- c(args,target.attribute="style::stroke")
+  
   ## fill mapping structure
-  values(mapC) <- data
-  targets(mapC) <- targets
-  mapColors(mapC) <- colors
-  mapRange(mapC) <- colors.range
-  targetAttribute(mapC) <- "style::stroke"
-  gradientType(mapC) <- gradient.type
-  fillAngle(mapC) <- fill.angle
-  if(missing(fn.parameters))
-    mapC <- setFunction(mapC,fn)
-  else
-    mapC <- setFunction(mapC,fn,fn.parameters)
+  if(!missing(data)) args <- c(args,values=data)
+  args <- c(args,targets=ifelse(missing("targets",row.names(data),targets)))
+  if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
+  if(!missing(map.range)) args <- c(args,map.range=map.range)
+  if(!missing(gradient.type)) args <- c(args,gradient.type)
+  if(!missing(fill.ange)) args <- c(args,fill.ange=fill.angle)
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapC <- do.call(new,args)
   
   ## eop
   return(mapC)
+}
+
+#' Mapping Expression Arrays Colors Factory
+#' 
+#' This function returns a \code{\link{MappingColors}} instance that will change
+#' the \strong{filling} colors of template targets according to some expression 
+#' fold-change values usually measured using microarrays. This function uses 
+#' some custom parameters that are dedicated to bioinformatics analysis.
+#' 
+#' HERE
+#' 
+#' For more details about Mapping Colors factory function see the 
+#' \code{\link{MappingColors.factory}} function documentation.
+#' 
+#' @name MappingStrokeColors.factory
+#'   
+#' @param arrays contains expression fold-change values
+#' 
+#' @return a \code{\link{MappingColors}} object
+#'   
+#' @export MappingArraysColors.factory
+#' @seealso \code{\link{MappingColors.factory}} function and 
+#'   \code{\link{MappingColors}} class definition
+#'   
+#' @examples
+MappingArraysColors.factory <- function(arrays) {
   
+  ## check.
+  if(missing(arrays)) 
+    stop("'arrays' parameters is absolutely required")
+  
+  ## init.
+  args <- list("MappingColors")
+  args <- c(args,
+            target.attribute="style::fill",
+            values=arrays,
+            map.colors=.microarrays_mapping_colors,
+            map.range=c(-2,2),
+            gradient.type="linear",
+            fill.angle=0,
+            fn="Identity",
+            fn.parameters=list())
+  
+  ## fill mapping structure
+  mapC <- do.call(new,args)
+  
+  ## eop
+  return(mapC)
 }
