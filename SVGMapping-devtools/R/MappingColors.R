@@ -960,18 +960,26 @@ MappingStrokeColors.factory <- function(data,targets,target.attribute,
 #' 
 #' This function returns a \code{\link{MappingColors}} instance that will change
 #' the \strong{filling} colors of template targets according to some expression 
-#' fold-change values usually measured using microarrays. This function uses 
+#' fold-change values, usually measured using microarrays. This function uses 
 #' some custom parameters that are dedicated to bioinformatics analysis.
 #' 
-#' HERE
+#' By default filling colors are taken from a green-red gradient with a white 
+#' middle color. Here, green colors are associated with down-regulated genes and
+#' red colors with up-regulated genes. If input data are vectors (\emph{ie}
+#' multiple conditions or kinetic experiments), then a linear gradient will be
+#' generated.
 #' 
-#' For more details about Mapping Colors factory function see the 
-#' \code{\link{MappingColors.factory}} function documentation.
+#' Expression values are mapped to colors in the range [-2,2]. One can easily 
+#' modify these bounds using the \code{\link{mapRange}} method. Furthermore, 
+#' these values are expected to be fold-changes. If not, one can use the
+#' dedicate \code{\link{fnLog2FC}} transformation method for base 2 log-ratios
+#' conversion or any user defined transformation function (see the
+#' \code{\link{fnUser}} methods).
 #' 
-#' @name MappingStrokeColors.factory
+#' @name MappingArraysColors.factory
 #'   
 #' @param arrays contains expression fold-change values
-#' 
+#'   
 #' @return a \code{\link{MappingColors}} object
 #'   
 #' @export MappingArraysColors.factory
@@ -979,6 +987,7 @@ MappingStrokeColors.factory <- function(data,targets,target.attribute,
 #'   \code{\link{MappingColors}} class definition
 #'   
 #' @examples
+#' 
 MappingArraysColors.factory <- function(arrays) {
   
   ## check.
