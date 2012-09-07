@@ -35,10 +35,10 @@
   transformation function is given in the example section
 }
 \details{
-  The \code{transFunction(object)} retrieve the current
-  transformation function
+  The \code{transFunction(object)} method retrieves the
+  current transformation function
 
-  The \code{transFunction(object) <- value} set the
+  The \code{transFunction(object) <- value} method sets the
   transformation function for the \code{object} mapping
   instance
 

@@ -2,6 +2,7 @@
 \name{exec}
 \alias{exec}
 \alias{exec,Mapping-method}
+\alias{exec,MappingColors-method}
 \title{Mapping Process Execution}
 \arguments{
   \item{.Object}{the mapping instance}
@@ -24,5 +25,9 @@
   Transformed values are stored in the \code{.values}
   fields. Thus, one can still access the original values
   using the \code{values(object)} method.
+
+  The \code{exec(object,svg)} method is called to process
+  the input \emph{svg} document with the current
+  \emph{object} mapping colors instance.
 }
 

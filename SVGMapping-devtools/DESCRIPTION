@@ -34,3 +34,4 @@ Collate:
     'SVGRect.R'
     'LinearGradient.R'
     'RadialGradient.R'
+    'MappingColors.R'

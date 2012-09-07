@@ -86,7 +86,7 @@ setClass("MappingColors",
 #' @rdname mappingcolors.targetattr-methods
 #' @exportMethod targetAttribute
 #' @docType methods
-setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
+setGeneric(name="targetAttribute", function(object) { standardGeneric("targetAttribute") })
 
 #' <title already defined>
 #' 
@@ -98,7 +98,7 @@ setGenericVerif(name="targetAttribute", function(object) { standardGeneric("targ
 #' @rdname mappingcolors.targetattr-methods
 #' @exportMethod targetAttribute<-
 #' @docType methods
-setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
+setGeneric(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
 
 #' Mapping Colors vector accessors
 #' 
@@ -121,7 +121,7 @@ setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGene
 #' @rdname mappingcolors.mapcolors-methods
 #' @exportMethod mapColors
 #' @docType methods
-setGenericVerif(name="mapColors", function(object) { standardGeneric("mapColors") })
+setGeneric(name="mapColors", function(object) { standardGeneric("mapColors") })
 
 #' <title already defined>
 #' 
@@ -133,7 +133,7 @@ setGenericVerif(name="mapColors", function(object) { standardGeneric("mapColors"
 #' @rdname mappingcolors.mapcolors-methods
 #' @exportMethod mapColors<-
 #' @docType methods
-setGenericVerif(name="mapColors<-", function(.Object,value) { standardGeneric("mapColors<-") })
+setGeneric(name="mapColors<-", function(.Object,value) { standardGeneric("mapColors<-") })
 
 #' Mapping Input Range Accessors
 #' 
@@ -156,7 +156,7 @@ setGenericVerif(name="mapColors<-", function(.Object,value) { standardGeneric("m
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.min
 #' @docType methods
-setGenericVerif(name="mapRange.min", function(object) { standardGeneric("mapRange.min") })
+setGeneric(name="mapRange.min", function(object) { standardGeneric("mapRange.min") })
 
 #' <title already defined>
 #' 
@@ -169,7 +169,7 @@ setGenericVerif(name="mapRange.min", function(object) { standardGeneric("mapRang
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.min<-
 #' @docType methods
-setGenericVerif(name="mapRange.min<-", function(.Object,value) { standardGeneric("mapRange.min<-") })
+setGeneric(name="mapRange.min<-", function(.Object,value) { standardGeneric("mapRange.min<-") })
 
 #' <title already defined>
 #' 
@@ -182,7 +182,7 @@ setGenericVerif(name="mapRange.min<-", function(.Object,value) { standardGeneric
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.max
 #' @docType methods
-setGenericVerif(name="mapRange.max", function(object) { standardGeneric("mapRange.max") })
+setGeneric(name="mapRange.max", function(object) { standardGeneric("mapRange.max") })
 
 #' <title already defined>
 #' 
@@ -195,7 +195,7 @@ setGenericVerif(name="mapRange.max", function(object) { standardGeneric("mapRang
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange.max<- 
 #' @docType methods
-setGenericVerif(name="mapRange.max<-", function(.Object,value) { standardGeneric("mapRange.max<-") })
+setGeneric(name="mapRange.max<-", function(.Object,value) { standardGeneric("mapRange.max<-") })
 
 #' <title already defined>
 #' 
@@ -208,7 +208,7 @@ setGenericVerif(name="mapRange.max<-", function(.Object,value) { standardGeneric
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange
 #' @docType methods
-setGenericVerif(name="mapRange", function(object) { standardGeneric("mapRange") })
+setGeneric(name="mapRange", function(object) { standardGeneric("mapRange") })
 
 #' <title already defined>
 #' 
@@ -221,7 +221,7 @@ setGenericVerif(name="mapRange", function(object) { standardGeneric("mapRange") 
 #' @rdname mappingcolors.maprange-methods
 #' @exportMethod mapRange<-
 #' @docType methods
-setGenericVerif(name="mapRange<-", function(.Object,value) { standardGeneric("mapRange<-") })
+setGeneric(name="mapRange<-", function(.Object,value) { standardGeneric("mapRange<-") })
 
 #' Gradient Specification Accessors
 #' 
@@ -238,7 +238,7 @@ setGenericVerif(name="mapRange<-", function(.Object,value) { standardGeneric("ma
 #' @rdname mappingcolors.gradient-methods
 #' @exportMethod gradientType
 #' @docType methods
-setGenericVerif(name="gradientType", function(object) { standardGeneric("gradientType") })
+setGeneric(name="gradientType", function(object) { standardGeneric("gradientType") })
 
 #' <title already defined>
 #' 
@@ -252,7 +252,7 @@ setGenericVerif(name="gradientType", function(object) { standardGeneric("gradien
 #' @rdname mappingcolors.gradient-methods
 #' @exportMethod gradientType<-
 #' @docType methods 
-setGenericVerif(name="gradientType<-", function(.Object,value) { standardGeneric("gradientType<-") })
+setGeneric(name="gradientType<-", function(.Object,value) { standardGeneric("gradientType<-") })
 
 #' <title already defined>
 #' 
@@ -265,7 +265,7 @@ setGenericVerif(name="gradientType<-", function(.Object,value) { standardGeneric
 #' @rdname mappingcolors.gradient-methods
 #' @exportMethod fillAngle
 #' @docType methods
-setGenericVerif(name="fillAngle", function(object) { standardGeneric("fillAngle") })
+setGeneric(name="fillAngle", function(object) { standardGeneric("fillAngle") })
 
 #' <title already defined>
 #' 
@@ -278,7 +278,7 @@ setGenericVerif(name="fillAngle", function(object) { standardGeneric("fillAngle"
 #' @rdname mappingcolors.gradient-methods
 #' @exportMethod fillAngle<-
 #' @docType methods
-setGenericVerif(name="fillAngle<-", function(.Object,value) { standardGeneric("fillAngle<-") })
+setGeneric(name="fillAngle<-", function(.Object,value) { standardGeneric("fillAngle<-") })
 
 #' <title already defined>
 #' 
@@ -291,7 +291,8 @@ setGenericVerif(name="fillAngle<-", function(.Object,value) { standardGeneric("f
 #'  @rdname mapping.exec-methods
 #'  @exportMethod exec
 #'  @docType methods 
-setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
+NULL
+##setGenericVerif(name="exec", function(.Object,svg) { standardGeneric("exec") })
 
 setMethod(f="initialize", signature="MappingColors",
           definition=function(.Object,...)
@@ -641,7 +642,7 @@ setMethod(f="exec", signature="MappingColors",
 
 ## an hand made gradient tailored for microarrays. It goes from green to red 
 ## with a white band at the center. This gradient has 1,000 levels.
-.microarrays_mapping_colors <- load(system.file("inst/extdata/microarrayColors.rda",
+.microarrays_mapping_colors <- load(system.file("extdata/microarrayColors.rda",
                                                 package="SVGMappingDevtools"))
 
 #' Mapping Colors Factory
@@ -660,7 +661,9 @@ setMethod(f="exec", signature="MappingColors",
 #'   list of SVG nodes identifiers or any node selection expression. By default 
 #'   the targets are the row names of the input data variable.
 #'   
-#' @param target.attribute
+#' @param target.attribute specifies to which attribute the color value will be
+#'   set. It can be either an SVG attribute (eg. \emph{color}) or a CSS style 
+#'   sub-attribute (eg. \emph{style::fill} or \emph{style::stroke}).
 #'   
 #' @param map.colors to use by the mapping operations. The default value is a 
 #'   color map that runs from blue to red, with 100 intermediates levels. This 
@@ -712,7 +715,7 @@ setMethod(f="exec", signature="MappingColors",
 #' ## First, let's create a MappingColors instance using the default factory
 #' ## function. Then, we apply this mapping object to the template, and show
 #' ## it in the default browser.
-#' color.map <- MappingColors.factory(data[,"x",drop=FALSE])
+#' color.map <- MappingColors.factory(dummy[,"x",drop=FALSE])
 #' ## mapping(template,color.map)
 #' ## show(template)
 #'
@@ -723,7 +726,7 @@ setMethod(f="exec", signature="MappingColors",
 #' ## orange and above 4 in green.
 #' 
 #' ## dummy data
-#' data <- data.frame(state=runif(6,min=0,max=5),
+#' dummy2 <- data.frame(state=runif(6,min=0,max=5),
 #'                    row.names=circles)
 #' 
 #' ## colors vector 
@@ -733,8 +736,8 @@ setMethod(f="exec", signature="MappingColors",
 #' cut.fn <- function(x,p) {return(ifelse(x<2,0,ifelse(x>4,2,1)))}
 #' 
 #' ## create & init. the mapping color operation
-#' traffic.map <- MappingColors.factory(data[,"x",drop=FALSE])
-#' mapColors(traffic.map) <- colors
+#' traffic.map <- MappingColors.factory(dummy2[,"state",drop=FALSE])
+#' mapColors(traffic.map) <- cust.colors
 #' mapRange(traffic.map) <- c(0,2)
 #' fnUser(traffic.map,cut.fn,list())
 #' 
@@ -751,11 +754,11 @@ MappingColors.factory <- function(data,targets,target.attribute,
   
   ## fill mapping structure
   if(!missing(data)) args <- c(args,values=data)
-  args <- c(args,targets=ifelse(missing("targets",row.names(data),targets)))
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
   if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
   if(!missing(map.range)) args <- c(args,map.range=map.range)
   if(!missing(gradient.type)) args <- c(args,gradient.type)
-  if(!missing(fill.ange)) args <- c(args,fill.ange=fill.angle)
+  if(!missing(fill.angle)) args <- c(args,fill.ange=fill.angle)
   if(!missing(fn)) args <- c(args,fn=fn)
   if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
   mapC <- do.call(new,args)
@@ -779,8 +782,6 @@ MappingColors.factory <- function(data,targets,target.attribute,
 #' @param targets is the list of template node targets to alter. This can be a 
 #'   list of SVG nodes identifiers or any node selection expression. By default 
 #'   the targets are the row names of the input data variable.
-#'   
-#' @param target.attribute
 #'   
 #' @param map.colors to use by the mapping operations. The default value is a 
 #'   color map that runs from blue to red, with 100 intermediates levels. This 
@@ -834,10 +835,10 @@ MappingColors.factory <- function(data,targets,target.attribute,
 #' ## First, let's create a MappingColors instance using the factory
 #' ## function. Then, we apply this mapping object to the template, and show
 #' ## it in the default browser.
-#' color.map <- MappingFillColors.factory(data[,"x",drop=FALSE])
+#' color.map <- MappingFillColors.factory(dummy[,"x",drop=FALSE])
 #' ## mapping(template,color.map)
 #' ## show(template)
-MappingFillColors.factory <- function(data,targets,target.attribute,
+MappingFillColors.factory <- function(data,targets,
                                       map.colors,map.range,
                                       gradient.type, fill.angle,
                                       fn, fn.parameters) {
@@ -847,11 +848,11 @@ MappingFillColors.factory <- function(data,targets,target.attribute,
   
   ## fill mapping structure
   if(!missing(data)) args <- c(args,values=data)
-  args <- c(args,targets=ifelse(missing("targets",row.names(data),targets)))
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
   if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
   if(!missing(map.range)) args <- c(args,map.range=map.range)
   if(!missing(gradient.type)) args <- c(args,gradient.type)
-  if(!missing(fill.ange)) args <- c(args,fill.ange=fill.angle)
+  if(!missing(fill.angle)) args <- c(args,fill.ange=fill.angle)
   if(!missing(fn)) args <- c(args,fn=fn)
   if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
   mapC <- do.call(new,args)
@@ -875,8 +876,6 @@ MappingFillColors.factory <- function(data,targets,target.attribute,
 #' @param targets is the list of template node targets to alter. This can be a 
 #'   list of SVG nodes identifiers or any node selection expression. By default 
 #'   the targets are the row names of the input data variable.
-#'   
-#' @param target.attribute
 #'   
 #' @param map.colors to use by the mapping operations. The default value is a 
 #'   color map that runs from blue to red, with 100 intermediates levels. This 
@@ -930,10 +929,10 @@ MappingFillColors.factory <- function(data,targets,target.attribute,
 #' ## First, let's create a MappingColors instance using the factory
 #' ## function. Then, we apply this mapping object to the template, and show
 #' ## it in the default browser.
-#' color.map <- MappingStrokeColors.factory(data[,"x",drop=FALSE])
+#' color.map <- MappingStrokeColors.factory(dummy[,"x",drop=FALSE])
 #' ## mapping(template,color.map)
 #' ## show(template)
-MappingStrokeColors.factory <- function(data,targets,target.attribute,
+MappingStrokeColors.factory <- function(data,targets,
                                         map.colors,map.range,
                                         gradient.type, fill.angle,
                                         fn, fn.parameters) {
@@ -943,11 +942,11 @@ MappingStrokeColors.factory <- function(data,targets,target.attribute,
   
   ## fill mapping structure
   if(!missing(data)) args <- c(args,values=data)
-  args <- c(args,targets=ifelse(missing("targets",row.names(data),targets)))
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
   if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
   if(!missing(map.range)) args <- c(args,map.range=map.range)
   if(!missing(gradient.type)) args <- c(args,gradient.type)
-  if(!missing(fill.ange)) args <- c(args,fill.ange=fill.angle)
+  if(!missing(fill.angle)) args <- c(args,fill.ange=fill.angle)
   if(!missing(fn)) args <- c(args,fn=fn)
   if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
   mapC <- do.call(new,args)
@@ -986,8 +985,9 @@ MappingStrokeColors.factory <- function(data,targets,target.attribute,
 #' @seealso \code{\link{MappingColors.factory}} function and 
 #'   \code{\link{MappingColors}} class definition
 #'   
-#' @examples
-#' 
+
+## @TODO --- ADD EXAMPLES FOR THIS FUNCTION
+##       --- Finish code below (missing 'targets' argument)
 MappingArraysColors.factory <- function(arrays) {
   
   ## check.
