@@ -975,20 +975,20 @@ MappingStrokeColors.factory <- function(data,targets,
 #' conversion or any user defined transformation function (see the
 #' \code{\link{fnUser}} methods).
 #' 
-#' @name MappingArraysColors.factory
+#' @name MappingBioArraysColors.factory
 #'   
 #' @param arrays contains expression fold-change values
 #'   
 #' @return a \code{\link{MappingColors}} object
 #'   
-#' @export MappingArraysColors.factory
+#' @export MappingBioArraysColors.factory
 #' @seealso \code{\link{MappingColors.factory}} function and 
 #'   \code{\link{MappingColors}} class definition
 #'   
 
 ## @TODO --- ADD EXAMPLES FOR THIS FUNCTION
 ##       --- Finish code below (missing 'targets' argument)
-MappingArraysColors.factory <- function(arrays) {
+MappingBioArraysColors.factory <- function(arrays) {
   
   ## check.
   if(missing(arrays)) 
