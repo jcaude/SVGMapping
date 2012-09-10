@@ -889,9 +889,8 @@
 </node>
 </node>
 </node>
-<node CREATED="1332425097294" ID="ID_1262260591" MODIFIED="1345646267536" TEXT="Mapping*">
+<node CREATED="1332425097294" ID="ID_1262260591" MODIFIED="1347279347071" TEXT="Mapping*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="button_ok"/>
 <node CREATED="1332425115135" FOLDED="true" ID="ID_1232153196" MODIFIED="1345646261341" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1332435376882" ID="ID_1918104855" MODIFIED="1345466907696" TEXT="targets">
@@ -956,13 +955,12 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1332425130312" ID="ID_490022262" MODIFIED="1345646278269" TEXT="class">
+<node CREATED="1332425130312" ID="ID_490022262" MODIFIED="1347279341795" TEXT="class">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
-<node CREATED="1332425138336" ID="ID_1143480637" MODIFIED="1347033307978" TEXT="MappingColors">
+<icon BUILTIN="closed"/>
+<node CREATED="1332425138336" ID="ID_1143480637" MODIFIED="1347279336878" TEXT="MappingColors">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="button_ok"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="closed"/>
 <node CREATED="1332516951319" FOLDED="true" ID="ID_1312959183" MODIFIED="1347033301201" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1333447334550" ID="ID_200950479" MODIFIED="1333458514785" TEXT="target.attribute">
@@ -1002,9 +1000,9 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1339426597810" ID="ID_1876751584" MODIFIED="1339426631962" TEXT="factory">
+<node CREATED="1339426597810" ID="ID_1876751584" MODIFIED="1347279328125" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="closed"/>
 <node CREATED="1339426602898" ID="ID_273981368" MODIFIED="1339426625247" TEXT="MappingColors">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -1014,8 +1012,8 @@
 <node CREATED="1339426614730" ID="ID_507627150" MODIFIED="1347033117031" TEXT="MappingStrokeColors">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1347033193330" TEXT="MappingBioArraysColors">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1347279319137" TEXT="MappingBioArraysColors">
+<icon BUILTIN="closed"/>
 <node COLOR="#999999" CREATED="1347033265655" ID="ID_1779626549" MODIFIED="1347033391453">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -1026,10 +1024,12 @@
       miss example &amp; test class file
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font NAME="SansSerif" SIZE="10"/>
 <icon BUILTIN="messagebox_warning"/>
+</node>
+<node CREATED="1347279289770" ID="ID_532432059" MODIFIED="1347279308843" TEXT="&apos;targets&apos; field not set, refactor constructor">
+<icon BUILTIN="closed"/>
 </node>
 </node>
 </node>
@@ -1777,6 +1777,24 @@
   </body>
 </html></richcontent>
 <icon BUILTIN="edit"/>
+</node>
+</node>
+<node CREATED="1347279228695" ID="ID_1340316282" MODIFIED="1347279231321" TEXT="Others">
+<node CREATED="1347279240888" ID="ID_802292891" MODIFIED="1347279276153">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Add 'print' and 'show' methods as much
+    </p>
+    <p>
+      as possible for all classes
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 </node>

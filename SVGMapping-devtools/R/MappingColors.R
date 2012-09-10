@@ -447,7 +447,7 @@ setReplaceMethod(f="mapRange", signature="MappingColors",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.vector(value) && (length(value) != 2))
+                   if(!is.vector(value) || (length(value) != 2))
                      stop("Mapping Range 'value' must be a vector such as: c(min,max)")
 
                    ## init.
