@@ -748,6 +748,11 @@ MappingColors.factory <- function(data,targets,target.attribute,
                                   map.colors,map.range,
                                   gradient.type, fill.angle,
                                   fn, fn.parameters) {
+  
+  ## check
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+  
   ## init.
   args <- list("MappingColors")
   args <- c(args,target.attribute=c("style::fill","style::stroke"))
@@ -842,6 +847,11 @@ MappingFillColors.factory <- function(data,targets,
                                       map.colors,map.range,
                                       gradient.type, fill.angle,
                                       fn, fn.parameters) {
+
+  ## check
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+  
   ## init.
   args <- list("MappingColors")
   args <- c(args,target.attribute="style::fill")
@@ -936,6 +946,10 @@ MappingStrokeColors.factory <- function(data,targets,
                                         map.colors,map.range,
                                         gradient.type, fill.angle,
                                         fn, fn.parameters) {
+  ## check
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+  
   ## init.
   args <- list("MappingColors")
   args <- c(args,target.attribute="style::stroke")
@@ -999,6 +1013,7 @@ MappingBioArraysColors.factory <- function(arrays) {
   args <- c(args,
             target.attribute="style::fill",
             values=arrays,
+            targets=row.names(arrays)
             map.colors=.microarrays_mapping_colors,
             map.range=c(-2,2),
             gradient.type="linear",

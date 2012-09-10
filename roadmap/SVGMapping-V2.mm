@@ -955,12 +955,12 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1332425130312" ID="ID_490022262" MODIFIED="1347279341795" TEXT="class">
+<node CREATED="1332425130312" ID="ID_490022262" MODIFIED="1347281890700" TEXT="class">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="closed"/>
-<node CREATED="1332425138336" ID="ID_1143480637" MODIFIED="1347279336878" TEXT="MappingColors">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1332425138336" ID="ID_1143480637" MODIFIED="1347281886943" TEXT="MappingColors">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="closed"/>
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1332516951319" FOLDED="true" ID="ID_1312959183" MODIFIED="1347033301201" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1333447334550" ID="ID_200950479" MODIFIED="1333458514785" TEXT="target.attribute">
@@ -1000,9 +1000,9 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1339426597810" ID="ID_1876751584" MODIFIED="1347279328125" TEXT="factory">
+<node CREATED="1339426597810" ID="ID_1876751584" MODIFIED="1347281882499" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="closed"/>
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1339426602898" ID="ID_273981368" MODIFIED="1339426625247" TEXT="MappingColors">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -1012,8 +1012,8 @@
 <node CREATED="1339426614730" ID="ID_507627150" MODIFIED="1347033117031" TEXT="MappingStrokeColors">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1347279319137" TEXT="MappingBioArraysColors">
-<icon BUILTIN="closed"/>
+<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1347281877065" TEXT="MappingBioArraysColors">
+<icon BUILTIN="messagebox_warning"/>
 <node COLOR="#999999" CREATED="1347033265655" ID="ID_1779626549" MODIFIED="1347033391453">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -1027,9 +1027,6 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="10"/>
 <icon BUILTIN="messagebox_warning"/>
-</node>
-<node CREATED="1347279289770" ID="ID_532432059" MODIFIED="1347279308843" TEXT="&apos;targets&apos; field not set, refactor constructor">
-<icon BUILTIN="closed"/>
 </node>
 </node>
 </node>
