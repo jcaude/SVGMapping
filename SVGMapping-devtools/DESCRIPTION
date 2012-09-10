@@ -35,3 +35,4 @@ Collate:
     'LinearGradient.R'
     'RadialGradient.R'
     'MappingColors.R'
+    'MappingValues.R'

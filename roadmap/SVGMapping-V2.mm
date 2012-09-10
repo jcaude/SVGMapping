@@ -6,7 +6,7 @@
 <font NAME="Andale Mono" SIZE="14"/>
 <node CREATED="1333001245915" ID="ID_78586763" MODIFIED="1337611751075" TEXT="SVG related">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1331826275636" FOLDED="true" ID="ID_1673745293" MODIFIED="1345463758669" TEXT="SVG">
+<node CREATED="1331826275636" FOLDED="true" ID="ID_1673745293" MODIFIED="1347281995258" TEXT="SVG">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <node CREATED="1331831424436" FOLDED="true" ID="ID_982312845" MODIFIED="1337672242126" TEXT="fields">
@@ -27,7 +27,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1331831427508" ID="ID_411838553" MODIFIED="1333466776561" TEXT="methods">
+<node CREATED="1331831427508" FOLDED="true" ID="ID_411838553" MODIFIED="1347281986940" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <node COLOR="#333333" CREATED="1331831435925" ID="ID_552081248" MODIFIED="1337671897655" TEXT="show()">
@@ -242,8 +242,23 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node CREATED="1337672228293" ID="ID_1209225427" MODIFIED="1337672234319" TEXT="mapping">
+<node CREATED="1337672228293" FOLDED="true" ID="ID_1209225427" MODIFIED="1347281984842" TEXT="mapping">
 <icon BUILTIN="button_ok"/>
+<icon BUILTIN="idea"/>
+<node CREATED="1347281939559" ID="ID_148931140" MODIFIED="1347281974052">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      can also be implemented by overloading the '+' operator (alike ggplot2)
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="idea"/>
+</node>
 </node>
 <node CREATED="1338813514029" ID="ID_1065257221" MODIFIED="1338813517119" TEXT="layout"/>
 <node CREATED="1338538568572" ID="ID_1920609179" MODIFIED="1338538576287" TEXT="svgDevice">
@@ -958,7 +973,7 @@
 <node CREATED="1332425130312" ID="ID_490022262" MODIFIED="1347281890700" TEXT="class">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
-<node CREATED="1332425138336" ID="ID_1143480637" MODIFIED="1347281886943" TEXT="MappingColors">
+<node CREATED="1332425138336" FOLDED="true" ID="ID_1143480637" MODIFIED="1347282001170" TEXT="MappingColors">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <node CREATED="1332516951319" FOLDED="true" ID="ID_1312959183" MODIFIED="1347033301201" TEXT="fields">
@@ -1000,7 +1015,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1339426597810" ID="ID_1876751584" MODIFIED="1347281882499" TEXT="factory">
+<node CREATED="1339426597810" FOLDED="true" ID="ID_1876751584" MODIFIED="1347281999306" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <node CREATED="1339426602898" ID="ID_273981368" MODIFIED="1339426625247" TEXT="MappingColors">
@@ -1012,7 +1027,7 @@
 <node CREATED="1339426614730" ID="ID_507627150" MODIFIED="1347033117031" TEXT="MappingStrokeColors">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1347281877065" TEXT="MappingBioArraysColors">
+<node CREATED="1347033153523" FOLDED="true" ID="ID_1058411253" MODIFIED="1347281997963" TEXT="MappingBioArraysColors">
 <icon BUILTIN="messagebox_warning"/>
 <node COLOR="#999999" CREATED="1347033265655" ID="ID_1779626549" MODIFIED="1347033391453">
 <richcontent TYPE="NODE"><html>
@@ -1031,7 +1046,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1333458495873" FOLDED="true" ID="ID_1444969248" MODIFIED="1347033358211" TEXT="MappingValues">
+<node CREATED="1333458495873" ID="ID_1444969248" MODIFIED="1347282002652" TEXT="MappingValues">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1333458502489" FOLDED="true" ID="ID_663904913" MODIFIED="1347033337738" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>

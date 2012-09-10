@@ -70,7 +70,7 @@ setClass("MappingColors",
 
 #' Target Style Attribute Accessors
 #' 
-#' Given the set of \emph{targets}, to apply the \code{MappingColors} operation
+#' Given the set of \emph{targets}, to apply the \code{Mapping} operation
 #' one as to provide the name of the \emph{style} attribute to change. The 
 #' methods described here allow to specify this attribute.
 #' 
@@ -79,7 +79,7 @@ setClass("MappingColors",
 #' 
 #' @name targetAttribute
 #' 
-#' @param object the mapping colors instance object
+#' @param object the mapping instance object
 #' 
 #' @return a CSS style attribute name
 #' 
