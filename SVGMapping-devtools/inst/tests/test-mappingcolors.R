@@ -1,6 +1,6 @@
 require(testthat)
 
-context("MappingColors")
+context("Mapping (Colors)")
 
 test_that("get/set Fields", {
   
@@ -64,5 +64,17 @@ test_that("get/set Fields", {
   expect_error(mapRange(mapping) <- c(1,1,1))
   expect_error(gradientType(mapping) <- "oval")
   expect_error(fillAngle(mapping) <- "180rad")
+})
+
+test_that("Factory Functions", {
+  
+  ## init.
+  circles <- paste("circle.",LETTERS[1:6],sep="")
+  dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+                      y=rep(3,times=6),
+                      z=runif(6,min=-5,max=5),
+                      row.names=circles)
+  
+  ## MappingColors factory
 })
 
