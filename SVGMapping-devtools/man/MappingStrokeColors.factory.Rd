@@ -7,8 +7,7 @@
     fn.parameters)
 }
 \arguments{
-  \item{data}{is the input datasets to use for this
-  mapping}
+  \item{data}{is the input dataset to use for this mapping}
 
   \item{targets}{is the list of template node targets to
   alter. This can be a list of SVG nodes identifiers or any
@@ -84,7 +83,9 @@ color.map <- MappingStrokeColors.factory(dummy[,"x",drop=FALSE])
 ## show(template)
 }
 \seealso{
-  \code{\link{MappingColors.factory}} function and
-  \code{\link{MappingColors}} class definition
+  Other possible factory functions are:
+  \code{\link{MappingColors.factory}},
+  \code{\link{MappingFillColors.factory}} and
+  \code{\link{MappingBioArraysColors.factory}}
 }
 

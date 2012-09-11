@@ -3,6 +3,7 @@
 \alias{exec}
 \alias{exec,Mapping-method}
 \alias{exec,MappingColors-method}
+\alias{exec,MappingValues-method}
 \title{Mapping Process Execution}
 \arguments{
   \item{.Object}{the mapping instance}
@@ -20,6 +21,8 @@
   \code{Mapping} super class must implement an \code{exec}
   method that will perform the mapping operation on the
   template (\code{svg} parameter).
+
+  <title already defined>
 }
 \details{
   Transformed values are stored in the \code{.values}

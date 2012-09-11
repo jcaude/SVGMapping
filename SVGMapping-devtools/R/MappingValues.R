@@ -49,6 +49,7 @@ setClass("MappingValues",
 #' 
 #' 
 #' 
+#'  @name targetAttribute
 #'  @rdname mappingcolors.targetattr-methods
 #'  @exportMethod targetAttribute
 #'  @docType methods 
@@ -59,8 +60,9 @@ NULL
 #' 
 #' 
 #' 
+#'  @name targetAttribute<-
 #'  @rdname mappingcolors.targetattr-methods
-#'  @exportMethod targetAttribute
+#'  @exportMethod targetAttribute<-
 #'  @docType methods 
 NULL
 #setGenericVerif(name="targetAttribute<-", function(.Object,value) { standardGeneric("targetAttribute<-") })
@@ -94,8 +96,9 @@ setGeneric(name="targetUnit", function(object) { standardGeneric("targetUnit") }
 #' The \code{targetUnit(object) <- value} method sets the target unit value 
 #' of the \code{object} mapping instance
 #' 
+#' @name targetUnit<-
 #' @rdname mappingvalues.targetunit-methods
-#' @exportMethod targetUnit
+#' @exportMethod targetUnit<-
 #' @docType methods
 setGeneric(name="targetUnit<-", function(.Object,value) { standardGeneric("targetUnit<-") })
 
@@ -103,6 +106,7 @@ setGeneric(name="targetUnit<-", function(.Object,value) { standardGeneric("targe
 #' 
 #' 
 #' 
+#'  @name exec
 #'  @rdname mapping.exec-methods
 #'  @exportMethod exec
 #'  @docType methods 
@@ -116,8 +120,8 @@ setMethod(f="initialize", signature="MappingValues",
             .Object <- callNextMethod()
 
             ## default init.
-            .Object@target.attribute <- c("opacity")
-            .Object@target.unit <- vector()
+            targetAttribute(.Object) <- character(0)
+            targetUnit(.Object) <- vector()
 
             ## eop
             return(.Object)
@@ -192,6 +196,10 @@ setMethod(f="exec", signature="MappingValues",
             ## call super
             callNextMethod()
 
+            ## empty target attribute ?
+            if(length(targetAttribute(.Object)) == 0)
+              return(invisible(.Object))
+            
             ## check & bound
             if(ncond < 2) 
               .Object@.values <- sapply(.Object@.values,
@@ -214,97 +222,329 @@ setMethod(f="exec", signature="MappingValues",
 
 ## F A C T O R Y
 ##--------------
-MappingValues.factory <- function(data,targets=rownames(data),
-                                  target.attribute,target.units=c(""),
-                                  fn="Identity", fn.parameters=list()) {
+
+#' Mapping Values Factory
+#' 
+#' This function returns a \emph{default} \code{\link{MappingValue}} instance.
+#' 
+#' Using this factory function, the return object has no target attribute and no
+#' transformation function. Only the input \emph{values} are initialized in the
+#' object. Thus, by default this mapping operation will have no effect if 
+#' applied to an SVG template (unless one has use the relevant methods to change
+#' this operation behavior).
+#' 
+#' @name MappingValues.factory
+#'   
+#' @param data is the input dataset to use for this mapping
+#'   
+#' @param targets is the list of template node targets to alter. This can be a 
+#'   list of SVG nodes identifiers or any node selection expression. By default 
+#'   the targets are the row names of the input data variable.
+#'   
+#' @param target.attribute specifies to which attribute the output value will be
+#'   set. It can be either an SVG attribute (eg. \emph{opacity}) or a CSS style 
+#'   sub-attribute (eg. \emph{style::stroke} or \emph{style::x}).
+#'   
+#' @param target.unit contains the unit(s) character string(s) that are use as 
+#'   postfix for output values.
+#'   
+#' @param fn is the transformation function that is applied onto the data, prior
+#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
+#'   By default the \emph{identity} function, which do not transformed the input
+#'   data, is assigned to the newly created instance.
+#'   
+#' @param fn.parameters is the list of parameters values associated with the 
+#'   transformation function.
+#'   
+#' @return a \code{\link{MappingValues}} object
+#' 
+#' @export MappingValues.factory
+#' @seealso Other possible factory functions are:
+#'   \code{\link{MappingOpacity.factory}}, 
+#'   \code{\link{MappingFillOpacity.factory}},
+#'   \code{\link{MappingStrokeOpacity.factory}} and
+#'   \code{\link{MappingStrokeWidth.factory}}
+#' 
+#' @examples
+#' ## load 'basic-sample.svg' a demo SVG template. 
+#' ## template <- SVG.factory(file=system.file("extdata/basic-sample.svg",package="SVGMapping))
+#' 
+#' ## In this demo template, the top six circles are identified with the 
+#' ## 'circle.A' ... 'circle.F' svg ID attributes. We will generate a list that
+#' ## contains such identifiers..
+#' circles <- paste("circle.",LETTERS[1:6],sep="")
+#' 
+#' ## Then, we will use the following dummy dataset. This data.frame contains 
+#' ## one column named x. Row names are the circles identifiers.
+#' dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+#'                    row.names=circles)
+#'                    
+#' ## Now, let's create a MappingValues instance using the default factory
+#' ## function. We initialize the target attribute to 'opacity'
+#' my.map <- MappingValues.factory(dummy[,"x",drop=FALSE])
+#' targetAttribute <- "opacity"
+#' 
+#' ## Then, we apply this mapping object to the template, and show
+#' ## it in the default browser.
+#' ## mapping(template,my.map)
+#' ## show(template)
+MappingValues.factory <- function(data,targets,
+                                  target.attribute,target.unit,
+                                  fn, fn.parameters) {
+  
+  ## check.
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+
+  ## check target attribute/unit length
+  if(!(missing(target.attribute) || missing(target.unit)) 
+     && (length(target.unit) != length(target.attribute)))
+    target.unit <- rep(target.unit[[1]], length(target.attribute))
   
   ## init.
-  mapV <- new("MappingValues")
-
-  ## check length
-  if(length(target.units) != length(target.attribute))
-    target.units <- rep(target.units[[1]], length(target.attribute))
+  args <- list("MappingValues")
+  args <- c(args, values=data)
   
   ## fill mapping structure
-  values(mapV) <- data
-  targets(mapV) <- targets
-  targetAttribute(mapV) <- target.attribute
-  targetUnit(mapV) <- target.units
-
-  ## set transform function
-  if(missing(fn.parameters))
-    mapV <- setFunction(mapV,fn)
-  else
-    mapV <- setFunction(mapV,fn,fn.parameters)
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
+  if(!missing(target.attirubte)) args <- c(args, target.attribute=target.attribute)
+  if(!missing(target.unit)) args <- c(args, target.unit=target.unit)
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapV <- do.call(new,args)
   
   #eop
   return(mapV)
 }
 
-MappingOpacity.factory <- function(data,targets=rownames(data),
-                                   target.attribute=c("opacity"),
-                                   fn="Identity", fn.parameters=list()) {
-  ## init.
-  if(missing(fn.parameters)) 
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn)
-  else
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn,fn.parameters)
+#' Mapping Opacity Factory
+#' 
+#' This function returns a \code{\link{MappingValue}} instance that can be use
+#' to change the opacity level according to some input values.
+#' 
+#' By default, this factory function expect that input values are levels in the 
+#' range [0,1]. Thus, if inputs does not fulfill this constraint one can provide
+#' a transformation function to scale the input data.
+#' 
+#' The \code{MappingOpacity.factory} factory function will create a mapping
+#' operation that change the \strong{overall} opacity of the target shapes.
+#' 
+#' @name MappingOpacity.factory
+#'   
+#' @param data is the input dataset to use for this mapping
+#'   
+#' @param targets is the list of template node targets to alter. This can be a 
+#'   list of SVG nodes identifiers or any node selection expression. By default 
+#'   the targets are the row names of the input data variable.
+#'   
+#' @param fn is the transformation function that is applied onto the data, prior
+#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
+#'   By default the \emph{identity} function, which do not transformed the input
+#'   data, is assigned to the newly created instance.
+#'   
+#' @param fn.parameters is the list of parameters values associated with the 
+#'   transformation function.
+#'   
+#' @return a \code{\link{MappingValues}} object
+#' 
+#' @export MappingOpacity.factory
+#' @seealso Other possible factory functions are:
+#'   \code{\link{MappingValues.factory}}, 
+#'   \code{\link{MappingFillOpacity.factory}},
+#'   \code{\link{MappingStrokeOpacity.factory}} and
+#'   \code{\link{MappingStrokeWidth.factory}}
+#' 
+#' @examples
+#' ## load 'basic-sample.svg' a demo SVG template. 
+#' ## template <- SVG.factory(file=system.file("extdata/basic-sample.svg",package="SVGMapping))
+#' 
+#' ## In this demo template, the top six circles are identified with the 
+#' ## 'circle.A' ... 'circle.F' svg ID attributes. We will generate a list that
+#' ## contains such identifiers..
+#' circles <- paste("circle.",LETTERS[1:6],sep="")
+#' 
+#' ## Then, we will use the following dummy dataset. This data.frame contains 
+#' ## one column named x. Row names are the circles identifiers.
+#' dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+#'                    row.names=circles)
+#'                    
+#' ## -------------- Overall Opacity Example                    
+#' ## Now, let's create a MappingValues instance using the default factory
+#' ## function. We initialize the target attribute to 'opacity'
+#' all.map <- MappingOpacity.factory(dummy[,"x",drop=FALSE])
+#' 
+#' ## Then, we apply this mapping object to the template, and show
+#' ## it in the default browser.
+#' ## mapping(template, all.map)
+#' ## show(template)
+#' 
+#' ## -------------- Filling Opacity Example                    
+#' ## just using a different factory function we can restrict the change 
+#' ## of opacity to only the filling of shapes
+#' fill.map <- MappingFillOpacity.factory(dummy[,"x",drop=FALSE])
+#' ## mapping(template, fill.map)
+#' ## show(template)
+#' 
+#' ## -------------- Stroke Opacity Example                    
+#' ## and now the stroke opacity..
+#' stroke.map <- MappingStrokeOpacity.factory(dummy[,"x",drop=FALSE])
+#' ## mapping(template, stroke.map)
+#' ## show(template)
+#' 
+#' @rdname mappingvalues.opacity-factory
+MappingOpacity.factory <- function(data,targets,
+                                   fn,fn.parameters) {
+  ## check.
+  if(missing(data))
+    stop("'data' argument is absolutely required")
 
-  ## eop
+  ## init.
+  args <- list("MappingValues")
+  args <- c(args, values=data)
+  args <- c(args, target.attribute="opacity")
+  
+  ## fill mapping structure
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapV <- do.call(new,args)
+  
+  #eop
   return(mapV)
 }
 
-MappingFillOpacity.factory <- function(data,targets=rownames(data),
-                                       target.attribute=c("style::fill-opacity"),
-                                       fn="Identity", fn.parameters=list()) {
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{MappingFillOpacity.factory} factory function will create a mapping
+#' operation that only change the \strong{filling} opacity of the target shapes.
+#' 
+#' @name MappingFillOpacity.factory
+#' @rdname mappingvalues.opacity-factory
+#' @export MappingFillOpacity.factory
+MappingFillOpacity.factory <- function(data,targets,
+                                       fn,fn.parameters) {
+  ## check.
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+  
   ## init.
-  if(missing(fn.parameters)) 
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn)
-  else
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn,fn.parameters)
-
-  ## eop
+  args <- list("MappingValues")
+  args <- c(args, values=data)
+  args <- c(args, target.attribute="style::fill-opacity")
+  
+  ## fill mapping structure
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapV <- do.call(new,args)
+  
+  #eop
   return(mapV)
 }
 
-MappingStrokeOpacity.factory <- function(data,targets=rownames(data),
-                                         target.attribute=c("style::stroke-opacity"),
-                                         fn="Identity", fn.parameters=list()) {
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{MappingStrokeOpacity.factory} factory function will create a
+#' mapping operation that only change the \strong{stroke} opacity of the target
+#' shapes.
+#' 
+#' @name MappingStrokeOpacity.factory
+#' @rdname mappingvalues.opacity-factory
+#' @export MappingStrokeOpacity.factory
+MappingStrokeOpacity.factory <- function(data,targets,
+                                         fn,fn.parameters) {
+  ## check.
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+  
   ## init.
-  if(missing(fn.parameters)) 
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn)
-  else
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn,fn.parameters)
-
-  ## eop
+  args <- list("MappingValues")
+  args <- c(args, values=data)
+  args <- c(args, target.attribute="style::stroke-opacity")
+  
+  ## fill mapping structure
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapV <- do.call(new,args)
+  
+  #eop
   return(mapV)
 }
 
-MappingStrokeWidth.factory <- function(data,targets=rownames(data),
-                                       target.attribute=c("style::stroke-width"),
-                                       fn="Identity", fn.parameters=list()) {
+#' Mapping Stroke Width Factory
+#' 
+#' This function returns a \code{\link{MappingValue}} instance that can be use
+#' to change the stroke width according to some input values.
+#' 
+#' By default, this factory function expect that input values are numerics given
+#' in the SVG user coordinates system. Thus, if inputs are not given in this
+#' system on can fix this by using the \code{\link{targetUnit}} method.
+#' 
+#' @name MappingStrokeWidth.factory
+#'   
+#' @param data is the input dataset to use for this mapping
+#'   
+#' @param targets is the list of template node targets to alter. This can be a 
+#'   list of SVG nodes identifiers or any node selection expression. By default 
+#'   the targets are the row names of the input data variable.
+#'   
+#' @param fn is the transformation function that is applied onto the data, prior
+#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
+#'   By default the \emph{identity} function, which do not transformed the input
+#'   data, is assigned to the newly created instance.
+#'   
+#' @param fn.parameters is the list of parameters values associated with the 
+#'   transformation function.
+#'   
+#' @return a \code{\link{MappingValues}} object
+#' 
+#' @export MappingStrokeWidth.factory
+#' 
+#' @examples
+#' ## load 'basic-sample.svg' a demo SVG template. 
+#' ## template <- SVG.factory(file=system.file("extdata/basic-sample.svg",package="SVGMapping))
+#' 
+#' ## In this demo template, the top six circles are identified with the 
+#' ## 'circle.A' ... 'circle.F' svg ID attributes. We will generate a list that
+#' ## contains such identifiers..
+#' circles <- paste("circle.",LETTERS[1:6],sep="")
+#' 
+#' ## Then, we will use the following dummy dataset. This data.frame contains 
+#' ## one column named x. Row names are the circles identifiers.
+#' dummy <- data.frame(x=runif(6,min=1,max=5),
+#'                    row.names=circles)
+#'                    
+#' ## Now, let's create a MappingValues instance using the stroke width factory
+#' ## function. We also set the target attribute unit to 'cm'
+#' my.map <- MappingOpacity.factory(dummy[,"x",drop=FALSE])
+#' targetUnit(my.map) <- "cm"
+#' 
+#' ## Then, we apply this mapping object to the template, and show
+#' ## it in the default browser.
+#' ## mapping(template, my.map)
+#' ## show(template)
+MappingStrokeWidth.factory <- function(data,targets,
+                                       fn,fn.parameters) {
+  ## check.
+  if(missing(data))
+    stop("'data' argument is absolutely required")
+  
   ## init.
-  if(missing(fn.parameters)) 
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn)
-  else
-    mapV <- MappingValues.factory(data,targets,
-                                  target.attribute,target.units=c(""),
-                                  fn,fn.parameters)
-
-  ## eop
+  args <- list("MappingValues")
+  args <- c(args, values=data)
+  args <- c(args, target.attribute="style::stroke-width")
+  
+  ## fill mapping structure
+  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
+  if(!missing(fn)) args <- c(args,fn=fn)
+  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  mapV <- do.call(new,args)
+  
+  #eop
   return(mapV)
 }

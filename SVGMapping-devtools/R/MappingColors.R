@@ -655,7 +655,7 @@ setMethod(f="exec", signature="MappingColors",
 #' 
 #' @name MappingColors.factory
 #'   
-#' @param data is the input datasets to use for this mapping
+#' @param data is the input dataset to use for this mapping
 #'   
 #' @param targets is the list of template node targets to alter. This can be a 
 #'   list of SVG nodes identifiers or any node selection expression. By default 
@@ -694,6 +694,10 @@ setMethod(f="exec", signature="MappingColors",
 #' @return a \code{\link{MappingColors}} object
 #'  
 #' @export MappingColors.factory
+#' @seealso Other possible factory functions are:
+#'   \code{\link{MappingFillColors.factory}},
+#'   \code{\link{MappingStrokeColors.factory}} and
+#'   \code{\link{MappingBioArraysColors.factory}}
 #' 
 #' @examples
 #' ## load 'basic-sample.svg' a demo SVG template. 
@@ -755,10 +759,10 @@ MappingColors.factory <- function(data,targets,target.attribute,
   
   ## init.
   args <- list("MappingColors")
+  args <- c(args,values=data)
   args <- c(args,target.attribute=c("style::fill","style::stroke"))
   
   ## fill mapping structure
-  if(!missing(data)) args <- c(args,values=data)
   args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
   if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
   if(!missing(map.range)) args <- c(args,map.range=map.range)
@@ -782,7 +786,7 @@ MappingColors.factory <- function(data,targets,target.attribute,
 #' 
 #' @name MappingFillColors.factory
 #'   
-#' @param data is the input datasets to use for this mapping
+#' @param data is the input dataset to use for this mapping
 #'   
 #' @param targets is the list of template node targets to alter. This can be a 
 #'   list of SVG nodes identifiers or any node selection expression. By default 
@@ -817,8 +821,10 @@ MappingColors.factory <- function(data,targets,target.attribute,
 #' @return a \code{\link{MappingColors}} object
 #'   
 #' @export MappingFillColors.factory
-#' @seealso \code{\link{MappingColors.factory}} function and 
-#'   \code{\link{MappingColors}} class definition
+#' @seealso Other possible factory functions are:
+#'   \code{\link{MappingColors.factory}},
+#'   \code{\link{MappingStrokeColors.factory}} and
+#'   \code{\link{MappingBioArraysColors.factory}}
 #'   
 #' @examples
 #' ## see also the manpage of MappingColors.factory for additional examples. 
@@ -854,10 +860,10 @@ MappingFillColors.factory <- function(data,targets,
   
   ## init.
   args <- list("MappingColors")
+  args <- c(args,values=data)
   args <- c(args,target.attribute="style::fill")
   
   ## fill mapping structure
-  if(!missing(data)) args <- c(args,values=data)
   args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
   if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
   if(!missing(map.range)) args <- c(args,map.range=map.range)
@@ -881,7 +887,7 @@ MappingFillColors.factory <- function(data,targets,
 #' 
 #' @name MappingStrokeColors.factory
 #'   
-#' @param data is the input datasets to use for this mapping
+#' @param data is the input dataset to use for this mapping
 #'   
 #' @param targets is the list of template node targets to alter. This can be a 
 #'   list of SVG nodes identifiers or any node selection expression. By default 
@@ -916,8 +922,10 @@ MappingFillColors.factory <- function(data,targets,
 #' @return a \code{\link{MappingColors}} object
 #'   
 #' @export MappingStrokeColors.factory
-#' @seealso \code{\link{MappingColors.factory}} function and 
-#'   \code{\link{MappingColors}} class definition
+#' @seealso Other possible factory functions are:
+#'   \code{\link{MappingColors.factory}},
+#'   \code{\link{MappingFillColors.factory}} and
+#'   \code{\link{MappingBioArraysColors.factory}}
 #'   
 #' @examples
 #' ## see also the manpage of MappingColors.factory for additional examples. 
@@ -952,10 +960,10 @@ MappingStrokeColors.factory <- function(data,targets,
   
   ## init.
   args <- list("MappingColors")
+  args <- c(args,values=data)
   args <- c(args,target.attribute="style::stroke")
   
   ## fill mapping structure
-  if(!missing(data)) args <- c(args,values=data)
   args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
   if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
   if(!missing(map.range)) args <- c(args,map.range=map.range)
@@ -996,8 +1004,10 @@ MappingStrokeColors.factory <- function(data,targets,
 #' @return a \code{\link{MappingColors}} object
 #'   
 #' @export MappingBioArraysColors.factory
-#' @seealso \code{\link{MappingColors.factory}} function and 
-#'   \code{\link{MappingColors}} class definition
+#' @seealso Other possible factory functions are:
+#'   \code{\link{MappingColors.factory}},
+#'   \code{\link{MappingFillColors.factory}} and
+#'   \code{\link{MappingStrokeColors.factory}}
 #'   
 
 ## @TODO --- ADD EXAMPLES FOR THIS FUNCTION
@@ -1013,7 +1023,7 @@ MappingBioArraysColors.factory <- function(arrays) {
   args <- c(args,
             target.attribute="style::fill",
             values=arrays,
-            targets=row.names(arrays)
+            targets=row.names(arrays),
             map.colors=.microarrays_mapping_colors,
             map.range=c(-2,2),
             gradient.type="linear",

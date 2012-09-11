@@ -7,8 +7,7 @@
     fn.parameters)
 }
 \arguments{
-  \item{data}{is the input datasets to use for this
-  mapping}
+  \item{data}{is the input dataset to use for this mapping}
 
   \item{targets}{is the list of template node targets to
   alter. This can be a list of SVG nodes identifiers or any
@@ -113,5 +112,11 @@ fnUser(traffic.map,cut.fn,list())
 ## apply & show mapping results
 ## mapping(template,traffic.map)
 ## show(template)
+}
+\seealso{
+  Other possible factory functions are:
+  \code{\link{MappingFillColors.factory}},
+  \code{\link{MappingStrokeColors.factory}} and
+  \code{\link{MappingBioArraysColors.factory}}
 }
 
