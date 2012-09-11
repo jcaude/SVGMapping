@@ -34,7 +34,7 @@
   a \code{\link{MappingValues}} object
 }
 \description{
-  This function returns a \code{\link{MappingValue}}
+  This function returns a \code{\link{MappingValues}}
   instance that can be use to change the opacity level
   according to some input values.
 }

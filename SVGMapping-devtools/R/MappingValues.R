@@ -121,7 +121,7 @@ setMethod(f="initialize", signature="MappingValues",
 
             ## default init.
             targetAttribute(.Object) <- character(0)
-            targetUnit(.Object) <- vector()
+            targetUnit(.Object) <- vector("character")
 
             ## eop
             return(.Object)
@@ -225,7 +225,7 @@ setMethod(f="exec", signature="MappingValues",
 
 #' Mapping Values Factory
 #' 
-#' This function returns a \emph{default} \code{\link{MappingValue}} instance.
+#' This function returns a \emph{default} \code{\link{MappingValues}} instance.
 #' 
 #' Using this factory function, the return object has no target attribute and no
 #' transformation function. Only the input \emph{values} are initialized in the
@@ -307,7 +307,7 @@ MappingValues.factory <- function(data,targets,
   
   ## fill mapping structure
   args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(target.attirubte)) args <- c(args, target.attribute=target.attribute)
+  if(!missing(target.attribute)) args <- c(args, target.attribute=target.attribute)
   if(!missing(target.unit)) args <- c(args, target.unit=target.unit)
   if(!missing(fn)) args <- c(args,fn=fn)
   if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
@@ -319,7 +319,7 @@ MappingValues.factory <- function(data,targets,
 
 #' Mapping Opacity Factory
 #' 
-#' This function returns a \code{\link{MappingValue}} instance that can be use
+#' This function returns a \code{\link{MappingValues}} instance that can be use
 #' to change the opacity level according to some input values.
 #' 
 #' By default, this factory function expect that input values are levels in the 
@@ -478,7 +478,7 @@ MappingStrokeOpacity.factory <- function(data,targets,
 
 #' Mapping Stroke Width Factory
 #' 
-#' This function returns a \code{\link{MappingValue}} instance that can be use
+#' This function returns a \code{\link{MappingValues}} instance that can be use
 #' to change the stroke width according to some input values.
 #' 
 #' By default, this factory function expect that input values are numerics given

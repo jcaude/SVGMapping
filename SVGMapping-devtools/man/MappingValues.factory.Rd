@@ -37,7 +37,7 @@
 }
 \description{
   This function returns a \emph{default}
-  \code{\link{MappingValue}} instance.
+  \code{\link{MappingValues}} instance.
 }
 \details{
   Using this factory function, the return object has no
