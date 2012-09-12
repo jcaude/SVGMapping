@@ -3,8 +3,8 @@
 \title{Mapping Filling Colors Factory}
 \usage{
   MappingFillColors.factory(data, targets, map.colors,
-    map.range, gradient.type, fill.angle, fn,
-    fn.parameters)
+    map.range, gradient.type, fill.angle, trans.function,
+    trans.parameters)
 }
 \arguments{
   \item{data}{is the input dataset to use for this mapping}
@@ -35,14 +35,14 @@
   \item{fill.angle}{is the filling angle of the gradient.
   The default value for this parameter is 0.}
 
-  \item{fn}{is the transformation function that is applied
-  onto the data, prior to the color mapping (see the
-  \code{\link{Mapping}} class documentation).  By default
-  the \emph{identity} function, which do not transformed
-  the input data, is assigned to the newly created
-  instance.}
+  \item{trans.function}{is the transformation function that
+  is applied onto the data, prior to the color mapping (see
+  the \code{\link{Mapping}} class documentation). By
+  default the \emph{identity} function, which do not
+  transformed the input data, is assigned to the newly
+  created instance.}
 
-  \item{fn.parameters}{is the list of parameters values
+  \item{trans.parameters}{is the list of parameters values
   associated with the transformation function.}
 }
 \value{
