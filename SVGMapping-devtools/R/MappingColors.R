@@ -318,10 +318,8 @@ setMethod(f="initialize", signature="MappingColors",
             
             ## detault init.
             targetAttribute(.Object) <- .arg("target.attribute",character())
-            mapColors(.Object) <- .arg("map.colors", vector())
+            mapColors(.Object) <- .arg("map.colors", .default_mapping_colors)
             mapRange(.Object) <- .arg("map.range",c(0,1))
-            mapRange.min(.Object) <- .arg("map.range.min",0)
-            mapRange.max(.Object) <- .arg("map.range.max",1)
             gradientType(.Object) <- .arg("gradient.type","linear")
             fillAngle(.Object) <- .arg("fill.angle", 0)
 
@@ -683,12 +681,12 @@ setMethod(f="exec", signature="MappingColors",
 #' @param fill.angle is the filling angle of the gradient. The default value for
 #'   this parameter is 0.
 #'   
-#' @param fn is the transformation function that is applied onto the data, prior
-#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
-#'   By default the \emph{identity} function, which do not transformed the input
-#'   data, is assigned to the newly created instance.
+#' @param trans.function is the transformation function that is applied onto the
+#'   data, prior to the color mapping (see the \code{\link{Mapping}} class
+#'   documentation). By default the \emph{identity} function, which do not
+#'   transformed the input data, is assigned to the newly created instance.
 #'   
-#' @param fn.parameters is the list of parameters values associated with the 
+#' @param trans.parameters is the list of parameters values associated with the 
 #'   transformation function.
 #'   
 #' @return a \code{\link{MappingColors}} object
@@ -751,7 +749,7 @@ setMethod(f="exec", signature="MappingColors",
 MappingColors.factory <- function(data,targets,target.attribute,
                                   map.colors,map.range,
                                   gradient.type, fill.angle,
-                                  fn, fn.parameters) {
+                                  trans.function, trans.parameters) {
   
   ## check
   if(missing(data))
@@ -759,17 +757,23 @@ MappingColors.factory <- function(data,targets,target.attribute,
   
   ## init.
   args <- list("MappingColors")
-  args <- c(args,values=data)
-  args <- c(args,target.attribute=c("style::fill","style::stroke"))
+  args[["values"]] <- data
+  if(missing(target.attribute))
+    args[["target.attribute"]] <- c("style::fill","style::stroke")
+  else
+    args[["target.attribute"]] <- target.attribute
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
-  if(!missing(map.range)) args <- c(args,map.range=map.range)
-  if(!missing(gradient.type)) args <- c(args,gradient.type)
-  if(!missing(fill.angle)) args <- c(args,fill.ange=fill.angle)
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(map.colors)) args[["map.colors"]] <- map.colors
+  if(!missing(map.range)) args[["map.range"]] <- map.range
+  if(!missing(gradient.type)) args <- c(args,gradient.type=gradient.type)
+  if(!missing(fill.angle)) args <- c(args,fill.angle=fill.angle)
+  if(!missing(trans.function)) args <- c(args,trans.function=trans.function)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
   mapC <- do.call(new,args)
   
   ## eop
@@ -810,12 +814,12 @@ MappingColors.factory <- function(data,targets,target.attribute,
 #' @param fill.angle is the filling angle of the gradient. The default value for
 #'   this parameter is 0.
 #'   
-#' @param fn is the transformation function that is applied onto the data, prior
-#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
-#'   By default the \emph{identity} function, which do not transformed the input
-#'   data, is assigned to the newly created instance.
+#' @param trans.function is the transformation function that is applied onto the
+#'   data, prior to the color mapping (see the \code{\link{Mapping}} class
+#'   documentation). By default the \emph{identity} function, which do not
+#'   transformed the input data, is assigned to the newly created instance.
 #'   
-#' @param fn.parameters is the list of parameters values associated with the 
+#' @param trans.parameters is the list of parameters values associated with the 
 #'   transformation function.
 #'   
 #' @return a \code{\link{MappingColors}} object
@@ -852,7 +856,7 @@ MappingColors.factory <- function(data,targets,target.attribute,
 MappingFillColors.factory <- function(data,targets,
                                       map.colors,map.range,
                                       gradient.type, fill.angle,
-                                      fn, fn.parameters) {
+                                      trans.function, trans.parameters) {
 
   ## check
   if(missing(data))
@@ -860,17 +864,20 @@ MappingFillColors.factory <- function(data,targets,
   
   ## init.
   args <- list("MappingColors")
-  args <- c(args,values=data)
-  args <- c(args,target.attribute="style::fill")
+  args[["values"]] <- data
+  args[["target.attribute"]] <- c("style::fill")
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
-  if(!missing(map.range)) args <- c(args,map.range=map.range)
-  if(!missing(gradient.type)) args <- c(args,gradient.type)
-  if(!missing(fill.angle)) args <- c(args,fill.ange=fill.angle)
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(map.colors)) args[["map.colors"]] <- map.colors
+  if(!missing(map.range)) args[["map.range"]] <- map.range
+  if(!missing(gradient.type)) args <- c(args,gradient.type=gradient.type)
+  if(!missing(fill.angle)) args <- c(args,fill.angle=fill.angle)
+  if(!missing(trans.function)) args <- c(args,trans.function=trans.function)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
   mapC <- do.call(new,args)
   
   ## eop
