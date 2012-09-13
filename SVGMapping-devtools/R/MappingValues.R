@@ -115,13 +115,29 @@ NULL
 
 setMethod(f="initialize", signature="MappingValues",
           definition=function(.Object,...)
-          {            
+          {
+            ## - locals
+            .arg <- function(name,default.value) {
+              if(sum(grepl(paste("^",name,"$",sep=""), args.names)) > 0) {
+                v <- args[[grep(paste("^",name,"$",sep=""),args.names)]]
+                return(v)
+              }
+              else {
+                return(default.value)
+              }
+            }
+            
             ## super
-            .Object <- callNextMethod()
+            .Object <- callNextMethod(.Object,...)
 
+            ## get args
+            args = list(...)
+            args.names = names(args)
+            if(is.null(args.names)) args.names <- list()
+            
             ## default init.
-            targetAttribute(.Object) <- character(0)
-            targetUnit(.Object) <- vector("character")
+            targetAttribute(.Object) <- .arg("target.attribute",character(0))
+            targetUnit(.Object) <- .arg("target.unit",vector("character"))
 
             ## eop
             return(.Object)
@@ -248,12 +264,12 @@ setMethod(f="exec", signature="MappingValues",
 #' @param target.unit contains the unit(s) character string(s) that are use as 
 #'   postfix for output values.
 #'   
-#' @param fn is the transformation function that is applied onto the data, prior
-#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
-#'   By default the \emph{identity} function, which do not transformed the input
-#'   data, is assigned to the newly created instance.
+#' @param trans.function is the transformation function that is applied onto the
+#'   data, prior to the color mapping (see the \code{\link{Mapping}} class
+#'   documentation). By default the \emph{identity} function, which do not
+#'   transformed the input data, is assigned to the newly created instance.
 #'   
-#' @param fn.parameters is the list of parameters values associated with the 
+#' @param trans.parameters is the list of parameters values associated with the 
 #'   transformation function.
 #'   
 #' @return a \code{\link{MappingValues}} object
@@ -290,7 +306,7 @@ setMethod(f="exec", signature="MappingValues",
 #' ## show(template)
 MappingValues.factory <- function(data,targets,
                                   target.attribute,target.unit,
-                                  fn, fn.parameters) {
+                                  trans.function, trans.parameters) {
   
   ## check.
   if(missing(data))
@@ -303,14 +319,17 @@ MappingValues.factory <- function(data,targets,
   
   ## init.
   args <- list("MappingValues")
-  args <- c(args, values=data)
+  args[["values"]] <- data
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(target.attribute)) args <- c(args, target.attribute=target.attribute)
-  if(!missing(target.unit)) args <- c(args, target.unit=target.unit)
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(target.attribute)) args[["target.attribute"]] <- target.attribute
+  if(!missing(target.unit)) args[["target.unit"]] <- target.unit
+  if(!missing(trans.function)) args <- c(args,trans.function=trans.function)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
   mapV <- do.call(new,args)
   
   #eop
@@ -323,8 +342,10 @@ MappingValues.factory <- function(data,targets,
 #' to change the opacity level according to some input values.
 #' 
 #' By default, this factory function expect that input values are levels in the 
-#' range [0,1]. Thus, if inputs does not fulfill this constraint one can provide
-#' a transformation function to scale the input data.
+#' range [0,1]. Thus, a default \code{\link{fnRangeLinear}} transformation, with
+#' the parameters \emph{a=1, b=0, min=0} and \emph{max=1}, is assigned to the
+#' mapping operation. Nevertheless, one can provide its own transformation 
+#' function if necessary.
 #' 
 #' The \code{MappingOpacity.factory} factory function will create a mapping
 #' operation that change the \strong{overall} opacity of the target shapes.
@@ -337,12 +358,12 @@ MappingValues.factory <- function(data,targets,
 #'   list of SVG nodes identifiers or any node selection expression. By default 
 #'   the targets are the row names of the input data variable.
 #'   
-#' @param fn is the transformation function that is applied onto the data, prior
-#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
-#'   By default the \emph{identity} function, which do not transformed the input
-#'   data, is assigned to the newly created instance.
+#' @param trans.function is the transformation function that is applied onto the
+#'   data, prior to the color mapping (see the \code{\link{Mapping}} class
+#'   documentation). By default the \emph{identity} function, which do not
+#'   transformed the input data, is assigned to the newly created instance.
 #'   
-#' @param fn.parameters is the list of parameters values associated with the 
+#' @param trans.parameters is the list of parameters values associated with the 
 #'   transformation function.
 #'   
 #' @return a \code{\link{MappingValues}} object
@@ -393,20 +414,28 @@ MappingValues.factory <- function(data,targets,
 #' 
 #' @rdname mappingvalues.opacity-factory
 MappingOpacity.factory <- function(data,targets,
-                                   fn,fn.parameters) {
+                                   trans.function,trans.parameters) {
   ## check.
   if(missing(data))
     stop("'data' argument is absolutely required")
 
   ## init.
   args <- list("MappingValues")
-  args <- c(args, values=data)
+  args[["values"]] <- data
   args <- c(args, target.attribute="opacity")
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
+  if(!missing(trans.function)) 
+    args <- c(args,trans.function=trans.function)
+  else {
+    args <- c(args,trans.function=fnRangeLinear)
+    args[["trans.parameters"]] <- list(a=1,b=0,min=0,max=1)
+  }
   mapV <- do.call(new,args)
   
   #eop
@@ -424,20 +453,28 @@ MappingOpacity.factory <- function(data,targets,
 #' @rdname mappingvalues.opacity-factory
 #' @export MappingFillOpacity.factory
 MappingFillOpacity.factory <- function(data,targets,
-                                       fn,fn.parameters) {
+                                       trans.function, trans.parameters) {
   ## check.
   if(missing(data))
     stop("'data' argument is absolutely required")
   
   ## init.
   args <- list("MappingValues")
-  args <- c(args, values=data)
+  args[["values"]] <- data
   args <- c(args, target.attribute="style::fill-opacity")
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
+  if(!missing(trans.function)) 
+    args <- c(args,trans.function=trans.function)
+  else {
+    args <- c(args,trans.function=fnRangeLinear)
+    args[["trans.parameters"]] <- list(a=1,b=0,min=0,max=1)
+  }
   mapV <- do.call(new,args)
   
   #eop
@@ -456,20 +493,28 @@ MappingFillOpacity.factory <- function(data,targets,
 #' @rdname mappingvalues.opacity-factory
 #' @export MappingStrokeOpacity.factory
 MappingStrokeOpacity.factory <- function(data,targets,
-                                         fn,fn.parameters) {
+                                         trans.function,trans.parameters) {
   ## check.
   if(missing(data))
     stop("'data' argument is absolutely required")
   
   ## init.
   args <- list("MappingValues")
-  args <- c(args, values=data)
+  args[["values"]] <- data
   args <- c(args, target.attribute="style::stroke-opacity")
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
+  if(!missing(trans.function)) 
+    args <- c(args,trans.function=trans.function)
+  else {
+    args <- c(args,trans.function=fnRangeLinear)
+    args[["trans.parameters"]] <- list(a=1,b=0,min=0,max=1)
+  }
   mapV <- do.call(new,args)
   
   #eop
@@ -493,12 +538,19 @@ MappingStrokeOpacity.factory <- function(data,targets,
 #'   list of SVG nodes identifiers or any node selection expression. By default 
 #'   the targets are the row names of the input data variable.
 #'   
-#' @param fn is the transformation function that is applied onto the data, prior
-#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
-#'   By default the \emph{identity} function, which do not transformed the input
-#'   data, is assigned to the newly created instance.
+#' @param target.unit contains the unit(s) character string(s) that are use as 
+#'   postfix for stroke width values. By default it is assumed that width values
+#'   are given in the user coordinates system (see the SVG specification for
+#'   more details about units). If one wants to use a different size, making a
+#'   unit conversion, both the target unit and a transformation function (see
+#'   below) should be provided.
 #'   
-#' @param fn.parameters is the list of parameters values associated with the 
+#' @param trans.function is the transformation function that is applied onto the
+#'   data, prior to the color mapping (see the \code{\link{Mapping}} class
+#'   documentation). By default the \emph{identity} function, which do not
+#'   transformed the input data, is assigned to the newly created instance.
+#'   
+#' @param trans.parameters is the list of parameters values associated with the 
 #'   transformation function.
 #'   
 #' @return a \code{\link{MappingValues}} object
@@ -529,20 +581,25 @@ MappingStrokeOpacity.factory <- function(data,targets,
 #' ## mapping(template, my.map)
 #' ## show(template)
 MappingStrokeWidth.factory <- function(data,targets,
-                                       fn,fn.parameters) {
+                                       target.unit,
+                                       trans.function, trans.parameters) {
   ## check.
   if(missing(data))
     stop("'data' argument is absolutely required")
   
   ## init.
   args <- list("MappingValues")
-  args <- c(args, values=data)
+  args[["values"]] <- data
   args <- c(args, target.attribute="style::stroke-width")
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(target.unit)) args[["target.unit"]] <- target.unit
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
+  if(!missing(trans.function)) args <- c(args,trans.function=trans.function)
   mapV <- do.call(new,args)
   
   #eop

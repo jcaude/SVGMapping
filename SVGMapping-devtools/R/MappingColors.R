@@ -317,7 +317,7 @@ setMethod(f="initialize", signature="MappingColors",
             if(is.null(args.names)) args.names <- list()
             
             ## detault init.
-            targetAttribute(.Object) <- .arg("target.attribute",character())
+            targetAttribute(.Object) <- .arg("target.attribute",character(0))
             mapColors(.Object) <- .arg("map.colors", .default_mapping_colors)
             mapRange(.Object) <- .arg("map.range",c(0,1))
             gradientType(.Object) <- .arg("gradient.type","linear")
