@@ -255,8 +255,7 @@
       can also be implemented by overloading the '+' operator (alike ggplot2)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="idea"/>
 </node>
 </node>
@@ -1046,16 +1045,23 @@
 </node>
 </node>
 </node>
-<node CREATED="1333458495873" FOLDED="true" ID="ID_1444969248" MODIFIED="1347367221508" TEXT="MappingValues">
+<node CREATED="1333458495873" FOLDED="true" ID="ID_1444969248" MODIFIED="1347551028260" TEXT="MappingValues">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333458502489" FOLDED="true" ID="ID_663904913" MODIFIED="1347367219854" TEXT="fields">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1333458502489" FOLDED="true" ID="ID_663904913" MODIFIED="1347550978089" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333447334550" ID="ID_1402213680" MODIFIED="1347033336362" TEXT="target.attribute"/>
-<node CREATED="1333537964899" ID="ID_160299077" MODIFIED="1347367204713" TEXT="target.unit"/>
+<icon BUILTIN="button_ok"/>
+<node CREATED="1333447334550" ID="ID_1402213680" MODIFIED="1347550628080" TEXT="target.attribute">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1333458504505" FOLDED="true" ID="ID_991078364" MODIFIED="1347367218876" TEXT="methods">
+<node CREATED="1333537964899" ID="ID_160299077" MODIFIED="1347550628080" TEXT="target.unit">
+<icon BUILTIN="button_ok"/>
+</node>
+</node>
+<node CREATED="1333458504505" FOLDED="true" ID="ID_991078364" MODIFIED="1347550981514" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333458528096" ID="ID_1459692792" MODIFIED="1347033332358">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1333458528096" ID="ID_1459692792" MODIFIED="1347550623525">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1066,9 +1072,12 @@
     </p>
   </body>
 </html></richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1333537969250" ID="ID_453635152" MODIFIED="1347367214290" TEXT="GS:targetUnit"/>
-<node CREATED="1333458531889" ID="ID_1792330335" MODIFIED="1347033332357">
+<node CREATED="1333537969250" ID="ID_453635152" MODIFIED="1347550623525" TEXT="GS:targetUnit">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1333458531889" ID="ID_1792330335" MODIFIED="1347550623524">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1079,28 +1088,47 @@
     </p>
   </body>
 </html></richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1333537957490" FOLDED="true" ID="ID_1943508734" MODIFIED="1347367217707" TEXT="factory">
+<node CREATED="1333537957490" FOLDED="true" ID="ID_1943508734" MODIFIED="1347551002915" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1333537992012" ID="ID_386392280" MODIFIED="1347033326462" TEXT="MappingValues.factory"/>
-<node CREATED="1333538000860" ID="ID_1171929019" MODIFIED="1347033326462" TEXT="MappingOpacity.factory"/>
-<node CREATED="1333538000860" ID="ID_295661513" MODIFIED="1347033326462" TEXT="MappingFillOpacity.factory"/>
-<node CREATED="1333538000860" ID="ID_83290407" MODIFIED="1347033326462" TEXT="MappingStrokeOpacity.factory"/>
-<node CREATED="1333538741711" ID="ID_1992504135" MODIFIED="1347033326462" TEXT="MappingStrokeWidth.factory"/>
+<icon BUILTIN="button_ok"/>
+<node CREATED="1333537992012" ID="ID_386392280" MODIFIED="1347550617269" TEXT="MappingValues.factory">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1333538000860" ID="ID_1171929019" MODIFIED="1347550617269" TEXT="MappingOpacity.factory">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1333538000860" ID="ID_295661513" MODIFIED="1347550617269" TEXT="MappingFillOpacity.factory">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1333538000860" ID="ID_83290407" MODIFIED="1347550617269" TEXT="MappingStrokeOpacity.factory">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1333538741711" ID="ID_1992504135" MODIFIED="1347550617268" TEXT="MappingStrokeWidth.factory">
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1332425165842" ID="ID_1274504389" MODIFIED="1347367275643" TEXT="Mapping.Transformation">
+</node>
+<node CREATED="1332425182531" ID="ID_224373614" MODIFIED="1347550638934" TEXT="MappingLinks">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="hourglass"/>
-</node>
-<node CREATED="1332425182531" FOLDED="true" ID="ID_224373614" MODIFIED="1347033359771" TEXT="MappingLinks">
-<font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1337612045486" ID="ID_1907742232" MODIFIED="1337612049686" TEXT="fields">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1337612045486" ID="ID_1907742232" MODIFIED="1347550663396" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1347550949001" ID="ID_1847619919" MODIFIED="1347550954846" TEXT="url.pattern"/>
 </node>
-<node CREATED="1337612047262" ID="ID_1510513928" MODIFIED="1337612050910" TEXT="methods">
+<node CREATED="1337612047262" ID="ID_1510513928" MODIFIED="1347550663395" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1347550956696" ID="ID_153801699" MODIFIED="1347550961416" TEXT="GS:url.pattern"/>
+<node CREATED="1347550961912" ID="ID_1722894883" MODIFIED="1347550963680" TEXT="exec"/>
+</node>
+<node CREATED="1347550641979" ID="ID_1034627331" MODIFIED="1347551015629" TEXT="facory">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1347550994826" ID="ID_1448804883" MODIFIED="1347551011754" TEXT="MappingLinks.factory"/>
 </node>
 </node>
 <node CREATED="1332425191467" FOLDED="true" ID="ID_1705692183" MODIFIED="1347033354058" TEXT="MappingTooltips">
@@ -1129,6 +1157,10 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
+</node>
+<node CREATED="1332425165842" ID="ID_1274504389" MODIFIED="1347367275643" TEXT="Mapping.Transformation">
+<font BOLD="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="hourglass"/>
 </node>
 <node CREATED="1332425202202" ID="ID_1467333508" MODIFIED="1347367283608" TEXT="Mapping.Animations">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
@@ -1606,10 +1638,11 @@
 </node>
 </node>
 </node>
-<node CREATED="1331821079345" FOLDED="true" ID="ID_1708593696" MODIFIED="1345466065676" TEXT="Mapping">
+<node CREATED="1331821079345" ID="ID_1708593696" MODIFIED="1347550764166" TEXT="Mapping">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1331821089265" ID="ID_1885349685" MODIFIED="1333447541311" TEXT="Input">
+<node CREATED="1331821089265" FOLDED="true" ID="ID_1885349685" MODIFIED="1347550846196" TEXT="Input">
 <font BOLD="true" ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="button_ok"/>
 <node CREATED="1331821110338" ID="ID_961117892" MODIFIED="1333538800652" TEXT="Numeric">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -1617,9 +1650,10 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1331821101073" ID="ID_1553317661" MODIFIED="1338554270142" TEXT="Function">
+<node CREATED="1331821101073" FOLDED="true" ID="ID_1553317661" MODIFIED="1347550836355" TEXT="Function">
 <font BOLD="true" ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="button_ok"/>
+<icon BUILTIN="hourglass"/>
 <node CREATED="1331821126522" ID="ID_1521524522" MODIFIED="1333447527928" TEXT="Linear">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -1635,11 +1669,11 @@
 <node CREATED="1331821147612" ID="ID_95181240" MODIFIED="1333447527927" TEXT="UDF">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1333538811154" ID="ID_1015039006" MODIFIED="1333538831263" TEXT="FoldChange">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1333538811154" ID="ID_1015039006" MODIFIED="1347550814382" TEXT="FoldChange">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1333538818043" ID="ID_797468018" MODIFIED="1333538831263" TEXT="Consider vector of functions">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1333538818043" ID="ID_797468018" MODIFIED="1347550824641" TEXT="Consider vector of functions">
+<icon BUILTIN="hourglass"/>
 </node>
 </node>
 <node CREATED="1331821104513" ID="ID_1586275763" MODIFIED="1333458623976" TEXT="Returns">
@@ -1666,12 +1700,14 @@
 <node CREATED="1331821492579" ID="ID_374254980" MODIFIED="1337611785233" TEXT="Mask Fill">
 <icon BUILTIN="messagebox_warning"/>
 </node>
-<node CREATED="1331821340844" ID="ID_95615391" MODIFIED="1342718416696" TEXT="Geometric Modification">
+<node CREATED="1331821340844" FOLDED="true" ID="ID_95615391" MODIFIED="1347550936584" TEXT="Geometric Modification">
+<icon BUILTIN="hourglass"/>
 <node CREATED="1331821349013" ID="ID_799563844" MODIFIED="1331821351930" TEXT="Scale"/>
 <node CREATED="1331821353173" ID="ID_372365465" MODIFIED="1331821355666" TEXT="Rotation"/>
 <node CREATED="1331821357013" ID="ID_813811202" MODIFIED="1331821359546" TEXT="Translation"/>
 </node>
-<node CREATED="1331821571559" ID="ID_1977809278" MODIFIED="1331821604622" TEXT="Shape Selection (within &lt;g&gt;)">
+<node CREATED="1331821571559" FOLDED="true" ID="ID_1977809278" MODIFIED="1347550937159" TEXT="Shape Selection (within &lt;g&gt;)">
+<icon BUILTIN="hourglass"/>
 <node COLOR="#666666" CREATED="1333459246389" ID="ID_1682463711" MODIFIED="1333469474920">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -1688,18 +1724,25 @@
 </html></richcontent>
 </node>
 </node>
-<node CREATED="1331821501428" ID="ID_707549647" MODIFIED="1331821506385" TEXT="Javascript">
+<node CREATED="1331821501428" FOLDED="true" ID="ID_707549647" MODIFIED="1347550937960" TEXT="Javascript">
+<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1331821507772" ID="ID_759493451" MODIFIED="1333626383178" TEXT="Tooltip">
 <icon BUILTIN="messagebox_warning"/>
 </node>
-<node CREATED="1331821515350" ID="ID_66877015" MODIFIED="1331821536138" TEXT="Animations">
+<node CREATED="1331821515350" FOLDED="true" ID="ID_66877015" MODIFIED="1347550869628" TEXT="Animations">
+<icon BUILTIN="hourglass"/>
 <node CREATED="1331821519413" ID="ID_410842462" MODIFIED="1331821524162" TEXT="Open"/>
 <node CREATED="1331821524733" ID="ID_986222748" MODIFIED="1331821528586" TEXT="Mouseover"/>
 </node>
 </node>
-<node CREATED="1331821546805" ID="ID_1450750105" MODIFIED="1334341810504" TEXT="Links">
-<icon BUILTIN="button_ok"/>
-<node CREATED="1331821551030" ID="ID_1504918804" MODIFIED="1331821552635" TEXT="HREF"/>
+<node CREATED="1331821546805" ID="ID_1450750105" MODIFIED="1347550907352" TEXT="Links">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1331821551030" ID="ID_1504918804" MODIFIED="1347550931026" TEXT="HREF">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1347550799803" ID="ID_582938735" MODIFIED="1347550927893" TEXT="Replacement Pattern">
+<icon BUILTIN="messagebox_warning"/>
+</node>
+</node>
 </node>
 </node>
 </node>
@@ -1807,8 +1850,7 @@
       as possible for all classes
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 </node>
 </node>
 </node>
