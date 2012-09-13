@@ -918,12 +918,12 @@ MappingFillColors.factory <- function(data,targets,
 #' @param fill.angle is the filling angle of the gradient. The default value for
 #'   this parameter is 0.
 #'   
-#' @param fn is the transformation function that is applied onto the data, prior
-#'   to the color mapping (see the \code{\link{Mapping}} class documentation). 
-#'   By default the \emph{identity} function, which do not transformed the input
-#'   data, is assigned to the newly created instance.
+#' @param trans.function is the transformation function that is applied onto the
+#'   data, prior to the color mapping (see the \code{\link{Mapping}} class
+#'   documentation). By default the \emph{identity} function, which do not
+#'   transformed the input data, is assigned to the newly created instance.
 #'   
-#' @param fn.parameters is the list of parameters values associated with the 
+#' @param trans.parameters is the list of parameters values associated with the 
 #'   transformation function.
 #'   
 #' @return a \code{\link{MappingColors}} object
@@ -960,24 +960,27 @@ MappingFillColors.factory <- function(data,targets,
 MappingStrokeColors.factory <- function(data,targets,
                                         map.colors,map.range,
                                         gradient.type, fill.angle,
-                                        fn, fn.parameters) {
+                                        trans.function, trans.parameters) {
   ## check
   if(missing(data))
     stop("'data' argument is absolutely required")
   
   ## init.
   args <- list("MappingColors")
-  args <- c(args,values=data)
-  args <- c(args,target.attribute="style::stroke")
+  args[["values"]] <- data
+  args[["target.attribute"]] <- c("style::stroke")
   
   ## fill mapping structure
-  args <- c(args,targets=ifelse(missing(targets),row.names(data),targets))
-  if(!missing(map.colors)) args <- c(args,map.colors=map.colors)
-  if(!missing(map.range)) args <- c(args,map.range=map.range)
-  if(!missing(gradient.type)) args <- c(args,gradient.type)
-  if(!missing(fill.angle)) args <- c(args,fill.ange=fill.angle)
-  if(!missing(fn)) args <- c(args,fn=fn)
-  if(!missing(fn.parameters)) args <- c(args,fn.parameters=fn.parameters)
+  if(!missing(targets)) 
+    args[["targets"]] <- targets
+  else    
+    args[["targets"]] <- row.names(data)
+  if(!missing(map.colors)) args[["map.colors"]] <- map.colors
+  if(!missing(map.range)) args[["map.range"]] <- map.range
+  if(!missing(gradient.type)) args <- c(args,gradient.type=gradient.type)
+  if(!missing(fill.angle)) args <- c(args,fill.angle=fill.angle)
+  if(!missing(trans.function)) args <- c(args,trans.function=trans.function)
+  if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
   mapC <- do.call(new,args)
   
   ## eop
@@ -1026,17 +1029,16 @@ MappingBioArraysColors.factory <- function(arrays) {
     stop("'arrays' parameters is absolutely required")
   
   ## init.
-  args <- list("MappingColors")
-  args <- c(args,
-            target.attribute="style::fill",
-            values=arrays,
-            targets=row.names(arrays),
-            map.colors=.microarrays_mapping_colors,
-            map.range=c(-2,2),
-            gradient.type="linear",
-            fill.angle=0,
-            fn="Identity",
-            fn.parameters=list())
+  args <- list("MappingColors",
+               target.attribute="style::fill",
+               values=arrays,
+               targets=row.names(arrays),
+               map.colors=.microarrays_mapping_colors,
+               map.range=c(-2,2),
+               gradient.type="linear",
+               fill.angle=0,
+               trans.function=fnIdentity,
+               trans.parameters=list())
   
   ## fill mapping structure
   mapC <- do.call(new,args)

@@ -26,6 +26,9 @@ require(testthat)
                      "#FF2400", "#FF1F00", "#FF1A00", "#FF1500",  
                      "#FF1000", "#FF0A00", "#FF0500", "#FF0000")
 
+.microarrays_mapping_colors <- load(system.file("extdata/microarrayColors.rda",
+                                                package="SVGMappingDevtools"))
+
 context("Mapping (Colors)")
 
 test_that("get/set Fields", {
@@ -150,6 +153,81 @@ test_that("Factory Functions", {
   expect_equal(gradientType(map),"linear")
   expect_equal(fillAngle(map),0)
   expect_equal(transFunction(map),NULL)
+  expect_equal(transParameters(map),list())
+  
+  ## (full args) MappingFillColors factory
+  map <- MappingFillColors.factory(data=dummy[,"y"],
+                                   targets=circles,
+                                   map.colors=c("#4D4D4D", "#6C6C6C", "#838383", 
+                                                "#969696", "#A7A7A7", "#B5B5B5",  
+                                                "#C3C3C3", "#CFCFCF", "#DBDBDB", 
+                                                "#E6E6E6"),
+                                   map.range=c(-7,8),
+                                   gradient.type="linear",
+                                   fill.angle=25,
+                                   trans.function=fnRangeLinear,
+                                   trans.parameters=list(a=1,b=0,min=-5,max=5))
+  expect_equal(values(map),dummy[,"y"])
+  expect_equal(targets(map),circles)
+  expect_equal(targetAttribute(map),"style::fill")
+  expect_equal(mapColors(map),c("#4D4D4D", "#6C6C6C", "#838383", 
+                                "#969696", "#A7A7A7", "#B5B5B5",  
+                                "#C3C3C3", "#CFCFCF", "#DBDBDB", 
+                                "#E6E6E6"))
+  expect_equal(mapRange(map),c(-7,8))
+  expect_equal(gradientType(map),"linear")
+  expect_equal(fillAngle(map),25)
+  expect_equal(transFunction(map),fnRangeLinear)
+  expect_equal(transParameters(map),list(a=1,b=0,min=-5,max=5))
+  
+  ## (default) MappingStrokeColors factory
+  map <- MappingStrokeColors.factory(data=dummy[,"x",drop=FALSE])
+  expect_equal(values(map),dummy[,"x",drop=FALSE])
+  expect_equal(targets(map),circles)
+  expect_equal(targetAttribute(map),c("style::stroke"))
+  expect_equal(mapColors(map),.default_colors)
+  expect_equal(mapRange(map),c(0,1))
+  expect_equal(gradientType(map),"linear")
+  expect_equal(fillAngle(map),0)
+  expect_equal(transFunction(map),NULL)
+  expect_equal(transParameters(map),list())
+
+  ## (full args) MappingStrokColors factory
+  map <- MappingStrokeColors.factory(data=dummy[,"y"],
+                                     targets=circles,
+                                     map.colors=c("#4D4D4D", "#6C6C6C", 
+                                                  "#838383", "#969696", 
+                                                  "#A7A7A7", "#B5B5B5",  
+                                                  "#C3C3C3", "#CFCFCF", 
+                                                  "#DBDBDB", "#E6E6E6"),
+                                     map.range=c(-7,8),
+                                     gradient.type="linear",
+                                     fill.angle=25,
+                                     trans.function=fnRangeLinear,
+                                     trans.parameters=list(a=1,b=0,min=-5,max=5))
+  expect_equal(values(map),dummy[,"y"])
+  expect_equal(targets(map),circles)
+  expect_equal(targetAttribute(map),"style::stroke")
+  expect_equal(mapColors(map),c("#4D4D4D", "#6C6C6C", "#838383", 
+                                "#969696", "#A7A7A7", "#B5B5B5",  
+                                "#C3C3C3", "#CFCFCF", "#DBDBDB", 
+                                "#E6E6E6"))
+  expect_equal(mapRange(map),c(-7,8))
+  expect_equal(gradientType(map),"linear")
+  expect_equal(fillAngle(map),25)
+  expect_equal(transFunction(map),fnRangeLinear)
+  expect_equal(transParameters(map),list(a=1,b=0,min=-5,max=5))
+  
+  ## MappingBioArraysColors factory
+  map <- MappingBioArraysColors.factory(arrays=dummy[,"x",drop=FALSE])
+  expect_equal(values(map),dummy[,"x",drop=FALSE])
+  expect_equal(targets(map),circles)
+  expect_equal(targetAttribute(map),c("style::fill"))
+  expect_equal(mapColors(map),.microarrays_mapping_colors)
+  expect_equal(mapRange(map),c(-2,2))
+  expect_equal(gradientType(map),"linear")
+  expect_equal(fillAngle(map),0)
+  expect_equal(transFunction(map),fnIdentity)
   expect_equal(transParameters(map),list())
   
 })
