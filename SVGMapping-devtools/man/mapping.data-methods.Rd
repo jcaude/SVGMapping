@@ -8,6 +8,7 @@
 \alias{values,Mapping-method}
 \alias{values<-}
 \alias{values<-,Mapping-method}
+\alias{values<-,MappingLinks-method}
 \title{Mapping Data (Values and Targets) Accessors}
 \arguments{
   \item{object}{the mapping instance object}

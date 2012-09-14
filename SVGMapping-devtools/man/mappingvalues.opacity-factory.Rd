@@ -4,13 +4,14 @@
 \alias{MappingStrokeOpacity.factory}
 \title{Mapping Opacity Factory}
 \usage{
-  MappingOpacity.factory(data, targets, fn, fn.parameters)
+  MappingOpacity.factory(data, targets, trans.function,
+    trans.parameters)
 
-  MappingFillOpacity.factory(data, targets, fn,
-    fn.parameters)
+  MappingFillOpacity.factory(data, targets, trans.function,
+    trans.parameters)
 
-  MappingStrokeOpacity.factory(data, targets, fn,
-    fn.parameters)
+  MappingStrokeOpacity.factory(data, targets,
+    trans.function, trans.parameters)
 }
 \arguments{
   \item{data}{is the input dataset to use for this mapping}
@@ -20,14 +21,14 @@
   node selection expression. By default the targets are the
   row names of the input data variable.}
 
-  \item{fn}{is the transformation function that is applied
-  onto the data, prior to the color mapping (see the
-  \code{\link{Mapping}} class documentation).  By default
-  the \emph{identity} function, which do not transformed
-  the input data, is assigned to the newly created
-  instance.}
+  \item{trans.function}{is the transformation function that
+  is applied onto the data, prior to the color mapping (see
+  the \code{\link{Mapping}} class documentation). By
+  default the \emph{identity} function, which do not
+  transformed the input data, is assigned to the newly
+  created instance.}
 
-  \item{fn.parameters}{is the list of parameters values
+  \item{trans.parameters}{is the list of parameters values
   associated with the transformation function.}
 }
 \value{
@@ -40,9 +41,11 @@
 }
 \details{
   By default, this factory function expect that input
-  values are levels in the range [0,1]. Thus, if inputs
-  does not fulfill this constraint one can provide a
-  transformation function to scale the input data.
+  values are levels in the range [0,1]. Thus, a default
+  \code{\link{fnRangeLinear}} transformation, with the
+  parameters \emph{a=1, b=0, min=0} and \emph{max=1}, is
+  assigned to the mapping operation. Nevertheless, one can
+  provide its own transformation function if necessary.
 
   The \code{MappingOpacity.factory} factory function will
   create a mapping operation that change the

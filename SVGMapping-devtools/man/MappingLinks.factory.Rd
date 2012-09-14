@@ -1,8 +1,8 @@
-\name{MappingStrokeWidth.factory}
-\alias{MappingStrokeWidth.factory}
-\title{Mapping Stroke Width Factory}
+\name{MappingLinks.factory}
+\alias{MappingLinks.factory}
+\title{Mapping Links Factory}
 \usage{
-  MappingStrokeWidth.factory(data, targets, target.unit,
+  MappingLinks.factory(data, targets, url.pattern,
     trans.function, trans.parameters)
 }
 \arguments{
@@ -13,14 +13,8 @@
   node selection expression. By default the targets are the
   row names of the input data variable.}
 
-  \item{target.unit}{contains the unit(s) character
-  string(s) that are use as postfix for stroke width
-  values. By default it is assumed that width values are
-  given in the user coordinates system (see the SVG
-  specification for more details about units). If one wants
-  to use a different size, making a unit conversion, both
-  the target unit and a transformation function (see below)
-  should be provided.}
+  \item{url.pattern}{contains the url pattern format string
+  that is used to forge url from input values}
 
   \item{trans.function}{is the transformation function that
   is applied onto the data, prior to the color mapping (see
@@ -33,19 +27,13 @@
   associated with the transformation function.}
 }
 \value{
-  a \code{\link{MappingValues}} object
+  a \code{\link{MappingLinks}} object
 }
 \description{
-  This function returns a \code{\link{MappingValues}}
-  instance that can be use to change the stroke width
-  according to some input values.
-}
-\details{
-  By default, this factory function expect that input
-  values are numerics given in the SVG user coordinates
-  system. Thus, if inputs are not given in this system on
-  can fix this by using the \code{\link{targetUnit}}
-  method.
+  This function returns a \code{\link{MappingLinks}}
+  instance that can be used to associate hyperlinks to a
+  set of \emph{targets} SVG elements. The links URL are
+  forge using input values and if set the url pattern.
 }
 \examples{
 ## load 'basic-sample.svg' a demo SVG template.
@@ -57,18 +45,20 @@
 circles <- paste("circle.",LETTERS[1:6],sep="")
 
 ## Then, we will use the following dummy dataset. This data.frame contains
-## one column named x. Row names are the circles identifiers.
-dummy <- data.frame(x=runif(6,min=1,max=5),
+## one column named x. Row names are the circles identifiers. We will
+## associate a link to the twitter accounts stored in the data-frame
+dummy <- data.frame(x=c("BarackObama","MittRomney","NYTLive",
+                        "Zidane_Zinedine","KingJames","IronmanTri"),
                    row.names=circles)
 
-## Now, let's create a MappingValues instance using the stroke width factory
-## function. We also set the target attribute unit to 'cm'
-my.map <- MappingOpacity.factory(dummy[,"x",drop=FALSE])
-targetUnit(my.map) <- "cm"
+## Now, let's create a MappingLinks instance using the default factory
+## function. We initialize the url pattern to point to twitter
+my.map <- MappingLinks.factory(dummy[,"x",drop=FALSE])
+urlPattern(my.map) <- "http://twitter.com/"
 
 ## Then, we apply this mapping object to the template, and show
 ## it in the default browser.
-## mapping(template, my.map)
+## mapping(template,my.map)
 ## show(template)
 }
 

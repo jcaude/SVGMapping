@@ -243,11 +243,10 @@ setMethod(f="exec", signature="MappingValues",
 #' 
 #' This function returns a \emph{default} \code{\link{MappingValues}} instance.
 #' 
-#' Using this factory function, the return object has no target attribute and no
-#' transformation function. Only the input \emph{values} are initialized in the
-#' object. Thus, by default this mapping operation will have no effect if 
-#' applied to an SVG template (unless one has use the relevant methods to change
-#' this operation behavior).
+#' Using this factory function, only the input \emph{values} and \emph{targets}
+#' are initialized in the object. By default this mapping operation will have no
+#' effect (\emph{ie} no target attribute assigned) if applied to an SVG template
+#' (unless one has use the relevant methods to change this operation behavior).
 #' 
 #' @name MappingValues.factory
 #'   
@@ -298,7 +297,7 @@ setMethod(f="exec", signature="MappingValues",
 #' ## Now, let's create a MappingValues instance using the default factory
 #' ## function. We initialize the target attribute to 'opacity'
 #' my.map <- MappingValues.factory(dummy[,"x",drop=FALSE])
-#' targetAttribute <- "opacity"
+#' targetAttribute(my.map) <- "opacity"
 #' 
 #' ## Then, we apply this mapping object to the template, and show
 #' ## it in the default browser.

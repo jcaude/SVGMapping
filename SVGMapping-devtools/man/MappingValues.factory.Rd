@@ -3,7 +3,7 @@
 \title{Mapping Values Factory}
 \usage{
   MappingValues.factory(data, targets, target.attribute,
-    target.unit, fn, fn.parameters)
+    target.unit, trans.function, trans.parameters)
 }
 \arguments{
   \item{data}{is the input dataset to use for this mapping}
@@ -22,14 +22,14 @@
   \item{target.unit}{contains the unit(s) character
   string(s) that are use as postfix for output values.}
 
-  \item{fn}{is the transformation function that is applied
-  onto the data, prior to the color mapping (see the
-  \code{\link{Mapping}} class documentation).  By default
-  the \emph{identity} function, which do not transformed
-  the input data, is assigned to the newly created
-  instance.}
+  \item{trans.function}{is the transformation function that
+  is applied onto the data, prior to the color mapping (see
+  the \code{\link{Mapping}} class documentation). By
+  default the \emph{identity} function, which do not
+  transformed the input data, is assigned to the newly
+  created instance.}
 
-  \item{fn.parameters}{is the list of parameters values
+  \item{trans.parameters}{is the list of parameters values
   associated with the transformation function.}
 }
 \value{
@@ -40,12 +40,12 @@
   \code{\link{MappingValues}} instance.
 }
 \details{
-  Using this factory function, the return object has no
-  target attribute and no transformation function. Only the
-  input \emph{values} are initialized in the object. Thus,
-  by default this mapping operation will have no effect if
-  applied to an SVG template (unless one has use the
-  relevant methods to change this operation behavior).
+  Using this factory function, only the input \emph{values}
+  and \emph{targets} are initialized in the object. By
+  default this mapping operation will have no effect
+  (\emph{ie} no target attribute assigned) if applied to an
+  SVG template (unless one has use the relevant methods to
+  change this operation behavior).
 }
 \examples{
 ## load 'basic-sample.svg' a demo SVG template.
@@ -64,7 +64,7 @@ dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
 ## Now, let's create a MappingValues instance using the default factory
 ## function. We initialize the target attribute to 'opacity'
 my.map <- MappingValues.factory(dummy[,"x",drop=FALSE])
-targetAttribute <- "opacity"
+targetAttribute(my.map) <- "opacity"
 
 ## Then, we apply this mapping object to the template, and show
 ## it in the default browser.
