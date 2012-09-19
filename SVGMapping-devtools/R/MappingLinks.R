@@ -131,6 +131,7 @@ setReplaceMethod(f="urlPattern", signature="MappingLinks",
                    ## check
                    if(!(is.atomic(value) && is.character(value)))
                      stop("URL pattern (format string) 'value' must be character strings")
+                   if(length(value) > 0) value <- value[[1]]
                    
                    ## init.
                    .Object@url.pattern <- value
@@ -146,7 +147,11 @@ setReplaceMethod(f="values", signature="MappingLinks",
                  definition=function(.Object, value)
                  {
                    ## check
-                   if(is.null(value)) return(.Object)
+                   if(is.null(value)) return(.Object)                  
+                   
+                   ## check
+                   if(is.factor(value))
+                     warning("'value' is a factor, it may cause issues")
                    
                    ## check 1D data
                    if(!is.vector(value) && (ncol(value) > 1))
@@ -268,7 +273,7 @@ MappingLinks.factory <- function(data,targets,
     args[["targets"]] <- targets
   else    
     args[["targets"]] <- row.names(data)
-  if(!missing(url.pattern)) arcs <- c(args,url.pattern=url.pattern)
+  if(!missing(url.pattern)) args <- c(args,url.pattern=url.pattern)
   if(!missing(trans.function)) args <- c(args,trans.function=trans.function)
   if(!missing(trans.parameters)) args[["trans.parameters"]] <- trans.parameters
   mapL <- do.call(new,args)
