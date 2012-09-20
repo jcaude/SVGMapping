@@ -1111,9 +1111,9 @@
 </node>
 </node>
 </node>
-<node CREATED="1332425182531" ID="ID_224373614" MODIFIED="1347639589532" TEXT="MappingLinks">
+<node CREATED="1332425182531" FOLDED="true" ID="ID_224373614" MODIFIED="1348072192779" TEXT="MappingLinks">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="button_ok"/>
 <node CREATED="1337612045486" FOLDED="true" ID="ID_1907742232" MODIFIED="1347639501108" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
@@ -1129,9 +1129,6 @@
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1347550994826" ID="ID_1448804883" MODIFIED="1347551011754" TEXT="MappingLinks.factory"/>
-</node>
-<node COLOR="#b3b95c" CREATED="1347639526814" ID="ID_13084897" MODIFIED="1347639556273" TEXT="missing test file">
-<icon BUILTIN="messagebox_warning"/>
 </node>
 </node>
 <node CREATED="1332425191467" FOLDED="true" ID="ID_1705692183" MODIFIED="1347033354058" TEXT="MappingTooltips">
