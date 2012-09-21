@@ -4,6 +4,7 @@
 \alias{exec,Mapping-method}
 \alias{exec,MappingColors-method}
 \alias{exec,MappingLinks-method}
+\alias{exec,MappingTooltips-method}
 \alias{exec,MappingValues-method}
 \title{Mapping Process Execution}
 \arguments{
@@ -22,6 +23,8 @@
   \code{Mapping} super class must implement an \code{exec}
   method that will perform the mapping operation on the
   template (\code{svg} parameter).
+
+  <title already defined>
 
   <title already defined>
 

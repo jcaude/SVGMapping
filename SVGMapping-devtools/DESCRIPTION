@@ -37,3 +37,4 @@ Collate:
     'MappingColors.R'
     'MappingValues.R'
     'MappingLinks.R'
+    'MappingTooltips.R'

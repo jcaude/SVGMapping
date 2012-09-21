@@ -1,9 +1,9 @@
-\name{MappingValues.factory}
-\alias{MappingValues.factory}
-\title{Mapping Values Factory}
+\name{MappingTooltips.factory}
+\alias{MappingTooltips.factory}
+\title{Mapping Tooltips Factory}
 \usage{
-  MappingValues.factory(data, targets, target.attribute,
-    target.unit, trans.function, trans.parameters)
+  MappingTooltips.factory(data, targets, trans.function,
+    trans.parameters)
 }
 \arguments{
   \item{data}{is the input dataset to use for this mapping}
@@ -12,15 +12,6 @@
   alter. This can be a list of SVG nodes identifiers or any
   node selection expression. By default the targets are the
   row names of the input data variable.}
-
-  \item{target.attribute}{specifies to which attribute the
-  output value will be set. It can be either an SVG
-  attribute (eg. \emph{opacity}) or a CSS style
-  sub-attribute (eg. \emph{style::stroke} or
-  \emph{style::x}).}
-
-  \item{target.unit}{contains the unit(s) character
-  string(s) that are use as postfix for output values.}
 
   \item{trans.function}{is the transformation function that
   is applied onto the data, prior to the color mapping (see
@@ -33,19 +24,20 @@
   associated with the transformation function.}
 }
 \value{
-  a \code{\link{MappingValues}} object
+  a \code{\link{MappingTooltips}} object
 }
 \description{
   This function returns a \emph{default}
-  \code{\link{MappingValues}} instance.
+  \code{\link{MappingTooltips}} instance.
 }
 \details{
-  Using this factory function, only the input \emph{values}
-  and \emph{targets} are initialized in the object. By
-  default this mapping operation will have no effect
-  (\emph{ie} no target attribute assigned) if applied to an
-  SVG template (unless one has use the relevant methods to
-  change this operation behavior).
+  Using this factory function, input \emph{values} and
+  \emph{targets} are initialized in the object. This
+  mapping operation associate default tooltips to the
+  targets shapes if applied to an SVG template. The tooltip
+  is very simple, with only one line that is filled using
+  input \emph{values}. Thus, the input value data.frame
+  must only contain one column of character strings.
 }
 \examples{
 ## load 'basic-sample.svg' a demo SVG template.
@@ -58,24 +50,20 @@ circles <- paste("circle.",LETTERS[1:6],sep="")
 
 ## Then, we will use the following dummy dataset. This data.frame contains
 ## one column named x. Row names are the circles identifiers.
-dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
+dummy <- data.frame(x=c("This is Circle A",
+                        "This is Circle B",
+                        "This is Circle C",
+                        "This is Circle D",
+                        "This is Circle E",
+                        "This is Circle F"),
                    row.names=circles)
 
-## Now, let's create a MappingValues instance using the default factory
-## function. We initialize the target attribute to 'opacity'
-my.map <- MappingValues.factory(dummy)
-targetAttribute(my.map) <- "opacity"
+## Now, let's create a MappingTooltips instance using the default factory
+my.map <- MappingTooltips.factory(dummy)
 
 ## Then, we apply this mapping object to the template, and show
 ## it in the default browser.
 ## mapping(template,my.map)
 ## show(template)
-}
-\seealso{
-  Other possible factory functions are:
-  \code{\link{MappingOpacity.factory}},
-  \code{\link{MappingFillOpacity.factory}},
-  \code{\link{MappingStrokeOpacity.factory}} and
-  \code{\link{MappingStrokeWidth.factory}}
 }
 
