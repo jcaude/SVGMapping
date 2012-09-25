@@ -38,3 +38,4 @@ Collate:
     'MappingValues.R'
     'MappingLinks.R'
     'MappingTooltips.R'
+    'MappingMasks.R'

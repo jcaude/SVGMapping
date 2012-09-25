@@ -4,6 +4,7 @@
 \alias{exec,Mapping-method}
 \alias{exec,MappingColors-method}
 \alias{exec,MappingLinks-method}
+\alias{exec,MappingMasks-method}
 \alias{exec,MappingTooltips-method}
 \alias{exec,MappingValues-method}
 \title{Mapping Process Execution}
