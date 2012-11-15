@@ -210,7 +210,7 @@ setMethod(f="exec", signature="MappingValues",
             if(is.null(ncond)) ncond <- 1
             
             ## call super
-            callNextMethod()
+            .Object <- callNextMethod(.Object,svg)
 
             ## empty target attribute ?
             if(length(targetAttribute(.Object)) == 0)
@@ -296,7 +296,7 @@ setMethod(f="exec", signature="MappingValues",
 #'                    
 #' ## Now, let's create a MappingValues instance using the default factory
 #' ## function. We initialize the target attribute to 'opacity'
-#' my.map <- MappingValues.factory(dummy[,"x",drop=FALSE])
+#' my.map <- MappingValues.factory(dummy)
 #' targetAttribute(my.map) <- "opacity"
 #' 
 #' ## Then, we apply this mapping object to the template, and show
