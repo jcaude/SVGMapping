@@ -316,7 +316,7 @@ setMethod(f="exec", signature="MappingMasks",
 #' ## function. Then, we apply this mapping object to the template, and show
 #' ## it in the default browser.
 #' mask.map <- MappingMasks.factory(dummy[,"x",drop=FALSE])
-#' ## mapping(template,color.map)
+#' ## mapping(template,mask.map)
 #' ## show(template)
 MappingMasks.factory <- function(data,targets,
                                  fill.angle,
