@@ -84,6 +84,13 @@
   return(devices[id][[1]])
 }
 
+.check_unit <- function(unit_name) {
+  if(unit_name %in% c("pt","pc","cm","mm","in","px"))
+    return(TRUE)
+  else
+    return(FALSE)
+}
+
 .toUserUnit <- function(value) {
   unit <- gsub("(-?[[:digit:].]+)(.*)","U_\\2",value)
   value <- as.numeric(gsub("(-?[[:digit:].]+)(.*)","\\1",value))
