@@ -91,6 +91,24 @@
     return(FALSE)
 }
 
+.to_user_unit <- function(x) {
+  unit <- paste("U_",uUnits(x),sep="")
+  value <- uValue(x)
+  dpi <- uDpi(x)
+  user.unit <- switch(unit,
+                      U_mm = 3.543307 * value,
+                      U_px = value,
+                      U_pt = 1.25 * value,
+                      U_pc = 15 * value,
+                      U_cm = 35.43307 * value,
+                      U_in = 90 * value,
+                      U_ = value,
+                      default= NA)
+  return(user.unit)
+  
+}
+
+## TO BE DEPRECATED..
 .toUserUnit <- function(value) {
   unit <- gsub("(-?[[:digit:].]+)(.*)","U_\\2",value)
   value <- as.numeric(gsub("(-?[[:digit:].]+)(.*)","\\1",value))

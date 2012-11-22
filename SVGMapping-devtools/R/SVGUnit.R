@@ -30,7 +30,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #' This class is used as a container for all SVG mesurement values
 #' 
-#' @export "SVGUnit"
+#' @name SVGUnit
+#' @exportClass "SVGUnit"
 #' @aliases SVGUnit-class
 setClass("SVGUnit",
          representation(u.value="numeric",
@@ -51,7 +52,7 @@ setClass("SVGUnit",
 #'   
 #' @param object is an SVGUnit object
 #'   
-#' @return a numeric unit value
+#' @return \code{uValue} and \code{uUser} return a numeric unit value
 #'   
 #' @rdname svgunit.unit-methods
 #' @exportMethod uValue
@@ -81,9 +82,7 @@ setGeneric(name="uValue<-", function(.Object,value) { standardGeneric("uValue<-"
 #' 
 #' @name uUnits
 #' 
-#' @param object is an SVGUnit object
-#' 
-#' @return a character unit system abreviation
+#' @return \code{uUnits} returns a character unit system abreviation
 #' 
 #' @rdname svgunit.unit-methods
 #' @exportMethod uUnits
@@ -103,6 +102,20 @@ setGeneric(name="uUnits", function(object) { standardGeneric("uUnits") })
 #' @exportMethod uUnits<-
 #' @docType methods
 setGeneric(name="uUnits<-", function(.Object,value) { standardGeneric("uUnits<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{uUser(object)} method returns the unit value in the user system
+#' after applying the required units transformation.
+#' 
+#' @name uUser
+#'   
+#' @rdname svgunit.unit-methods
+#' @exportMethod uUser
+#' @docType methods
+setGeneric(name="uUser", function(object) { standardGeneric("uUser") })
 
 #' Device Resolution Accessors
 #' 
@@ -230,6 +243,15 @@ setReplaceMethod(f="uUnits", signature="SVGUnit",
                    .Object@u.units <- value
                    return(.Object)
                  }
+)
+
+#' @rdname svgunit.unit-methods
+#' @aliases uUser,SVGUnit-method
+setMethod(f="uUser",signature="SVGUnit",
+          definition=function(object) 
+          {
+            ##
+          }
 )
 
 #' @rdname svgunit.dpi-methods

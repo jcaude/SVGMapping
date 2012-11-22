@@ -11,13 +11,11 @@
 \title{Unit Value Accessors}
 \arguments{
   \item{object}{is an SVGUnit object}
-
-  \item{object}{is an SVGUnit object}
 }
 \value{
-  a numeric unit value
+  \code{uValue} returns a numeric unit value
 
-  a character unit system abreviation
+  \code{uUnits} returns a character unit system abreviation
 }
 \description{
   These methods are accessors to the unit value and units
