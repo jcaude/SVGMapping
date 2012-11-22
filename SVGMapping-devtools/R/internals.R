@@ -85,7 +85,7 @@
 }
 
 .check_unit <- function(unit_name) {
-  if(unit_name %in% c("pt","pc","cm","mm","in","px"))
+  if(unit_name %in% c("","pt","pc","cm","mm","in","px"))
     return(TRUE)
   else
     return(FALSE)

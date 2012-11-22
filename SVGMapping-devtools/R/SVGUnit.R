@@ -38,38 +38,106 @@ setClass("SVGUnit",
                         u.dpi="numeric")
          )
 
+#' Unit Value Accessors
+#' 
+#' These methods are accessors to the unit value and units sytem of a 
+#' \emph{SVGUnit} object. Valid units system are defined in the SVG 1.1
+#' specification.
+#' 
+#' The \code{uValue(object)} method returns the unit value in the current unit 
+#' system.
+#' 
+#' @name uValue
+#'   
+#' @param object is an SVGUnit object
+#'   
+#' @return a numeric unit value
+#'   
+#' @rdname svgunit.unit-methods
+#' @exportMethod uValue
+#' @docType methods
+setGeneric(name="uValue", function(object) { standardGeneric("uValue") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{uValue(object) <- value} method can be used to set the unit value
+#' of a \emph{SVGUnit} object
+#' 
+#' @name uValue<-
+#' 
+#' @rdname svgunit.unit-methods
+#' @exportMethod uValue<-
+#' @docType methods
+setGeneric(name="uValue<-", function(.Object,value) { standardGeneric("uValue<-") })
+
+#' <title already defined>
+#'
+#'
+#' 
+#' The \code{uUnits(object)} method returns the unit system of the current unit
+#' object.
+#' 
+#' @name uUnits
+#' 
+#' @param object is an SVGUnit object
+#' 
+#' @return a character unit system abreviation
+#' 
+#' @rdname svgunit.unit-methods
+#' @exportMethod uUnits
+#' @docType methods
+setGeneric(name="uUnits", function(object) { standardGeneric("uUnits") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{uUnits(object) <- value} method can be used to set the unit system
+#' of a \emph{SVGUnit} object
+#' 
+#' @name uUnits<-
+#' 
+#' @rdname svgunit.unit-methods
+#' @exportMethod uUnits<-
+#' @docType methods
+setGeneric(name="uUnits<-", function(.Object,value) { standardGeneric("uUnits<-") })
+
 #' Device Resolution Accessors
 #' 
-#' These methods are accessors to the  device resolution of a \emph{SVGUnit} 
+#' These methods are accessors to the device resolution of a \emph{SVGUnit} 
 #' object. This resolution is given in the standard pixels by inches unit.
 #' 
-#' The \code{dpi(object)} method returns the device resolution of the current
+#' The default DPI value is 90.
+#' 
+#' The \code{uDpi(object)} method returns the device resolution of the current
 #' unit object.
 #' 
-#' @name dpi
+#' @name uDpi
 #'   
 #' @param object is an SVGUnit object
 #'   
 #' @return a numeric dpi value 
 #'   
 #' @rdname svgunit.dpi-methods
-#' @exportMethod dpi
+#' @exportMethod uDpi
 #' @docType methods
-setGeneric(name="dpi", function(object) { standardGeneric("dpi") })
+setGeneric(name="uDpi", function(object) { standardGeneric("uDpi") })
 
 #' <title already defined>
 #' 
 #' 
 #' 
-#' The \code{dpi(object) <- value} method can be used to set the device
+#' The \code{uDpi(object) <- value} method can be used to set the device
 #' resolution of a \emph{SVGUnit} object.
 #' 
-#' @name dpi<-
+#' @name uDpi<-
 #'   
 #' @rdname svgunit.dpi-methods
-#' @exportMethod dpi<-
+#' @exportMethod uDpi<-
 #' @docType methods
-setGeneric(name="dpi<-", function(.Object,value) { standardGeneric("dpi<-") })
+setGeneric(name="uDpi<-", function(.Object,value) { standardGeneric("uDpi<-") })
 
 #' Show method for SVGUnit objects
 #' 
@@ -105,26 +173,78 @@ setMethod(f="initialize", signature="SVGUnit",
             if(is.null(args.names)) args.names <- list()
             
             ## detault init.
-            dpi(.Object) <- .arg("dpi",72)
+            uDpi(.Object) <- .arg("dpi",90)
             
             ## eop
             return(.Object)
           }
 )
 
+#' @rdname svgunit.unit-methods
+#' @aliases uValue,SVGUnit-method
+setMethod(f="uValue",signature="SVGUnit",
+          definition=function(object) 
+          {
+            return(object@u.value)
+          }
+)
+
+#' @name uValue<-
+#' @rdname svgunit.unit-methods
+#' @aliases uValue<-,SVGUnit-method
+setReplaceMethod(f="uValue", signature="SVGUnit",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.numeric(value))
+                     stop("unit 'value' must be a numeric")
+                   
+                   ## init.
+                   .Object@u.value <- value
+                   return(.Object)
+                 }
+)
+
+#' @rdname svgunit.unit-methods
+#' @aliases uUnits,SVGUnit-method
+setMethod(f="uUnits",signature="SVGUnit",
+          definition=function(object) 
+          {
+            return(object@u.unit)
+          }
+)
+
+#' @name uUnits<-
+#' @rdname svgunit.unit-methods
+#' @aliases uUnits<-,SVGUnit-method
+setReplaceMethod(f="uUnits", signature="SVGUnit",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.character(value))
+                     stop("Unit system 'value' must be a character")
+                   if(!.check_unit(value))
+                     stop("Valid unit system are: 'pt','pc','cm','mm','in','px' or '' for user system")
+                   
+                   ## init.
+                   .Object@u.units <- value
+                   return(.Object)
+                 }
+)
+
 #' @rdname svgunit.dpi-methods
-#' @aliases dpi,SVGUnit-method
-setMethod(f="dpi",signature="SVGUnit",
+#' @aliases uDpi,SVGUnit-method
+setMethod(f="uDpi",signature="SVGUnit",
           definition=function(object) 
           {
             return(object@u.dpi)
           }
           )
 
-#' @name dpi<-
+#' @name uDpi<-
 #' @rdname svgunit.dpi-methods
-#' @aliases dpi<-,SVGUnit-method
-setReplaceMethod(f="dpi", signature="SVGUnit",
+#' @aliases uDpi<-,SVGUnit-method
+setReplaceMethod(f="uDpi", signature="SVGUnit",
                  definition=function(.Object,value)
                  {
                    ## check

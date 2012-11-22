@@ -63,7 +63,7 @@ dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
 ## function. Then, we apply this mapping object to the template, and show
 ## it in the default browser.
 mask.map <- MappingMasks.factory(dummy[,"x",drop=FALSE])
-## mapping(template,color.map)
+## mapping(template,mask.map)
 ## show(template)
 }
 
