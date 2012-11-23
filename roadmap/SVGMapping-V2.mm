@@ -916,22 +916,25 @@
 </node>
 <node CREATED="1342212992068" ID="ID_866959047" MODIFIED="1353419438259" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1353419324630" ID="ID_225529175" MODIFIED="1353594871979">
+<node CREATED="1353419324630" ID="ID_225529175" MODIFIED="1353676097314">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      GS:uDpi,uValue,uUnits
+      GS:uDpi,uValue
     </p>
   </body>
 </html>
 </richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1353594900311" ID="ID_1697377259" MODIFIED="1353594908639" TEXT="uUser">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1353676099342" ID="ID_1158822019" MODIFIED="1353676107674" TEXT="uUnits">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1353594900311" ID="ID_1697377259" MODIFIED="1353664285407" TEXT="uUser">
+<icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1353419517983" ID="ID_1672506305" LINK="http://stackoverflow.com/questions/8937719/sum-of-s4-objects-in-r" MODIFIED="1353419585892" TEXT="Arithm ops"/>
 <node CREATED="1353419364224" ID="ID_201980500" MODIFIED="1353594883965" TEXT="show">
