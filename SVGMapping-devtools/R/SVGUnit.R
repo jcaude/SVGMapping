@@ -93,20 +93,6 @@ setGeneric(name="uUnits", function(object) { standardGeneric("uUnits") })
 #' 
 #' 
 #' 
-#' The \code{uUnits(object) <- value} method can be used to set the unit system
-#' of a \emph{SVGUnit} object
-#' 
-#' @name uUnits<-
-#' 
-#' @rdname svgunit.unit-methods
-#' @exportMethod uUnits<-
-#' @docType methods
-setGeneric(name="uUnits<-", function(.Object,value) { standardGeneric("uUnits<-") })
-
-#' <title already defined>
-#' 
-#' 
-#' 
 #' The \code{uUser(object)} method returns the unit value in the user system
 #' after applying the required units transformation.
 #' 
@@ -227,30 +213,29 @@ setMethod(f="uUnits",signature="SVGUnit",
           }
 )
 
-#' @name uUnits<-
-#' @rdname svgunit.unit-methods
-#' @aliases uUnits<-,SVGUnit-method
-setReplaceMethod(f="uUnits", signature="SVGUnit",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.character(value))
-                     stop("Unit system 'value' must be a character")
-                   if(!.check_unit(value))
-                     stop("Valid unit system are: 'pt','pc','cm','mm','in','px' or '' for user system")
-                   
-                   ## init.
-                   .Object@u.units <- value
-                   return(.Object)
-                 }
-)
-
 #' @rdname svgunit.unit-methods
 #' @aliases uUser,SVGUnit-method
 setMethod(f="uUser",signature="SVGUnit",
           definition=function(object) 
           {
-            ##
+            ## init.
+            unit <- paste("U_",uUnits(x),sep="")
+            value <- uValue(x)
+            dpi <- uDpi(x)
+            
+            ## conversion
+            user.unit <- switch(unit,
+                                U_mm = dpi * 0.0393700787 * value,
+                                U_px = value,
+                                U_pt = dpi * 0.01388888889 * value,
+                                U_pc = dpi * 0.16666667 * value,
+                                U_cm = dpi * 0.393700787 * value,
+                                U_in = dpi * value,
+                                U_ = value,
+                                default= NA)
+            
+            ## eop
+            return(user.unit)
           }
 )
 
@@ -286,3 +271,36 @@ setMethod(f="show",signature="SVGUnit",
           {
             return(paste(object@u.value,object@u.unit,sep=""))            
           })
+
+## F A C T O R Y
+##--------------
+
+#' SVGUnit Factory
+#' 
+#' This function returns a new \code{\link{SVGUnit}} object. An SVG unit is 
+#' simply a single numeric with an associated unit system as defined in the SVG
+#' Specification.
+#' 
+#' \code{SVGUnit} objects are used to specify location or shape attributes 
+#' (\emph{eg} a circle radius). A \code{SVGUnit} is specified using a
+#' \emph{value} associated to a \emph{unit system} and a \emph{device
+#' resolution} given as a \emph{dpi} value.
+#' 
+#' @name SVGUnit.factory
+#'
+#' @param x
+#' @param unit
+#' @param target.unit
+#' @param dpi      
+#'   
+#' @return a \code{\link{SVGUnit}} object
+#'   
+#' @export SVGUnit.factory
+#'   
+#' @examples
+#' SVGUnit(1.5)
+#' SVGUnit(10,"px")
+#' SVGUnit(10,"px",dpi=100)
+#' SVGUnit("10.43cm")
+#' SVGUnit(0.9,"in",target.unit="px")
+#' SVGUnit(1.5,"cm") - SVGUnit(70,"mm")
