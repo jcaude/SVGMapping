@@ -166,14 +166,14 @@ NULL
 #' @docType methods
 setGeneric(name="print.SVGUnit", function(x,...) { standardGeneric("print.SVGUnit") })
 
-#' Arith methods for SVGUnit objects
+#' Group Generic methods for SVGUnit objects
 #' 
-#' The S4 Arith group generic functions are implemented for SVGUnit object. For
-#' more details see the \link{Arith} documentation page.
+#' Some of the S4 group generic methods are implemented for SVGUnit object. For
+#' more details see \link{S4groupGeneric} documentation page.
 #' 
 #' @name Arith
 #' 
-#' @rdname svgunit.ArithGroup-methods
+#' @rdname svgunit.groupGeneric-methods
 #' @docType methods
 NULL
 
@@ -325,13 +325,46 @@ setMethod(f="print.SVGUnit", signature="SVGUnit",
           }
 )
 
-#' @rdname svgunit.ArithGroup-methods
+#' @rdname svgunit.groupGeneric-methods
 #' @aliases Arith,SVGUnit-method
 setMethod("Arith", signature="SVGUnit", 
           definition=function(e1, e2) 
           {
             v = callGeneric(uUser(e1), uUser(e2))
             return(SVGUnit.factory(v,target.unit=uUnits(e1)))
+          }
+)
+
+#' @name Compare
+#' @rdname svgunit.groupGeneric-methods
+#' @aliases Compare,SVGUnit-method
+setMethod("Compare", signature="SVGUnit", 
+          definition=function(e1, e2) 
+          {
+            v = callGeneric(uUser(e1), uUser(e2))
+            return(v)
+          }
+)
+
+#' @name Logic
+#' @rdname svgunit.groupGeneric-methods
+#' @aliases Logic,SVGUnit-method
+setMethod("Logic", signature="SVGUnit", 
+          definition=function(e1, e2) 
+          {
+            v = callGeneric(uUser(e1), uUser(e2))
+            return(v)
+          }
+)
+
+#' @name Ops
+#' @rdname svgunit.groupGeneric-methods
+#' @aliases Ops,SVGUnit-method
+setMethod("Ops", signature="SVGUnit", 
+          definition=function(e1, e2) 
+          {
+            v = callGeneric(uUser(e1), uUser(e2))
+            return(v)
           }
 )
 

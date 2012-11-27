@@ -4,7 +4,7 @@
 \alias{uDpi,SVGUnit-method}
 \alias{uDpi<-}
 \alias{uDpi<-,SVGUnit-method}
-\title{Device Resolution Accessors}
+\title{Unit Device Resolution Accessors}
 \arguments{
   \item{object}{is an SVGUnit object}
 }
