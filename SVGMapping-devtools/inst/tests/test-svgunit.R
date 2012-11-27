@@ -1,6 +1,6 @@
 require(testthat)
 
-context("SVG Units")
+context("SVGUnit")
 
 test_that("Accessors", {
   
