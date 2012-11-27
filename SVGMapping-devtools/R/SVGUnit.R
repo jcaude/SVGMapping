@@ -103,7 +103,7 @@ setGeneric(name="uUnits", function(object) { standardGeneric("uUnits") })
 #' @docType methods
 setGeneric(name="uUser", function(object) { standardGeneric("uUser") })
 
-#' Device Resolution Accessors
+#' Unit Device Resolution Accessors
 #' 
 #' These methods are accessors to the device resolution of a \emph{SVGUnit} 
 #' object. This resolution is given in the standard pixels by inches unit.
@@ -151,6 +151,31 @@ setGeneric(name="uDpi<-", function(.Object,value) { standardGeneric("uDpi<-") })
 #' @docType methods
 NULL
 
+#' Print an SVGUnit object to the terminal
+#' 
+#' This method attempts to print SVGUnit object to the terminal as text
+#' 
+#' @name print.SVGUnit
+#' 
+#' @param x the SVGUnit object to print
+#' 
+#' @return the SVGUnit object invisibly
+#' 
+#' @rdname svgunit.print-methods
+#' @exportMethod print.SVGUnit
+#' @docType methods
+setGeneric(name="print.SVGUnit", function(x,...) { standardGeneric("print.SVGUnit") })
+
+#' Arith methods for SVGUnit objects
+#' 
+#' The S4 Arith group generic functions are implemented for SVGUnit object. For
+#' more details see the \link{Arith} documentation page.
+#' 
+#' @name Arith
+#' 
+#' @rdname svgunit.ArithGroup-methods
+#' @docType methods
+NULL
 
 setMethod(f="initialize", signature="SVGUnit",
           definition=function(.Object,...)
@@ -171,8 +196,26 @@ setMethod(f="initialize", signature="SVGUnit",
             args.names = names(args)
             if(is.null(args.names)) args.names <- list()
             
+            ## check: empty args
+            if(length(args) == 0) {
+              args <- list(value=0,unit="")
+              args.names <- c("value","unit")
+            }
+            
+            ## check: missing args names
+            if(!"value" %in% args.names) {
+              args.names[1] <- "value"
+              names(args) <- args.names
+            }
+            if((!"unit" %in% args.names) && (length(args) > 1)) {
+              args.names[2] <- "unit"
+              names(args) <- args.names
+            }
+            
             ## detault init.
             uDpi(.Object) <- .arg("dpi",90)
+            .Object@u.unit <- .arg("unit","")
+            uValue(.Object) <- .arg("value",0)
             
             ## eop
             return(.Object)
@@ -219,17 +262,17 @@ setMethod(f="uUser",signature="SVGUnit",
           definition=function(object) 
           {
             ## init.
-            unit <- paste("U_",uUnits(x),sep="")
-            value <- uValue(x)
-            dpi <- uDpi(x)
+            unit <- paste("U_",uUnits(object),sep="")
+            value <- uValue(object)
+            dpi <- uDpi(object)
             
             ## conversion
             user.unit <- switch(unit,
-                                U_mm = dpi * 0.0393700787 * value,
+                                U_mm = dpi * value / 25.4,
                                 U_px = value,
-                                U_pt = dpi * 0.01388888889 * value,
-                                U_pc = dpi * 0.16666667 * value,
-                                U_cm = dpi * 0.393700787 * value,
+                                U_pt = dpi * value / 72,
+                                U_pc = dpi * value / 6,
+                                U_cm = dpi * value / 2.54,
                                 U_in = dpi * value,
                                 U_ = value,
                                 default= NA)
@@ -269,8 +312,28 @@ setReplaceMethod(f="uDpi", signature="SVGUnit",
 setMethod(f="show",signature="SVGUnit",
           definition=function(object)
           {
-            return(paste(object@u.value,object@u.unit,sep=""))            
+            return(paste(object@u.value,object@u.unit,sep=""))
           })
+
+#' @rdname svgunit.print-methods
+#' @aliases print.SVGUnit,SVGUnit-method
+setMethod(f="print.SVGUnit", signature="SVGUnit",
+          definition=function(x,...)
+          {
+            print(paste(x@u.value,x@u.unit,sep=""))
+            return(invisible(x))
+          }
+)
+
+#' @rdname svgunit.ArithGroup-methods
+#' @aliases Arith,SVGUnit-method
+setMethod("Arith", signature="SVGUnit", 
+          definition=function(e1, e2) 
+          {
+            v = callGeneric(uUser(e1), uUser(e2))
+            return(SVGUnit.factory(v,target.unit=uUnits(e1)))
+          }
+)
 
 ## F A C T O R Y
 ##--------------
@@ -288,19 +351,60 @@ setMethod(f="show",signature="SVGUnit",
 #' 
 #' @name SVGUnit.factory
 #'
-#' @param x
-#' @param unit
-#' @param target.unit
-#' @param dpi      
+#' @param x the unit value
+#' @param unit the value unit system
+#' @param dpi the device resoluation
+#' @param target.unit the return unit system after value conversion 
 #'   
 #' @return a \code{\link{SVGUnit}} object
 #'   
 #' @export SVGUnit.factory
 #'   
 #' @examples
-#' SVGUnit(1.5)
-#' SVGUnit(10,"px")
-#' SVGUnit(10,"px",dpi=100)
-#' SVGUnit("10.43cm")
-#' SVGUnit(0.9,"in",target.unit="px")
-#' SVGUnit(1.5,"cm") - SVGUnit(70,"mm")
+#' SVGUnit.factory(1.5)
+#' SVGUnit.factory(10,"px")
+#' SVGUnit.factory(10,"px",dpi=100)
+#' SVGUnit.factory("10.43cm")
+#' SVGUnit.factory(0.9,"in",target.unit="px")
+#' SVGUnit.factory(1.5,"cm") - SVGUnit.factory(70,"mm")
+SVGUnit.factory <- function(x,unit,dpi,target.unit) {
+  
+  ## init.
+  if(missing(x)) x <- 0
+  if(missing(unit)) unit <- ""
+  
+  ## check: character value+unit (eg '10cm')
+  if(is.character(x)) {
+    v <- x
+    x <- as.numeric(gsub("([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)(.*)",
+                         "\\1",v))
+    unit <- gsub("([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)([ \\t]*)(.*)",
+                 "\\4",v)
+  }
+  
+  ## create unit value
+  if(missing(dpi))
+    svg_unit <- new("SVGUnit",x,unit)
+  else
+    svg_unit <- new("SVGUnit",x,unit,dpi=dpi)
+    
+  ## target unit conversion
+  if(!missing(target.unit)) {
+    user_value <- uUser(svg_unit)
+    target_unit <- paste("U_",target.unit,sep="")
+    dpi <- 1/uDpi(svg_unit)
+    target_value <- switch(target_unit,
+                           U_mm = dpi * 25.4 * user_value,
+                           U_px = user_value,
+                           U_pt = dpi * 72 * user_value,
+                           U_pc = dpi * 6 * user_value,
+                           U_cm = dpi * 2.54 * user_value,
+                           U_in = dpi * user_value,
+                           U_ = user_value,
+                           default= NA)
+    svg_unit <- new("SVGUnit",target_value,target.unit,dpi=uDpi(svg_unit))
+  }
+  
+  ## eop
+  return(svg_unit)
+}

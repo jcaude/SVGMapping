@@ -2,8 +2,8 @@
 \name{uValue}
 \alias{uUnits}
 \alias{uUnits,SVGUnit-method}
-\alias{uUnits<-}
-\alias{uUnits<-,SVGUnit-method}
+\alias{uUser}
+\alias{uUser,SVGUnit-method}
 \alias{uValue}
 \alias{uValue,SVGUnit-method}
 \alias{uValue<-}
@@ -13,7 +13,8 @@
   \item{object}{is an SVGUnit object}
 }
 \value{
-  \code{uValue} returns a numeric unit value
+  \code{uValue} and \code{uUser} return a numeric unit
+  value
 
   \code{uUnits} returns a character unit system abreviation
 }
@@ -32,7 +33,8 @@
   The \code{uUnits(object)} method returns the unit system
   of the current unit object.
 
-  The \code{uUnits(object) <- value} method can be used to
-  set the unit system of a \emph{SVGUnit} object
+  The \code{uUser(object)} method returns the unit value in
+  the user system after applying the required units
+  transformation.
 }
 
