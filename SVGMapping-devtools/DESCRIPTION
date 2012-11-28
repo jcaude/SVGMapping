@@ -19,6 +19,7 @@ Depends:
     testthat
 Collate:
     'internals.R'
+    'SVGUnit.R'
     '0_SVGNode.R'
     '0_CSS.R'
     '0_Vector.R'
@@ -39,4 +40,3 @@ Collate:
     'MappingLinks.R'
     'MappingTooltips.R'
     'MappingMasks.R'
-    'SVGUnit.R'

@@ -5,15 +5,16 @@ context("SVG Line")
 test_that("Accessors", {
   
   line <- SVGLine.factory()
+  zero <- SVGUnit.factory()
   
   expect_equal(id(line), character(0))
   expect_equal(svgTransform(line),character(0))
   expect_equal(cssClass(line),character(0))
   expect_equal(cssStyle(line),character(0))
-  expect_identical(x1(line),"0")
-  expect_identical(y1(line),"0")
-  expect_identical(x2(line),"0")
-  expect_identical(y2(line),"0")
+  expect_equal(x1(line),zero)
+  expect_equal(y1(line),zero)
+  expect_equal(x2(line),zero)
+  expect_equal(y2(line),zero)
   expect_is(line,"SVGShape")
   expect_is(line,"Vector")
   
@@ -23,14 +24,14 @@ test_that("Accessors", {
   cssStyle(line) <- "stroke:blue; stroke-width:2pt"
   svgTransform(line) <- "translate(5,6)"
   
-  expect_identical(id(line), "line1")
-  expect_identical(svgTransform(line),"translate(5,6)")
-  expect_identical(cssClass(line),"line.style")
-  expect_identical(cssStyle(line),"stroke:blue; stroke-width:2pt")
-  expect_identical(x1(line),"10px")
-  expect_identical(y1(line),"20px")
-  expect_identical(x2(line),"100px")
-  expect_identical(y2(line),"70px")
+  expect_equal(id(line), "line1")
+  expect_equal(svgTransform(line),"translate(5,6)")
+  expect_equal(cssClass(line),"line.style")
+  expect_equal(cssStyle(line),"stroke:blue; stroke-width:2pt")
+  expect_equal(x1(line),SVGUnit.factory("10px"))
+  expect_equal(y1(line),SVGUnit.factory("20px"))
+  expect_equal(x2(line),SVGUnit.factory("100px"))
+  expect_equal(y2(line),SVGUnit.factory("70px"))
   expect_is(line,"SVGShape")
   expect_is(line,"Vector")
   

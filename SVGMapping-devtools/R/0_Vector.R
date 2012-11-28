@@ -35,12 +35,11 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "Vector"
 #'  @aliases Vector-class
 setClass("Vector",
-         representation(x1="character",
-                        y1="character",
-                        x2="character",
-                        y2="character",
-                        "VIRTUAL"),
-         prototype(x1="0",y1="0",x2="0",y2="0")
+         representation(x1="SVGUnit",
+                        y1="SVGUnit",
+                        x2="SVGUnit",
+                        y2="SVGUnit",
+                        "VIRTUAL")
 )
 
 #' Named list of coordinates and dimensions 
@@ -224,10 +223,10 @@ setMethod(f="initialize", signature="Vector",
               bbox(.Object) <- bbox
             }
             else  {
-              x1(.Object) <- .arg("x1","0")
-              y1(.Object) <- .arg("y1","0")
-              x2(.Object) <- .arg("x2","0")
-              y2(.Object) <- .arg("y2","0")
+              x1(.Object) <- .arg("x1",SVGUnit.factory())
+              y1(.Object) <- .arg("y1",SVGUnit.factory())
+              x2(.Object) <- .arg("x2",SVGUnit.factory())
+              y2(.Object) <- .arg("y2",SVGUnit.factory())
             }
             
             ## eop
@@ -281,11 +280,11 @@ setReplaceMethod(f="x1", signature="Vector",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@x1 <- value
@@ -309,11 +308,11 @@ setReplaceMethod(f="y1", signature="Vector",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@y1 <- value
@@ -337,11 +336,11 @@ setReplaceMethod(f="x2", signature="Vector",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@x2 <- value
@@ -365,11 +364,11 @@ setReplaceMethod(f="y2", signature="Vector",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@y2 <- value
@@ -384,12 +383,13 @@ setMethod(f=".xml", signature="Vector",
           {
             ## super
             attr <- list()
+            zero <- SVGUnit.factory()
             
             ## attributes
-            if(x1(object) != "0") attr <- c(attr, x1=x1(object))
-            if(y1(object) != "0") attr <- c(attr, y1=y1(object))
-            if(x2(object) != "0") attr <- c(attr, x2=x2(object))
-            if(y2(object) != "0") attr <- c(attr, y2=y2(object))
+            if(x1(object) != zero) attr <- c(attr, x1=as.character(x1(object)))
+            if(y1(object) != zero) attr <- c(attr, y1=as.character(y1(object)))
+            if(x2(object) != zero) attr <- c(attr, x2=as.character(x2(object)))
+            if(y2(object) != zero) attr <- c(attr, y2=as.character(y2(object)))
             
             ## eop
             return(attr)

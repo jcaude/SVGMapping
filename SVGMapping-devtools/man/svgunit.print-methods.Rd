@@ -1,7 +1,6 @@
 \docType{methods}
 \name{print.SVGUnit}
 \alias{print.SVGUnit}
-\alias{print.SVGUnit,SVGUnit-method}
 \title{Print an SVGUnit object to the terminal}
 \arguments{
   \item{x}{the SVGUnit object to print}

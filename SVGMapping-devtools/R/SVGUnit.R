@@ -140,6 +140,8 @@ setGeneric(name="uDpi<-", function(.Object,value) { standardGeneric("uDpi<-") })
 
 #' Show method for SVGUnit objects
 #' 
+#' Various methods to show or convert SVGUnit objects
+#' 
 #' The \code{show()} method called with an SVGUnit object as an argument allows
 #' display the unit value in the current unit as a string.
 #' 
@@ -147,6 +149,17 @@ setGeneric(name="uDpi<-", function(.Object,value) { standardGeneric("uDpi<-") })
 #' 
 #' @param object is a \code{\link{SVGUnit}} instance.
 #' 
+#' @rdname svgunit.show-methods
+#' @docType methods
+NULL
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{as.character()} method converts an SVGUnit object into a string
+#' 
+#' @name as.character
 #' @rdname svgunit.show-methods
 #' @docType methods
 NULL
@@ -312,16 +325,25 @@ setReplaceMethod(f="uDpi", signature="SVGUnit",
 setMethod(f="show",signature="SVGUnit",
           definition=function(object)
           {
-            return(paste(object@u.value,object@u.unit,sep=""))
+            cat(as.character(object),"\n")
           })
 
-#' @rdname svgunit.print-methods
+#' @rdname svgunit.show-methods
 #' @aliases print.SVGUnit,SVGUnit-method
 setMethod(f="print.SVGUnit", signature="SVGUnit",
           definition=function(x,...)
           {
-            print(paste(x@u.value,x@u.unit,sep=""))
+            print(as.character(x))
             return(invisible(x))
+          }
+)
+
+#' @rdname svgunit.show-methods
+#' @aliases as.character,SVGUnit-method
+setMethod(f="as.character", signature="SVGUnit",
+          definition=function(x,...)
+          {
+              return(paste(uValue(x),uUnits(x),sep=""))
           }
 )
 
