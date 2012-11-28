@@ -41,5 +41,34 @@ test_that("Factory", {
   expect_is(u,"SVGUnit")
   
   ## 2. DPI set factory
+  u <- SVGUnit.factory(10,"in",dpi=75)
+  expect_equal(uUser(u),750)
+  
+  ## 3. String factory
+  u <- SVGUnit.factory("12.456pc")
+  expect_equal(uValue(u),12.456)
+  expect_equal(uUnits(u),"pc")
+  
+  ## 4. Target unit factory
+  u <- SVGUnit.factory(10,"in",target.unit="px")
+  expect_equal(uValue(u),900)
+  expect_equal(uUnits(u),"px")
+
+})
+
+test_that("Operations", {
+  
+  ## 1. Arithmetic (only one ops)
+  u <- SVGUnit.factory(1.5,"cm") + SVGUnit.factory(50,"mm")
+  expect_is(u,"SVGUnit")
+  expect_equal(uValue(u),6.5)
+  expect_equal(uUnits(u),"cm")
+  
+  ## 2. Comparison (only one ops)
+  expect_true(SVGUnit.factory(1,"cm") < SVGUnit.factory(1,"in"))
+  
+  ## 3. Logic (only one ops)
+  expect_false(SVGUnit.factory(1,"cm") & SVGUnit.factory())
+  expect_false(SVGUnit.factory(1,"cm") & SVGUnit.factory(0,"cm"))
   
 })
