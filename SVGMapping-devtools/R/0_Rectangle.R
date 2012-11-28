@@ -35,12 +35,11 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' @exportClass "Rectangle"
 #' @aliases Rectangle-class
 setClass("Rectangle",
-         representation(x="character",
-                        y="character",
-                        width="character",
-                        height="character",
-                        "VIRTUAL"),
-         prototype(x="0",y="0",width="0",height="0")
+         representation(x="SVGUnit",
+                        y="SVGUnit",
+                        width="SVGUnit",
+                        height="SVGUnit",
+                        "VIRTUAL")
 )
 
 #' <title already defined> 
@@ -82,7 +81,7 @@ NULL
 #' 
 #' @name x
 #' 
-#' @return \code{x(),y(),width(),height()}: a string value for single 
+#' @return \code{x(),y(),width(),height()}: an SVGUnit object for single 
 #' coordinates and dimensions methods
 #' 
 #' @rdname rectangle.bbox-methods
@@ -210,10 +209,10 @@ setMethod(f="initialize", signature="Rectangle",
               bbox(.Object) <- bbox
             }
             else {
-              x(.Object) <- .arg("x","0")
-              y(.Object) <- .arg("y","0")
-              width(.Object) <- .arg("width","0")
-              height(.Object) <- .arg("height","0")
+              x(.Object) <- .arg("x",SVGUnit.factory())
+              y(.Object) <- .arg("y",SVGUnit.factory())
+              width(.Object) <- .arg("width",SVGUnit.factory())
+              height(.Object) <- .arg("height",SVGUnit.factory())
             }
             
             ## eop
@@ -268,11 +267,11 @@ setReplaceMethod(f="x", signature="Rectangle",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value must be a string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@x <- value
@@ -296,11 +295,11 @@ setReplaceMethod(f="y", signature="Rectangle",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value must be a string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@y <- value
@@ -324,12 +323,11 @@ setReplaceMethod(f="width", signature="Rectangle",
                  definition=function(.Object,value)
                  {
                    ## check
-                   ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value must be a string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@width <- value
@@ -353,11 +351,11 @@ setReplaceMethod(f="height", signature="Rectangle",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value must be a string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@height <- value
@@ -374,10 +372,12 @@ setMethod(f=".xml", signature="Rectangle",
             attr <- list()
             
             ## return a list of core attributes
-            if(x(object) != "0") attr <- c(attr, x=x(object))
-            if(y(object) != "0") attr <- c(attr, y=y(object))
-            if(width(object) != "0") attr <- c(attr,width=width(object))
-            if(height(object) != "0") attr <- c(attr,height=height(object))
+            if(x(object) != "0") attr <- c(attr, x=as.character(x(object)))
+            if(y(object) != "0") attr <- c(attr, y=as.character(y(object)))
+            if(width(object) != "0") 
+              attr <- c(attr,width=as.character(width(object)))
+            if(height(object) != "0") 
+              attr <- c(attr,height=as.character(height(object)))
             
             ## eop
             return(attr)
