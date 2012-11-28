@@ -57,7 +57,7 @@ test_that("Factory Functions", {
   expect_equal(targets(map),circles)
   expect_equal(transFunction(map),NULL)
   expect_equal(transParameters(map),list())
-  expect_equal(fillAngle(mapping),-pi/2)
+  expect_equal(fillAngle(map),-pi/2)
   
   ## (full args) MappingValues factory
   map <- MappingMasks.factory(data=dummy[,"x"],
@@ -70,5 +70,5 @@ test_that("Factory Functions", {
   expect_equal(targets(map),circles)
   expect_equal(transFunction(map),fnIdentity)
   expect_equal(transParameters(map),list())
-  expect_equal(fillAngle(mapping),0)
+  expect_equal(fillAngle(map),0)
 })

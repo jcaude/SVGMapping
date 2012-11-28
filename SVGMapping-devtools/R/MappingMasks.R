@@ -115,7 +115,7 @@ setReplaceMethod(f="fillAngle", signature="MappingMasks",
                    ## check
                    if(!is.numeric(value))
                      stop("fill angle 'value' must be a numeric")
-                   if(!is.vector(value) && ((value < -pi) || (value > pi)))
+                   if(!all((value >= -pi) && (value <= pi)))
                      stop("fill angle 'value' must be in the range [-pi,pi]")
 
                    ## init.

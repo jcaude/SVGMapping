@@ -1,3 +1,4 @@
+export(.callMethod)
 export(GradientStop.factory)
 export(LinearGradient.factory)
 export(MAPPING.Identity)
