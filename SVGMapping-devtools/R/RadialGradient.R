@@ -36,8 +36,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "RadialGradient"
 #'  @aliases RadialGradient-class
 setClass("RadialGradient",
-         representation(fx="character",
-                        fy="character"),
+         representation(fx="SVGUnit",
+                        fy="SVGUnit"),
          contains=c("Gradient","Circle")
          )
 
@@ -46,18 +46,17 @@ setClass("RadialGradient",
 #' These methods are accessors to the focal point definition of a radial 
 #' gradient object.
 #' 
-#' The method \code{fx(object)} return the X-axis of the focal point. 
-#' The gradient will be drawn such that the 0% gradient stop is mapped to 
+#' The method \code{fx(object)} return the X-axis of the focal point. The 
+#' gradient will be drawn such that the 0\% gradient stop is mapped to
 #' \code{(fx, fy)}.
 #' 
 #' @name fx
-#' 
+#'   
 #' @param object a RadialGradient object
-#' 
-#' @return \code{fx(object)} return the coordinates in untis compliant with
-#'  the SVG 1.1 specifications. \code{fx(object) <- value} return the invisible
-#'  object.
-#' 
+#'   
+#' @return \code{fx(object)} return the coordinates as an \code{\link{SVGUnit}} 
+#'   object. \code{fx(object) <- value} return the invisible object.
+#'   
 #' @rdname radialgradient.bbox-methods
 #' @exportMethod fx
 #' @docType methods
@@ -77,7 +76,7 @@ setGeneric(name="fx", function(object) { standardGeneric("fx") })
 #'  @docType methods  
 setGeneric(name="fx<-", function(.Object,value) { standardGeneric("fx<-") })
 
-#' Focal point definition of the Radial Gradient
+#' <title already defined>
 #' 
 #' 
 #' 
@@ -86,12 +85,6 @@ setGeneric(name="fx<-", function(.Object,value) { standardGeneric("fx<-") })
 #' for \code{\link{cy}} was inherited or not.
 #' 
 #' @name fy
-#' 
-#' @param object a RadialGradient object
-#' 
-#' @return \code{fy(object)} return the coordinates in untis compliant with
-#'  the SVG 1.1 specifications. \code{fy(object) <- value} return the invisible
-#'  object.
 #' 
 #' @rdname radialgradient.bbox-methods
 #' @exportMethod fy
@@ -139,8 +132,8 @@ setMethod(f="initialize", signature="RadialGradient",
             if(is.null(args.names)) args.names <- list()
             
             ## default init.
-            fx(.Object) <- .arg("fx",character(0))
-            fy(.Object) <- .arg("fy",character(0))
+            fx(.Object) <- .arg("fx",SVGUnit.factory())
+            fy(.Object) <- .arg("fy",SVGUnit.factory())
 
             ## eop
             return(.Object)
@@ -162,11 +155,11 @@ setReplaceMethod(f="fx", signature="RadialGradient",
                  definition=function(.Object,value) 
                  {                   
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@fx <- value                   
@@ -188,11 +181,11 @@ setReplaceMethod(f="fy", signature="RadialGradient",
                  definition=function(.Object,value) 
                  {                   
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@fy <- value                   
@@ -224,6 +217,7 @@ setMethod(f=".xml", signature="RadialGradient",
           {
             ## init.
             gradient <- newXMLNode("radialGradient")
+            zero <- SVGUnit.factory()
 
             ## core.attributes (Gradient)
             attr <- callNextMethod(object)
@@ -232,8 +226,8 @@ setMethod(f=".xml", signature="RadialGradient",
             attr <- c(attr,.callMethod(".xml","Circle",object))
 
             ## attributes
-            if(length(fx(object) != 0)) attr <- c(attr, fx=fx(object))
-            if(length(fy(object) != 0)) attr <- c(attr, fy=fy(object))
+            if(fx(object) != zero) attr <- c(attr, fx=as.character(fx(object)))
+            if(fy(object) != zero) attr <- c(attr, fy=as.character(fy(object)))
             xmlAttrs(gradient) <- attr
 
             ## add stop items

@@ -35,12 +35,11 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "Ellipse"
 #'  @aliases Ellipse-class
 setClass("Ellipse",
-         representation(cx="character",
-                        cy="character",
-                        rx="character",
-                        ry="character",
-                        "VIRTUAL"),
-         prototype(cx="0",cy="0",rx="0",ry="0")
+         representation(cx="SVGUnit",
+                        cy="SVGUnit",
+                        rx="SVGLength",
+                        ry="SVGLength",
+                        "VIRTUAL")
 )
 
 #' <title already defined>
@@ -74,15 +73,15 @@ NULL
 
 #' Coordinates of the Ellipse object
 #' 
-#' These methods are accessors to the center and radius of an Ellipse
-#' object.
+#' These methods are accessors to the center and radius of an Ellipse object.
 #' 
 #' The \code{cx(object)} method returns the X-axis center of the ellipse.
 #' 
-#' @return coordinates in units compliant with the SVG 1.1 specifications
-#' 
+#' @return coordinates as SVGUnits (\code{cx,cy}) or SVGLength (\code{rx,ry})
+#'   objects
+#'   
 #' @name cx
-#' 
+#'   
 #' @rdname ellipse.bbox-methods
 #' @exportMethod cx
 #' @docType methods
@@ -217,10 +216,10 @@ setMethod(f="initialize", signature="Ellipse",
               bbox(.Object) <- bbox
             }
             else  {
-              cx(.Object) <- .arg("cx","0")
-              cy(.Object) <- .arg("cy","0")
-              rx(.Object) <- .arg("rx","0")
-              ry(.Object) <- .arg("ry","0")
+              cx(.Object) <- .arg("cx",SVGUnit.factory())
+              cy(.Object) <- .arg("cy",SVGUnit.factory())
+              rx(.Object) <- .arg("rx",SVGLength.factory())
+              ry(.Object) <- .arg("ry",SVGLength.factory())
             }
             
             ## eop
@@ -274,11 +273,11 @@ setReplaceMethod(f="cx", signature="Ellipse",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@cx <- value
@@ -302,11 +301,11 @@ setReplaceMethod(f="cy", signature="Ellipse",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGUnit.factory(value)
+                   if(!(is.object(value) && is(value,"SVGUnit")))
+                     stop("'value' must be an SVGUnit object")
                    
                    ## assign & eop
                    .Object@cy <- value
@@ -330,11 +329,11 @@ setReplaceMethod(f="rx", signature="Ellipse",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
                    
                    ## assign & eop
                    .Object@rx <- value
@@ -358,11 +357,11 @@ setReplaceMethod(f="ry", signature="Ellipse",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
                    
                    ## assign & eop
                    .Object@ry <- value
@@ -375,14 +374,18 @@ setReplaceMethod(f="ry", signature="Ellipse",
 setMethod(f=".xml", signature="Ellipse",
           definition=function(object)
           {
+            ## init.
+            uzero <- SVGUnit.factory()
+            lzero <- SVGLength.factory()
+            
             ## super
             attr <- list()
             
             ## attributes
-            if(cx(object) != "0") attr <- c(attr, cx=cx(object))
-            if(cy(object) != "0") attr <- c(attr, cy=cy(object))
-            if(rx(object) != "0") attr <- c(attr, rx=rx(object))
-            if(ry(object) != "0") attr <- c(attr, ry=ry(object))
+            if(cx(object) != uzero) attr <- c(attr, cx=as.character(cx(object)))
+            if(cy(object) != uzero) attr <- c(attr, cy=as.character(cy(object)))
+            if(rx(object) != lzero) attr <- c(attr, rx=as.character(rx(object)))
+            if(ry(object) != lzero) attr <- c(attr, ry=as.character(ry(object)))
             
             ## eop
             return(attr)

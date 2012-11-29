@@ -2,20 +2,22 @@ require(testthat)
 
 context("Radial Gradient")
 
-test_that("get/set Fields", {
+test_that("Accessors", {
   
   ## Standard constructor (empty)
   gradient  <- new("RadialGradient")
+  uzero <- SVGUnit.factory()
+  lzero <- SVGLength.factory()
   
   expect_identical(svgUnits(gradient), "objectBoundingBox")
   expect_identical(spreadMethod(gradient), "pad")
   expect_equal(xlinkHref(gradient), character(0))
   expect_equal(stops(gradient), list())
-  expect_identical(cx(gradient), "0")
-  expect_identical(cy(gradient), "0")
-  expect_identical(r(gradient), "0")
-  expect_identical(fx(gradient), character(0))
-  expect_identical(fy(gradient), character(0))  
+  expect_identical(cx(gradient), uzero)
+  expect_identical(cy(gradient), uzero)
+  expect_identical(r(gradient), lzero)
+  expect_identical(fx(gradient), uzero)
+  expect_identical(fy(gradient), uzero)  
   expect_is(gradient, "Gradient")
   expect_is(gradient, "Circle")
   
@@ -38,16 +40,19 @@ test_that("get/set Fields", {
   expect_identical(svgUnits(gradient), "userSpaceOnUse")
   expect_identical(spreadMethod(gradient), "repeat")
   expect_identical(xlinkHref(gradient), "http://mywebsite.org/we-need-you")
-  expect_identical(cx(gradient), "15pt")
-  expect_identical(cy(gradient), "12pt")
-  expect_identical(r(gradient), "50px")
-  expect_identical(fx(gradient), "4")
-  expect_identical(fy(gradient), "3")
+  expect_identical(cx(gradient), SVGUnit.factory("15pt"))
+  expect_identical(cy(gradient), SVGUnit.factory("12pt"))
+  expect_identical(r(gradient), SVGLength.factory("50px"))
+  expect_identical(fx(gradient), SVGUnit.factory("4"))
+  expect_identical(fy(gradient), SVGUnit.factory("3"))
   expect_equal(length(stops(gradient)),4)
   expect_equal(id(gradient), "RadialGradientX01")
   expect_identical(URL(gradient), "url(#RadialGradientX01)")
   
   expect_output(print(.xml(gradient)),"<radialGradient id=\"RadialGradientX01\" gradientUnits=\"userSpaceOnUse\" spreadMethod=\"repeat\" xlink:href=\"http://mywebsite.org/we-need-you\" cx=\"15pt\" cy=\"12pt\" r=\"50px\" fx=\"4\" fy=\"3\">[ \t\n]*<stop offset=\"0\" stop-color=\"white\" stop-opacity=\"1\"/>[ \t\n]*<stop offset=\"0.2\" stop-color=\"darkbrown\" stop-opacity=\"0.48\"/>[ \t\n]*<stop offset=\"0.8\" stop-color=\"purple\" stop-opacity=\"1\"/>[ \t\n]*<stop offset=\"1\" stop-color=\"lightgrey\" stop-opacity=\"0.67\"/>[ \t\n]*</radialGradient>")
+})
+
+test_that("Factory", {
   
   ## Factory building
   blue <- GradientStop.factory(color="blue")

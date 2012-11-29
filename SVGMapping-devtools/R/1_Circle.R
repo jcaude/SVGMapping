@@ -73,13 +73,13 @@ NULL
 
 #' Coordinates of the Circle object
 #' 
-#' These methods are accessors to the center and radius of a Circle
-#' object.
+#' These methods are accessors to the center and radius of a Circle object.
 #' 
-#' The \code{r(object)} method returns the radius length of the circle.
+#' The \code{r(object)} method returns the radius length of the circle as an
+#' \code{\link{SVGLength}} object.
 #' 
 #' @name r
-#' 
+#'   
 #' @rdname circle.bbox-methods
 #' @exportMethod r
 #' @docType methods
@@ -142,7 +142,7 @@ setMethod(f="initialize", signature="Circle",
               bbox(.Object) <- bbox
             }
             else  {
-              r(.Object) <- .arg("r","0")
+              r(.Object) <- .arg("r",SVGLength.factory())
             }
             
             ## eop
@@ -195,11 +195,11 @@ setReplaceMethod(f="r", signature="Circle",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
                    
                    ## assign & eop
                    rx(.Object) <- value
@@ -215,11 +215,13 @@ setMethod(f=".xml", signature="Circle",
           {
             ## super
             attr <- list()
+            uzero <- SVGUnit.factory()
+            lzero <- SVGLength.factory()
             
             ## attributes
-            if(cx(object) != "0") attr <- c(attr, cx=cx(object))
-            if(cy(object) != "0") attr <- c(attr, cy=cy(object))
-            if(r(object) != "0") attr <- c(attr, r=r(object))
+            if(cx(object) != uzero) attr <- c(attr, cx=as.character(cx(object)))
+            if(cy(object) != uzero) attr <- c(attr, cy=as.character(cy(object)))
+            if(r(object) != lzero) attr <- c(attr, r=as.character(r(object)))
             
             ## eop
             return(attr)

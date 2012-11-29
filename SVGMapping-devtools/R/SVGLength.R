@@ -112,7 +112,7 @@ setMethod(f="isRelative", signature="SVGLength",
 setMethod(f="uUser",signature="SVGLength",
           definition=function(object) 
           {
-            if(isRelative(object))
+            if(isRelative(object) && (uValue(object) != 0))
               return(NA)
             else
               return(callNextMethod(object))
@@ -124,7 +124,10 @@ setMethod(f="uUser",signature="SVGLength",
 setMethod("Arith", signature="SVGLength", 
           definition=function(e1, e2) 
           {
-            v = callGeneric(uUser(e1), uUser(e2))
+            if(uUnits(e1) == uUnits(e2))
+              v <- callGeneric(uValue(e1),uValue(e2))
+            else
+              v = callGeneric(uUser(e1), uUser(e2))
             return(SVGLength.factory(v,target.unit=uUnits(e1)))
           }
 )

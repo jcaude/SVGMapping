@@ -280,6 +280,9 @@ setMethod(f="uUser",signature="SVGUnit",
             unit <- paste("U_",uUnits(object),sep="")
             value <- uValue(object)
             dpi <- uDpi(object)
+           
+            ## check: 0
+            if(value == 0) return(value)
             
             ## conversion
             user.unit <- switch(unit,
@@ -365,7 +368,12 @@ setMethod("Arith", signature="SVGUnit",
 setMethod("Compare", signature="SVGUnit", 
           definition=function(e1, e2) 
           {
-            v = callGeneric(uUser(e1), uUser(e2))
+            if( (uUnits(e1) == uUnits(e2)) 
+                || (uValue(e1) == 0)
+                || (uValue(e2) == 0) )
+              v = callGeneric(uValue(e1), uValue(e2))
+            else
+              v = callGeneric(uUser(e1), uUser(e2))
             return(v)
           }
 )
@@ -376,7 +384,12 @@ setMethod("Compare", signature="SVGUnit",
 setMethod("Logic", signature="SVGUnit", 
           definition=function(e1, e2) 
           {
-            v = callGeneric(uUser(e1), uUser(e2))
+            if( (uUnits(e1) == uUnits(e2)) 
+                || (uValue(e1) == 0)
+                || (uValue(e2) == 0) )
+              v = callGeneric(uValue(e1), uValue(e2))
+            else
+              v = callGeneric(uUser(e1), uUser(e2))
             return(v)
           }
 )
@@ -387,7 +400,10 @@ setMethod("Logic", signature="SVGUnit",
 setMethod("Ops", signature="SVGUnit", 
           definition=function(e1, e2) 
           {
-            v = callGeneric(uUser(e1), uUser(e2))
+            if(uUnits(e1) == uUnits(e2))
+              v = callGeneric(uValue(e1), uValue(e2))
+            else              
+              v = callGeneric(uUser(e1), uUser(e2))
             return(v)
           }
 )
