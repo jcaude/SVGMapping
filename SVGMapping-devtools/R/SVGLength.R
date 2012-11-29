@@ -70,7 +70,18 @@ setGeneric(name="isRelative", function(object) { standardGeneric("isRelative") }
 #' @docType methods
 NULL
 
-setMethod(f="initialize", signature="SVGUnit",
+#' Group Generic methods for SVGLength objects
+#' 
+#' Some of the S4 group generic methods are implemented for SVGUnit object. For
+#' more details see \link{S4groupGeneric} documentation page.
+#' 
+#' @name Arith
+#' 
+#' @rdname svglength.groupGeneric-methods
+#' @docType methods
+NULL
+
+setMethod(f="initialize", signature="SVGLength",
           definition=function(.Object,...)
           {            
             # super
@@ -79,6 +90,8 @@ setMethod(f="initialize", signature="SVGUnit",
             # check for relative units
             if(uUnits(.Object) %in% c("em","ex","%"))
               .Object@u.relative <- TRUE
+            else
+              .Object@u.relative <- FALSE
             
             # eop
             return(.Object)
@@ -106,8 +119,86 @@ setMethod(f="uUser",signature="SVGLength",
           }
 )
 
+#' @rdname svglength.groupGeneric-methods
+#' @aliases Arith,SVGLength-method
+setMethod("Arith", signature="SVGLength", 
+          definition=function(e1, e2) 
+          {
+            v = callGeneric(uUser(e1), uUser(e2))
+            return(SVGLength.factory(v,target.unit=uUnits(e1)))
+          }
+)
+
 ## F A C T O R Y
 ##--------------
 
 #' SVGLength Factory
-
+#' 
+#' This function returns a new \code{\link{SVGLength}} object. \code{SVGLength} 
+#' is a subclass of \code{\link{SVGUnit}} that allows relative units such as 
+#' \emph{'em'}, \emph{'ex'} or \emph{'\%'}.
+#' 
+#' \code{SVGLength} objects are used to specify length of some shape attributes. 
+#' 
+#' @name SVGLength.factory
+#'   
+#' @param x the unit value
+#' @param unit the value unit system
+#' @param dpi the device resoluation
+#' @param target.unit the return unit system after value conversion. Note that
+#'   only non relative source units can be converted into another unit system.
+#'   
+#' @return a \code{\link{SVGLength}} object
+#'   
+#' @export SVGLength.factory
+#' 
+#' @seealso The \code{\link{SVGUnit.factory}} function.
+#'   
+#' @examples
+#' SVGLength.factory(1.5)
+#' SVGLength.factory(7,"%")
+#' SVGLength.factory(10,"px",dpi=100)
+#' SVGLength.factory("10.43em")
+#' SVGLength.factory(0.9,"in",target.unit="px")
+#' SVGLength.factory(1.5,"cm") - SVGLength.factory(70,"mm")
+SVGLength.factory <- function(x,unit,dpi,target.unit) {
+  
+  ## init.
+  if(missing(x)) x <- 0
+  if(missing(unit)) unit <- ""
+  
+  ## check: character value+unit (eg '10cm')
+  if(is.character(x)) {
+    v <- x
+    x <- as.numeric(gsub("([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)(.*)",
+                         "\\1",v))
+    unit <- gsub("([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)([ \\t]*)(.*)",
+                 "\\4",v)
+  }
+  
+  ## create unit value
+  if(missing(dpi))
+    svg_length <- new("SVGLength",x,unit)
+  else
+    svg_length <- new("SVGLength",x,unit,dpi=dpi)
+  
+  ## target unit conversion
+  if(!missing(target.unit) && !isRelative(svg_length)) {
+    user_value <- uUser(svg_length)
+    target_unit <- paste("U_",target.unit,sep="")
+    dpi <- 1/uDpi(svg_length)
+    target_value <- switch(target_unit,
+                           U_mm = dpi * 25.4 * user_value,
+                           U_px = user_value,
+                           U_pt = dpi * 72 * user_value,
+                           U_pc = dpi * 6 * user_value,
+                           U_cm = dpi * 2.54 * user_value,
+                           U_in = dpi * user_value,
+                           U_ = user_value,
+                           default= NA)
+    svg_length <- new("SVGLength",target_value,target.unit,dpi=uDpi(svg_length))
+  }
+  
+  ## eop
+  return(svg_length)  
+}

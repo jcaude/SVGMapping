@@ -253,6 +253,8 @@ setReplaceMethod(f="uValue", signature="SVGUnit",
                    ## check
                    if(!is.numeric(value))
                      stop("unit 'value' must be a numeric")
+                   if(is.na(value))
+                     stop("unit 'value' can't be NA")
                    
                    ## init.
                    .Object@u.value <- value

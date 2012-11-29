@@ -20,6 +20,7 @@ Depends:
 Collate:
     'internals.R'
     'SVGUnit.R'
+    'SVGLength.R'
     '0_SVGNode.R'
     '0_CSS.R'
     '0_Vector.R'
