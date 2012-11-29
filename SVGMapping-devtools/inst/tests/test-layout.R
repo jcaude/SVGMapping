@@ -15,9 +15,11 @@ test_that("get/set Locations attributes", {
             })
   
   layout  <- new("myClass.Layout")
+  uzero <- SVGUnit.factory()
+  lzero <- SVGLength.factory()
   
   expect_equal(opacity(layout), 0.0)
-  expect_equal(bbox(layout), list(x="0",y="0",width="0",height="0"))
+  expect_equal(bbox(layout), list(x=uzero,y=uzero,width=lzero,height=lzero))
   expect_is(layout, "Layout")
   expect_is(layout, "SVGNode")
   expect_is(layout, "Rectangle")
@@ -29,10 +31,10 @@ test_that("get/set Locations attributes", {
   height(layout) <- 99.4
   
   expect_equal(opacity(layout), 0.8)
-  expect_equal(x(layout), "0.2")
-  expect_equal(y(layout), "0.21")
-  expect_equal(width(layout), "200.5")
-  expect_equal(height(layout), "99.4")
+  expect_equal(x(layout), SVGUnit.factory("0.2"))
+  expect_equal(y(layout), SVGUnit.factory("0.21"))
+  expect_equal(width(layout), SVGLength.factory("200.5"))
+  expect_equal(height(layout), SVGLength.factory("99.4"))
   expect_equal(.xml(layout),list(x="0.2",y="0.21",width="200.5",height="99.4",opacity=0.8))
   
   id(layout) <- "ID10"

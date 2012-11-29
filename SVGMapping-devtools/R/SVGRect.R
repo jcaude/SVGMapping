@@ -36,8 +36,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "SVGRect"
 #'  @aliases SVGRect-class
 setClass("SVGRect",
-         representation(roundx="character",
-                        roundy="character"),
+         representation(roundx="SVGLength",
+                        roundy="SVGLength"),
          contains=c("SVGShape","Rectangle")
          )
 
@@ -59,7 +59,7 @@ setGeneric(name="print.SVGRect", function(x,...) { standardGeneric("print.SVGRec
 #'  
 #' @param object the SVG shape instance
 #' 
-#' @return the length in SVG units  
+#' @return the length as an SVGLength object  
 #' 
 #' @rdname svgrect.roundoff-methods
 #' @exportMethod roundx
@@ -136,8 +136,8 @@ setMethod(f="initialize", signature="SVGRect",
             if(is.null(args.names)) args.names <- list()
 
             ## default init.
-            roundx(.Object) <- .arg("roundx",character(0))
-            roundy(.Object) <- .arg("roundy",character(0))
+            roundx(.Object) <- .arg("roundx",SVGLength.factory())
+            roundy(.Object) <- .arg("roundy",SVGLength.factory())
 
             ## eop
             return(.Object)
@@ -170,12 +170,12 @@ setReplaceMethod(f="roundx", signature="SVGRect",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
-
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
+                   
                    ## assign & eop
                    .Object@roundx <- value
                    return(.Object)
@@ -198,12 +198,12 @@ setReplaceMethod(f="roundy", signature="SVGRect",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value))
-                     stop("'value' must be atomic")
-                   if(is.numeric(value)) value <- as.character(value)
-                   if(!is.character(value))
-                     stop("'value' must be an atomic string")
-
+                   if(is.atomic(value) && 
+                        (is.numeric(value) || is.character(value))) 
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
+                   
                    ## assign & eop
                    .Object@roundy <- value
                    return(.Object)
@@ -225,8 +225,8 @@ setMethod(f=".xml", signature="SVGRect",
             attr <- c(attr,.callMethod(".xml", "Rectangle",object))
 
             ## attributes
-            if(length(roundx(object)) > 0) attr <- c(attr, rx=roundx(object))
-            if(length(roundy(object)) > 0) attr <- c(attr, ry=roundy(object))
+            if(length(roundx(object)) > 0) attr <- c(attr, rx=as.character(roundx(object)))
+            if(length(roundy(object)) > 0) attr <- c(attr, ry=as.character(roundy(object)))
             xmlAttrs(rect) <- attr
 
             ## eop

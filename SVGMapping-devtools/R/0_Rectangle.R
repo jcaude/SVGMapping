@@ -37,8 +37,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 setClass("Rectangle",
          representation(x="SVGUnit",
                         y="SVGUnit",
-                        width="SVGUnit",
-                        height="SVGUnit",
+                        width="SVGLength",
+                        height="SVGLength",
                         "VIRTUAL")
 )
 
@@ -73,17 +73,17 @@ NULL
 
 #' Dimensions of the Rectangular object
 #' 
-#' These methods are accessors to the location and dimension of a Rectangular
+#' These methods are accessors to the location and dimension of a Rectangular 
 #' object.
-#'
+#' 
 #' The method \code{x(object)} return the location on the \emph{X-axis} of the 
 #' rectangular object.
 #' 
 #' @name x
-#' 
-#' @return \code{x(),y(),width(),height()}: an SVGUnit object for single 
-#' coordinates and dimensions methods
-#' 
+#'   
+#' @return \code{x(),y()}: an SVGUnit object for single coordinates and an
+#'   SVGLength object for \code{width(),height()} dimensions methods
+#'   
 #' @rdname rectangle.bbox-methods
 #' @exportMethod x
 #' @docType methods
@@ -211,8 +211,8 @@ setMethod(f="initialize", signature="Rectangle",
             else {
               x(.Object) <- .arg("x",SVGUnit.factory())
               y(.Object) <- .arg("y",SVGUnit.factory())
-              width(.Object) <- .arg("width",SVGUnit.factory())
-              height(.Object) <- .arg("height",SVGUnit.factory())
+              width(.Object) <- .arg("width",SVGLength.factory())
+              height(.Object) <- .arg("height",SVGLength.factory())
             }
             
             ## eop
@@ -325,9 +325,9 @@ setReplaceMethod(f="width", signature="Rectangle",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
                    
                    ## assign & eop
                    .Object@width <- value
@@ -353,9 +353,9 @@ setReplaceMethod(f="height", signature="Rectangle",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGLength.factory(value)
+                   if(!(is.object(value) && is(value,"SVGLength")))
+                     stop("'value' must be an SVGLength object")
                    
                    ## assign & eop
                    .Object@height <- value
@@ -368,15 +368,19 @@ setReplaceMethod(f="height", signature="Rectangle",
 setMethod(f=".xml", signature="Rectangle",
           definition=function(object)
           {
+            ## init.
+            uzero <- SVGUnit.factory()
+            lzero <- SVGLength.factory()
+            
             ## super
             attr <- list()
             
             ## return a list of core attributes
-            if(x(object) != "0") attr <- c(attr, x=as.character(x(object)))
-            if(y(object) != "0") attr <- c(attr, y=as.character(y(object)))
-            if(width(object) != "0") 
+            if(x(object) != uzero) attr <- c(attr, x=as.character(x(object)))
+            if(y(object) != uzero) attr <- c(attr, y=as.character(y(object)))
+            if(width(object) != lzero) 
               attr <- c(attr,width=as.character(width(object)))
-            if(height(object) != "0") 
+            if(height(object) != lzero) 
               attr <- c(attr,height=as.character(height(object)))
             
             ## eop

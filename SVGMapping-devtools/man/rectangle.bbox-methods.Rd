@@ -18,7 +18,7 @@
 \alias{y<-,Rectangle-method}
 \title{Dimensions of the Rectangular object}
 \value{
-  \code{x(),y(),width(),height()}: a string value for
+  \code{x(),y(),width(),height()}: an SVGUnit object for
   single coordinates and dimensions methods
 
   \code{x(),y(),width(),height()<-}: the rectangular object
