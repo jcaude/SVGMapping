@@ -215,7 +215,7 @@ setMethod(f=".xml", signature="Circle",
           {
             ## super
             attr <- list()
-            uzero <- SVGUnit.factory()
+            uzero <- SVGCoord.factory()
             lzero <- SVGLength.factory()
             
             ## attributes

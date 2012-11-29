@@ -5,7 +5,7 @@ context("SVG Rectangle")
 test_that("Accessors", {
   
   rectangle <- SVGRect.factory()
-  uzero <- SVGUnit.factory()
+  uzero <- SVGCoord.factory()
   lzero <- SVGLength.factory()
 
   expect_equal(id(rectangle), character(0))
@@ -33,8 +33,8 @@ test_that("Accessors", {
   expect_identical(svgTransform(rectangle),"translate(5,6)")
   expect_identical(cssClass(rectangle),"rectangle.style")
   expect_identical(cssStyle(rectangle),"stroke:blue; stroke-width:2pt")
-  expect_identical(x(rectangle),SVGUnit.factory("10px"))
-  expect_identical(y(rectangle),SVGUnit.factory("20px"))
+  expect_identical(x(rectangle),SVGCoord.factory("10px"))
+  expect_identical(y(rectangle),SVGCoord.factory("20px"))
   expect_identical(width(rectangle),SVGLength.factory("100px"))
   expect_identical(height(rectangle),SVGLength.factory("70px"))
   expect_identical(roundx(rectangle),SVGLength.factory("5"))

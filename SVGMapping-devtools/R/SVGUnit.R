@@ -36,7 +36,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 setClass("SVGUnit",
          representation(u.value="numeric",
                         u.unit="character",
-                        u.dpi="numeric")
+                        u.dpi="numeric",
+                        "VIRTUAL")
          )
 
 #' Unit Value Accessors
@@ -407,77 +408,3 @@ setMethod("Ops", signature="SVGUnit",
             return(v)
           }
 )
-
-## F A C T O R Y
-##--------------
-
-#' SVGUnit Factory
-#' 
-#' This function returns a new \code{\link{SVGUnit}} object. An SVG unit is 
-#' simply a single numeric with an associated unit system as defined in the SVG
-#' Specification.
-#' 
-#' \code{SVGUnit} objects are used to specify location or shape attributes 
-#' (\emph{eg} a circle radius). A \code{SVGUnit} is specified using a
-#' \emph{value} associated to a \emph{unit system} and a \emph{device
-#' resolution} given as a \emph{dpi} value.
-#' 
-#' @name SVGUnit.factory
-#'
-#' @param x the unit value
-#' @param unit the value unit system
-#' @param dpi the device resoluation
-#' @param target.unit the return unit system after value conversion 
-#'   
-#' @return a \code{\link{SVGUnit}} object
-#'   
-#' @export SVGUnit.factory
-#'   
-#' @examples
-#' SVGUnit.factory(1.5)
-#' SVGUnit.factory(10,"px")
-#' SVGUnit.factory(10,"px",dpi=100)
-#' SVGUnit.factory("10.43cm")
-#' SVGUnit.factory(0.9,"in",target.unit="px")
-#' SVGUnit.factory(1.5,"cm") - SVGUnit.factory(70,"mm")
-SVGUnit.factory <- function(x,unit,dpi,target.unit) {
-  
-  ## init.
-  if(missing(x)) x <- 0
-  if(missing(unit)) unit <- ""
-  
-  ## check: character value+unit (eg '10cm')
-  if(is.character(x)) {
-    v <- x
-    x <- as.numeric(gsub("([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)(.*)",
-                         "\\1",v))
-    unit <- gsub("([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)([ \\t]*)(.*)",
-                 "\\4",v)
-  }
-  
-  ## create unit value
-  if(missing(dpi))
-    svg_unit <- new("SVGUnit",x,unit)
-  else
-    svg_unit <- new("SVGUnit",x,unit,dpi=dpi)
-    
-  ## target unit conversion
-  if(!missing(target.unit)) {
-    user_value <- uUser(svg_unit)
-    target_unit <- paste("U_",target.unit,sep="")
-    dpi <- 1/uDpi(svg_unit)
-    target_value <- switch(target_unit,
-                           U_mm = dpi * 25.4 * user_value,
-                           U_px = user_value,
-                           U_pt = dpi * 72 * user_value,
-                           U_pc = dpi * 6 * user_value,
-                           U_cm = dpi * 2.54 * user_value,
-                           U_in = dpi * user_value,
-                           U_ = user_value,
-                           default= NA)
-    svg_unit <- new("SVGUnit",target_value,target.unit,dpi=uDpi(svg_unit))
-  }
-  
-  ## eop
-  return(svg_unit)
-}

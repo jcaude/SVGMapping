@@ -5,7 +5,7 @@ context("SVG Line")
 test_that("Accessors", {
   
   line <- SVGLine.factory()
-  zero <- SVGUnit.factory()
+  zero <- SVGCoord.factory()
   
   expect_equal(id(line), character(0))
   expect_equal(svgTransform(line),character(0))
@@ -28,10 +28,10 @@ test_that("Accessors", {
   expect_equal(svgTransform(line),"translate(5,6)")
   expect_equal(cssClass(line),"line.style")
   expect_equal(cssStyle(line),"stroke:blue; stroke-width:2pt")
-  expect_equal(x1(line),SVGUnit.factory("10px"))
-  expect_equal(y1(line),SVGUnit.factory("20px"))
-  expect_equal(x2(line),SVGUnit.factory("100px"))
-  expect_equal(y2(line),SVGUnit.factory("70px"))
+  expect_equal(x1(line),SVGCoord.factory("10px"))
+  expect_equal(y1(line),SVGCoord.factory("20px"))
+  expect_equal(x2(line),SVGCoord.factory("100px"))
+  expect_equal(y2(line),SVGCoord.factory("70px"))
   expect_is(line,"SVGShape")
   expect_is(line,"Vector")
   

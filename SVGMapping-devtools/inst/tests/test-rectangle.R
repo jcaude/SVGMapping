@@ -17,7 +17,7 @@ test_that("Accessors", {
             })
   
   node  <- new("myClass.Rectangle")
-  uzero <- SVGUnit.factory()
+  uzero <- SVGCoord.factory()
   lzero <- SVGLength.factory()
   
   expect_equal(x(node), uzero)
@@ -32,28 +32,28 @@ test_that("Accessors", {
   width(node) <- "211pt"
   height(node) <- "333pt"
 
-  expect_equal(x(node), SVGUnit.factory("10px"))
-  expect_equal(y(node), SVGUnit.factory("15px"))
+  expect_equal(x(node), SVGCoord.factory("10px"))
+  expect_equal(y(node), SVGCoord.factory("15px"))
   expect_equal(width(node), SVGLength.factory("211pt"))
   expect_equal(height(node), SVGLength.factory("333pt"))
   
   bbox(node) <- list(x="9cm",width="341cm",height="94cm",y="8cm")
   
-  expect_equal(x(node), SVGUnit.factory("9cm"))
-  expect_equal(y(node), SVGUnit.factory("8cm"))
+  expect_equal(x(node), SVGCoord.factory("9cm"))
+  expect_equal(y(node), SVGCoord.factory("8cm"))
   expect_equal(width(node), SVGLength.factory("341cm"))
   expect_equal(height(node), SVGLength.factory("94cm"))
   
-  expect_equal(bbox(node), list(x=SVGUnit.factory("9cm"),
-                                y=SVGUnit.factory("8cm"),
+  expect_equal(bbox(node), list(x=SVGCoord.factory("9cm"),
+                                y=SVGCoord.factory("8cm"),
                                 width=SVGLength.factory("341cm"),
                                 height=SVGLength.factory("94cm")))
   
   node <- new("myClass.Rectangle",
               bbox=list(x="9cm",y="8cm",width="341cm",height="94cm"))
 
-  expect_equal(x(node), SVGUnit.factory("9cm"))
-  expect_equal(y(node), SVGUnit.factory("8cm"))
+  expect_equal(x(node), SVGCoord.factory("9cm"))
+  expect_equal(y(node), SVGCoord.factory("8cm"))
   expect_equal(width(node), SVGLength.factory("341cm"))
   expect_equal(height(node), SVGLength.factory("94cm"))
   

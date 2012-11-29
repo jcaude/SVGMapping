@@ -35,8 +35,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "Ellipse"
 #'  @aliases Ellipse-class
 setClass("Ellipse",
-         representation(cx="SVGUnit",
-                        cy="SVGUnit",
+         representation(cx="SVGCoord",
+                        cy="SVGCoord",
                         rx="SVGLength",
                         ry="SVGLength",
                         "VIRTUAL")
@@ -77,7 +77,7 @@ NULL
 #' 
 #' The \code{cx(object)} method returns the X-axis center of the ellipse.
 #' 
-#' @return coordinates as SVGUnits (\code{cx,cy}) or SVGLength (\code{rx,ry})
+#' @return coordinates as SVGCoords (\code{cx,cy}) or SVGLength (\code{rx,ry})
 #'   objects
 #'   
 #' @name cx
@@ -216,8 +216,8 @@ setMethod(f="initialize", signature="Ellipse",
               bbox(.Object) <- bbox
             }
             else  {
-              cx(.Object) <- .arg("cx",SVGUnit.factory())
-              cy(.Object) <- .arg("cy",SVGUnit.factory())
+              cx(.Object) <- .arg("cx",SVGCoord.factory())
+              cy(.Object) <- .arg("cy",SVGCoord.factory())
               rx(.Object) <- .arg("rx",SVGLength.factory())
               ry(.Object) <- .arg("ry",SVGLength.factory())
             }
@@ -275,9 +275,9 @@ setReplaceMethod(f="cx", signature="Ellipse",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@cx <- value
@@ -303,9 +303,9 @@ setReplaceMethod(f="cy", signature="Ellipse",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@cy <- value
@@ -375,7 +375,7 @@ setMethod(f=".xml", signature="Ellipse",
           definition=function(object)
           {
             ## init.
-            uzero <- SVGUnit.factory()
+            uzero <- SVGCoord.factory()
             lzero <- SVGLength.factory()
             
             ## super

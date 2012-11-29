@@ -35,10 +35,10 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "Vector"
 #'  @aliases Vector-class
 setClass("Vector",
-         representation(x1="SVGUnit",
-                        y1="SVGUnit",
-                        x2="SVGUnit",
-                        y2="SVGUnit",
+         representation(x1="SVGCoord",
+                        y1="SVGCoord",
+                        x2="SVGCoord",
+                        y2="SVGCoord",
                         "VIRTUAL")
 )
 
@@ -223,10 +223,10 @@ setMethod(f="initialize", signature="Vector",
               bbox(.Object) <- bbox
             }
             else  {
-              x1(.Object) <- .arg("x1",SVGUnit.factory())
-              y1(.Object) <- .arg("y1",SVGUnit.factory())
-              x2(.Object) <- .arg("x2",SVGUnit.factory())
-              y2(.Object) <- .arg("y2",SVGUnit.factory())
+              x1(.Object) <- .arg("x1",SVGCoord.factory())
+              y1(.Object) <- .arg("y1",SVGCoord.factory())
+              x2(.Object) <- .arg("x2",SVGCoord.factory())
+              y2(.Object) <- .arg("y2",SVGCoord.factory())
             }
             
             ## eop
@@ -282,9 +282,9 @@ setReplaceMethod(f="x1", signature="Vector",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@x1 <- value
@@ -310,9 +310,9 @@ setReplaceMethod(f="y1", signature="Vector",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@y1 <- value
@@ -338,9 +338,9 @@ setReplaceMethod(f="x2", signature="Vector",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@x2 <- value
@@ -366,9 +366,9 @@ setReplaceMethod(f="y2", signature="Vector",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@y2 <- value
@@ -383,7 +383,7 @@ setMethod(f=".xml", signature="Vector",
           {
             ## super
             attr <- list()
-            zero <- SVGUnit.factory()
+            zero <- SVGCoord.factory()
             
             ## attributes
             if(x1(object) != zero) attr <- c(attr, x1=as.character(x1(object)))

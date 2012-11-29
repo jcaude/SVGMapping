@@ -17,7 +17,7 @@ test_that("Accessors", {
             })
   
   node  <- new("myClass.Ellipse")
-  uzero <- SVGUnit.factory()
+  uzero <- SVGCoord.factory()
   lzero <- SVGLength.factory()
   
   expect_identical(cx(node), uzero)
@@ -32,28 +32,28 @@ test_that("Accessors", {
   rx(node) <- "211pt"
   ry(node) <- "333pt"
   
-  expect_identical(cx(node), SVGUnit.factory("10px"))
-  expect_identical(cy(node), SVGUnit.factory("15px"))
+  expect_identical(cx(node), SVGCoord.factory("10px"))
+  expect_identical(cy(node), SVGCoord.factory("15px"))
   expect_identical(rx(node), SVGLength.factory("211pt"))
   expect_identical(ry(node), SVGLength.factory("333pt"))
   
   bbox(node) <- list(cx="9cm",cy="341cm",rx="94cm",ry="8cm")
   
-  expect_identical(cx(node), SVGUnit.factory("9cm"))
-  expect_identical(cy(node), SVGUnit.factory("341cm"))
+  expect_identical(cx(node), SVGCoord.factory("9cm"))
+  expect_identical(cy(node), SVGCoord.factory("341cm"))
   expect_identical(rx(node), SVGLength.factory("94cm"))
   expect_identical(ry(node), SVGLength.factory("8cm"))
   
-  expect_equal(bbox(node), list(cx=SVGUnit.factory("9cm"),
-                                cy=SVGUnit.factory("341cm"),
+  expect_equal(bbox(node), list(cx=SVGCoord.factory("9cm"),
+                                cy=SVGCoord.factory("341cm"),
                                 rx=SVGLength.factory("94cm"),
                                 ry=SVGLength.factory("8cm")))
   
   node <- new("myClass.Ellipse",
               bbox=list(cx="9cm",cy="8cm",rx="341cm",ry="94cm"))
   
-  expect_identical(cx(node), SVGUnit.factory("9cm"))
-  expect_identical(cy(node), SVGUnit.factory("8cm"))
+  expect_identical(cx(node), SVGCoord.factory("9cm"))
+  expect_identical(cy(node), SVGCoord.factory("8cm"))
   expect_identical(rx(node), SVGLength.factory("341cm"))
   expect_identical(ry(node), SVGLength.factory("94cm"))
   

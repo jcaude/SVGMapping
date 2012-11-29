@@ -21,6 +21,7 @@ Collate:
     'internals.R'
     'SVGUnit.R'
     'SVGLength.R'
+    'SVGCoord.R'
     '0_SVGNode.R'
     '0_CSS.R'
     '0_Vector.R'

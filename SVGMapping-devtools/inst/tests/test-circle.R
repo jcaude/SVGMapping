@@ -17,7 +17,7 @@ test_that("Accessors", {
             })
   
   node  <- new("myClass.Circle")
-  uzero <- SVGUnit.factory()
+  uzero <- SVGCoord.factory()
   lzero <- SVGLength.factory()
   
   expect_identical(cx(node), uzero)
@@ -30,25 +30,25 @@ test_that("Accessors", {
   cy(node) <- "15px"
   r(node) <- "211pt"
   
-  expect_identical(cx(node), SVGUnit.factory("10px"))
-  expect_identical(cy(node), SVGUnit.factory("15px"))
+  expect_identical(cx(node), SVGCoord.factory("10px"))
+  expect_identical(cy(node), SVGCoord.factory("15px"))
   expect_identical(r(node), SVGLength.factory("211pt"))
   
   bbox(node) <- list(cx="9cm",cy="341cm",r="94cm")
   
-  expect_identical(cx(node), SVGUnit.factory("9cm"))
-  expect_identical(cy(node), SVGUnit.factory("341cm"))
+  expect_identical(cx(node), SVGCoord.factory("9cm"))
+  expect_identical(cy(node), SVGCoord.factory("341cm"))
   expect_identical(r(node), SVGLength.factory("94cm"))
   
-  expect_equal(bbox(node), list(cx=SVGUnit.factory("9cm"),
-                                cy=SVGUnit.factory("341cm"),
+  expect_equal(bbox(node), list(cx=SVGCoord.factory("9cm"),
+                                cy=SVGCoord.factory("341cm"),
                                 r=SVGLength.factory("94cm")))
   
   node <- new("myClass.Circle",
               bbox=list(cx="9cm",cy="8cm",r="341cm"))
   
-  expect_identical(cx(node), SVGUnit.factory("9cm"))
-  expect_identical(cy(node), SVGUnit.factory("8cm"))
+  expect_identical(cx(node), SVGCoord.factory("9cm"))
+  expect_identical(cy(node), SVGCoord.factory("8cm"))
   expect_identical(r(node), SVGLength.factory("341cm"))
   
   expect_error(new("myClass.Circle",

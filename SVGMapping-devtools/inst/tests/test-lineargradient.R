@@ -6,7 +6,7 @@ test_that("get/set Fields", {
   
   ## Standard constructor (empty)
   gradient  <- new("LinearGradient")
-  zero <- SVGUnit.factory()
+  zero <- SVGCoord.factory()
   
   expect_identical(svgUnits(gradient), "objectBoundingBox")
   expect_identical(spreadMethod(gradient), "pad")
@@ -40,10 +40,10 @@ test_that("get/set Fields", {
   expect_equal(svgUnits(gradient), "userSpaceOnUse")
   expect_equal(spreadMethod(gradient), "repeat")
   expect_equal(xlinkHref(gradient), "http://mywebsite.org/we-need-you")
-  expect_equal(x1(gradient), SVGUnit.factory("1px"))
-  expect_equal(y1(gradient), SVGUnit.factory("5px"))
-  expect_equal(x2(gradient), SVGUnit.factory("21pt"))
-  expect_equal(y2(gradient), SVGUnit.factory("33pt"))
+  expect_equal(x1(gradient), SVGCoord.factory("1px"))
+  expect_equal(y1(gradient), SVGCoord.factory("5px"))
+  expect_equal(x2(gradient), SVGCoord.factory("21pt"))
+  expect_equal(y2(gradient), SVGCoord.factory("33pt"))
   expect_equal(length(stops(gradient)),4)
   expect_equal(id(gradient), "LinGradient_01")
   expect_identical(URL(gradient), "url(#LinGradient_01)")

@@ -36,8 +36,8 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #'  @exportClass "RadialGradient"
 #'  @aliases RadialGradient-class
 setClass("RadialGradient",
-         representation(fx="SVGUnit",
-                        fy="SVGUnit"),
+         representation(fx="SVGCoord",
+                        fy="SVGCoord"),
          contains=c("Gradient","Circle")
          )
 
@@ -54,7 +54,7 @@ setClass("RadialGradient",
 #'   
 #' @param object a RadialGradient object
 #'   
-#' @return \code{fx(object)} return the coordinates as an \code{\link{SVGUnit}} 
+#' @return \code{fx(object)} return the coordinates as an \code{\link{SVGCoord}} 
 #'   object. \code{fx(object) <- value} return the invisible object.
 #'   
 #' @rdname radialgradient.bbox-methods
@@ -132,8 +132,8 @@ setMethod(f="initialize", signature="RadialGradient",
             if(is.null(args.names)) args.names <- list()
             
             ## default init.
-            fx(.Object) <- .arg("fx",SVGUnit.factory())
-            fy(.Object) <- .arg("fy",SVGUnit.factory())
+            fx(.Object) <- .arg("fx",SVGCoord.factory())
+            fy(.Object) <- .arg("fy",SVGCoord.factory())
 
             ## eop
             return(.Object)
@@ -157,9 +157,9 @@ setReplaceMethod(f="fx", signature="RadialGradient",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@fx <- value                   
@@ -183,9 +183,9 @@ setReplaceMethod(f="fy", signature="RadialGradient",
                    ## check
                    if(is.atomic(value) && 
                         (is.numeric(value) || is.character(value))) 
-                     value <- SVGUnit.factory(value)
-                   if(!(is.object(value) && is(value,"SVGUnit")))
-                     stop("'value' must be an SVGUnit object")
+                     value <- SVGCoord.factory(value)
+                   if(!(is.object(value) && is(value,"SVGCoord")))
+                     stop("'value' must be an SVGCoord object")
                    
                    ## assign & eop
                    .Object@fy <- value                   
@@ -217,7 +217,7 @@ setMethod(f=".xml", signature="RadialGradient",
           {
             ## init.
             gradient <- newXMLNode("radialGradient")
-            zero <- SVGUnit.factory()
+            zero <- SVGCoord.factory()
 
             ## core.attributes (Gradient)
             attr <- callNextMethod(object)
