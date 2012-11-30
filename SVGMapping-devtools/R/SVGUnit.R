@@ -185,7 +185,7 @@ setGeneric(name="print.SVGUnit", function(x,...) { standardGeneric("print.SVGUni
 #' Some of the S4 group generic methods are implemented for SVGUnit object. For
 #' more details see \link{S4groupGeneric} documentation page.
 #' 
-#' @name Arith
+#' @name Compare
 #' 
 #' @rdname svgunit.groupGeneric-methods
 #' @docType methods
@@ -350,16 +350,6 @@ setMethod(f="as.character", signature="SVGUnit",
           definition=function(x,...)
           {
               return(paste(uValue(x),uUnits(x),sep=""))
-          }
-)
-
-#' @rdname svgunit.groupGeneric-methods
-#' @aliases Arith,SVGUnit-method
-setMethod("Arith", signature="SVGUnit", 
-          definition=function(e1, e2) 
-          {
-            v = callGeneric(uUser(e1), uUser(e2))
-            return(SVGUnit.factory(v,target.unit=uUnits(e1)))
           }
 )
 

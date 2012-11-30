@@ -1,7 +1,5 @@
 \docType{methods}
-\name{Arith}
-\alias{Arith}
-\alias{Arith,SVGUnit-method}
+\name{Compare}
 \alias{Compare}
 \alias{Compare,SVGUnit-method}
 \alias{Logic}

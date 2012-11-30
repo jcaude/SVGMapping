@@ -30,7 +30,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' 
 #' This class is used as a container for all SVG coordinates values
 #' 
-#' In practice it is only an \emph{alias} to the \code{\link{SVGCoord}} class
+#' In practice it is only an \emph{alias} of the \code{\link{SVGLength}} class
 #' 
 #' @name SVGCoord
 #' @exportClass "SVGCoord"
@@ -38,6 +38,17 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 setClass("SVGCoord",
          contains=c("SVGLength")
 )
+
+#' Group Generic methods for SVGCoord objects
+#' 
+#' Some of the S4 group generic methods are implemented for SVGCoord objects.
+#' For more details see \link{S4groupGeneric} documentation page.
+#' 
+#' @name Arith
+#'   
+#' @rdname svgcoord.groupGeneric-methods
+#' @docType methods
+NULL
 
 setMethod(f="initialize", signature="SVGCoord",
           definition=function(.Object,...)
@@ -49,6 +60,20 @@ setMethod(f="initialize", signature="SVGCoord",
             return(.Object)
           }
 )
+
+#' @rdname svgcoord.groupGeneric-methods
+#' @aliases Arith,SVGCoord-method
+setMethod("Arith", signature="SVGCoord", 
+          definition=function(e1, e2) 
+          {
+            if(uUnits(e1) == uUnits(e2))
+              v <- callGeneric(uValue(e1),uValue(e2))
+            else
+              v = callGeneric(uUser(e1), uUser(e2))
+            return(SVGCoord.factory(v,target.unit=uUnits(e1)))
+          }
+)
+
 
 ## F A C T O R Y
 ##--------------

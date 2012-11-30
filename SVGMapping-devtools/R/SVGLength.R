@@ -72,11 +72,11 @@ NULL
 
 #' Group Generic methods for SVGLength objects
 #' 
-#' Some of the S4 group generic methods are implemented for SVGUnit object. For
-#' more details see \link{S4groupGeneric} documentation page.
+#' Some of the S4 group generic methods are implemented for SVGLength objects.
+#' For more details see \link{S4groupGeneric} documentation page.
 #' 
 #' @name Arith
-#' 
+#'   
 #' @rdname svglength.groupGeneric-methods
 #' @docType methods
 NULL
@@ -86,6 +86,10 @@ setMethod(f="initialize", signature="SVGLength",
           {            
             # super
             .Object <- callNextMethod(.Object,...)
+            
+            # check for valid units
+            if(!uUnits(.Object) %in% c("pt","pc","cm","mm","in","px","","em","ex","%"))
+              stop("Invalid Units System.. failed to create object")
             
             # check for relative units
             if(uUnits(.Object) %in% c("em","ex","%"))
@@ -179,7 +183,7 @@ SVGLength.factory <- function(x,unit,dpi,target.unit) {
                  "\\4",v)
   }
   
-  ## create unit value
+  ## create length value
   if(missing(dpi))
     svg_length <- new("SVGLength",x,unit)
   else
