@@ -544,39 +544,86 @@
 </richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
-<node CREATED="1337611493965" FOLDED="true" ID="ID_1352474441" MODIFIED="1354208548671" TEXT="fields">
+<node CREATED="1337611493965" FOLDED="true" ID="ID_1352474441" MODIFIED="1354278859506" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1337611508229" ID="ID_520109548" MODIFIED="1354208546690" TEXT="maskUnits">
+<node CREATED="1337611508229" ID="ID_520109548" MODIFIED="1354278275292">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      mask.units
+    </p>
+  </body>
+</html>
+</richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1337611512781" ID="ID_43529853" MODIFIED="1354208546689" TEXT="maskContentUnits">
+<node CREATED="1337611512781" ID="ID_43529853" MODIFIED="1354278270372">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      mask.content.units
+    </p>
+  </body>
+</html>
+</richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1337611534078" ID="ID_1283618884" MODIFIED="1354208546689" TEXT="content">
+<node CREATED="1337611534078" ID="ID_1283618884" MODIFIED="1354278258401">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      mask.content
+    </p>
+  </body>
+</html>
+</richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1337611496541" ID="ID_1309336581" MODIFIED="1354208549184" TEXT="methods">
+<node CREATED="1337611496541" FOLDED="true" ID="ID_1309336581" MODIFIED="1354278858834" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1337611562679" ID="ID_1061409619" MODIFIED="1354196779588" TEXT="GS:maskUnits">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1337611562679" ID="ID_1061409619" MODIFIED="1354278850588" TEXT="GS:maskUnits">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1337611568720" ID="ID_1121574372" MODIFIED="1354196779588" TEXT="GS:maskContentUnits">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1337611568720" ID="ID_1121574372" MODIFIED="1354278850589" TEXT="GS:maskContentUnits">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1337611585497" ID="ID_991852011" MODIFIED="1354196779587" TEXT="GS:content">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1337611585497" ID="ID_991852011" MODIFIED="1354278850589">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      GS:maskContent
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1337611590697" ID="ID_1398146754" MODIFIED="1354208556409" TEXT=".xml">
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1337611500757" ID="ID_1348220327" MODIFIED="1354208550384" TEXT="factory">
+<node CREATED="1337611500757" FOLDED="true" ID="ID_1348220327" MODIFIED="1354278860578" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1337611649276" ID="ID_334725342" MODIFIED="1354196785875" TEXT="all fields..">
+<node CREATED="1337611649276" ID="ID_334725342" MODIFIED="1354278857001" TEXT="all fields..">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="button_ok"/>
 </node>
+</node>
+<node COLOR="#ff0000" CREATED="1354278861386" ID="ID_370527526" MODIFIED="1354278870834" TEXT="test file missing">
+<font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 <node CREATED="1331826621619" FOLDED="true" ID="ID_1139868882" MODIFIED="1354196628776">
