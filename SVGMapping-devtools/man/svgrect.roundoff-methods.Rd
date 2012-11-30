@@ -13,7 +13,7 @@
   \item{object}{the SVG shape instance}
 }
 \value{
-  the length in SVG units
+  the length as an SVGLength object
 }
 \description{
   The methods get or set the round off corners of an SVG

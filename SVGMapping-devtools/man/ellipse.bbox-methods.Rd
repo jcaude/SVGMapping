@@ -18,8 +18,8 @@
 \alias{ry<-,Ellipse-method}
 \title{Coordinates of the Ellipse object}
 \value{
-  coordinates in units compliant with the SVG 1.1
-  specifications
+  coordinates as SVGCoords (\code{cx,cy}) or SVGLength
+  (\code{rx,ry}) objects
 }
 \description{
   These methods are accessors to the center and radius of

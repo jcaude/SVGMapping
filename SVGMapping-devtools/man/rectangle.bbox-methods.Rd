@@ -18,8 +18,9 @@
 \alias{y<-,Rectangle-method}
 \title{Dimensions of the Rectangular object}
 \value{
-  \code{x(),y(),width(),height()}: an SVGUnit object for
-  single coordinates and dimensions methods
+  \code{x(),y()}: an SVGCoord object for single coordinates
+  and an SVGLength object for \code{width(),height()}
+  dimensions methods
 
   \code{x(),y(),width(),height()<-}: the rectangular object
   as invisible

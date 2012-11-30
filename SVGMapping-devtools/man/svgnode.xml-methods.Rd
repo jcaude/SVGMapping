@@ -1,13 +1,14 @@
 \docType{methods}
 \name{.xml}
 \alias{.xml}
-\alias{.xml,CSS-method}
 \alias{.xml,Circle-method}
+\alias{.xml,CSS-method}
 \alias{.xml,Ellipse-method}
 \alias{.xml,Gradient-method}
 \alias{.xml,GradientStop-method}
 \alias{.xml,Layout-method}
 \alias{.xml,LinearGradient-method}
+\alias{.xml,Mask-method}
 \alias{.xml,RadialGradient-method}
 \alias{.xml,Rectangle-method}
 \alias{.xml,SVGLine-method}

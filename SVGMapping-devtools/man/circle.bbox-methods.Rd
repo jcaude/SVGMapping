@@ -11,7 +11,7 @@
 }
 \details{
   The \code{r(object)} method returns the radius length of
-  the circle.
+  the circle as an \code{\link{SVGLength}} object.
 
   The \code{r(object) <- value} method sets the radius
   length of the circle.

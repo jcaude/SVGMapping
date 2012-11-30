@@ -11,17 +11,11 @@
 \title{Focal point definition of the Radial Gradient}
 \arguments{
   \item{object}{a RadialGradient object}
-
-  \item{object}{a RadialGradient object}
 }
 \value{
-  \code{fx(object)} return the coordinates in untis
-  compliant with the SVG 1.1 specifications.
-  \code{fx(object) <- value} return the invisible object.
-
-  \code{fy(object)} return the coordinates in untis
-  compliant with the SVG 1.1 specifications.
-  \code{fy(object) <- value} return the invisible object.
+  \code{fx(object)} return the coordinates as an
+  \code{\link{SVGCoord}} object. \code{fx(object) <- value}
+  return the invisible object.
 }
 \description{
   These methods are accessors to the focal point definition
@@ -29,7 +23,7 @@
 }
 \details{
   The method \code{fx(object)} return the X-axis of the
-  focal point. The gradient will be drawn such that the 0%
+  focal point. The gradient will be drawn such that the 0\%
   gradient stop is mapped to \code{(fx, fy)}.
 
   The \code{fx{object} <- value} method sets the X-axis

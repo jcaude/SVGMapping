@@ -34,12 +34,12 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' background.
 #' 
 #' @name Mask
-#' @exportClass "Maks"
+#' @exportClass "Mask"
 #' @aliases Mask-class
 setClass("Mask",
-         representation(maskUnits="character",
-                        maskContentUnits="character",
-                        content="XMLInternalNode"),
+         representation(mask.units="character",
+                        mask.content.units="character",
+                        mask.content="ANY"),
          contains=c("SVGNode","Rectangle")
          )
 
@@ -130,7 +130,7 @@ setGeneric(name="maskContentUnits<-", function(.Object, value) { standardGeneric
 #' 
 #' These methods give access of the content (graphical elements) of the mask
 #' 
-#' The \code{content{object}} method returns the content of the mask as an 
+#' The \code{maskContent(object)} method returns the content of the mask as an 
 #' XMLInternalNode
 #' 
 #' @note
@@ -140,30 +140,30 @@ setGeneric(name="maskContentUnits<-", function(.Object, value) { standardGeneric
 #' background through the mask, thus completely or partially masking out parts
 #' of the graphical object.
 #' 
-#' @name content
+#' @name maskContent
 #' 
 #' @param object is the Mask instance
 #' 
-#' @return an XMLIntenalNode
+#' @return an XMLInternalNode
 #' 
-#' @rdname mask.content-methods
-#' @exportMethod content
+#' @rdname mask.maskcontent-methods
+#' @exportMethod maskContent
 #' @docType methods
-setGeneric(name="content", function(object) { standardGeneric("content") })
+setGeneric(name="maskContent", function(object) { standardGeneric("maskContent") })
 
 #' <title already defined>
 #' 
 #' 
 #' 
-#' The \code{content(object) <- value} method set the content of the mask. Here
+#' The \code{maskContent(object) <- value} method set the content of the mask. Here
 #' \emph{value} is an XMLInternalNode.
 #' 
-#' @name content<-
+#' @name maskContent<-
 #' 
-#' @rdname mask.content-methods
-#' @exportMethod content<-
+#' @rdname mask.maskcontent-methods
+#' @exportMethod maskContent<-
 #' @docType methods
-setGeneric(name="content<-", function(.Object, value) { standardGeneric("content<-") })
+setGeneric(name="maskContent<-", function(.Object, value) { standardGeneric("maskContent<-") })
 
 setMethod(f="initialize", signature="Mask",
           definition=function(.Object,...)
@@ -197,22 +197,27 @@ setMethod(f="initialize", signature="Mask",
             height(.Object) <- .arg("height",SVGLength.factory(120,"%"))
             
             ## default init.
-            maskUnits(.Object) <- .arg("maskUnits","objectBoundingBox")
-            maskContentUnits(.Object) <- .arg("maskContentUnits","userSpaceOnUse")
-            content(.Object) <- .arg("content",NULL)
+            maskUnits(.Object) <- .arg("mask.units","objectBoundingBox")
+            maskContentUnits(.Object) <- .arg("mask.content.units","userSpaceOnUse")
+            maskContent(.Object) <- .arg("mask.content",NULL)
 
             ## eop
             return(.Object)
           }
           )
 
+#' @rdname mask.maskunits-methods
+#' @aliases maskUnits,Mask-method
 setMethod(f="maskUnits", signature="Mask",
           definition=function(object)
           {
-            return(object@maskUnits)
+            return(object@mask.units)
           }
           )
 
+#' @name maskUnits<-,Mask-method
+#' @rdname mask.maskunits-methods
+#' @aliases maskUnits<-,Mask-method 
 setReplaceMethod(f="maskUnits", signature="Mask",
                  definition=function(.Object, value)
                  {
@@ -223,18 +228,23 @@ setReplaceMethod(f="maskUnits", signature="Mask",
                      stop("'value' must be either 'userSpaceOnUse' or 'objectBoundingBox'")
 
                    ## assign & eop
-                   .Object@maskUnits <- value
+                   .Object@mask.units <- value
                    return(.Object)
                  }
                  )
 
+#' @rdname mask.maskcontentunits-methods
+#' @aliases maskContentUnits,Mask-method
 setMethod(f="maskContentUnits", signature="Mask",
           definition=function(object)
           {
-            return(object@maskContentUnits)
+            return(object@mask.content.units)
           }
           )
 
+#' @name maskContentUnits<-,Mask-method
+#' @rdname mask.maskcontentunits-methods
+#' @aliases maskContentUnits<-,Mask-method 
 setReplaceMethod(f="maskContentUnits", signature="Mask",
                  definition=function(.Object, value)
                  {
@@ -245,30 +255,36 @@ setReplaceMethod(f="maskContentUnits", signature="Mask",
                      stop("'value' must be either 'userSpaceOnUse' or 'objectBoundingBox'")
 
                    ## assign & eop
-                   .Object@maskContentUnits <- value
+                   .Object@mask.content.units <- value
                    return(.Object)
                  }
-                 )
+)
  
-setMethod(f="content", signature="Mask",
+#' @rdname mask.maskcontent-methods
+#' @aliases maskContent,Mask-method
+setMethod(f="maskContent", signature="Mask",
           definition=function(object)
           {
-            return(object@content)
+            return(object@mask.content)
           }
-          )
+)
 
-setReplaceMethod(f="content", signature="Mask",
+#' @name maskContent<-,Mask-method
+#' @rdname mask.maskcontent-methods
+#' @aliases maskContent<-,Mask-method 
+setReplaceMethod(f="maskContent", signature="Mask",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.object(value) && !is(value,"XMLInternalNode")) 
-                     stop("'value' must be a XMLInternalNode object")
+                   if(!is.object(value) 
+                      && !(is(value,"XMLInternalNode") || is.null(value))) 
+                     stop("'value' must be a XMLInternalNode object or NULL")
 
                    ## assign & eop
-                   .Object@content <- value
+                   .Object@mask.content <- value
                    return(.Object)
                  }
-                 )
+)
 
 #' @name .xml,Mask-method
 #' @rdname svgnode.xml-methods
@@ -283,38 +299,67 @@ setMethod(f=".xml", signature="Mask",
             attr <- callNextMethod(object)
 
             ## return a core attribute list
-            if(object@maskUnits != "objectBoundingBox")
-              attr <- c(attr,maskUnits=object@maskUnits)
-            if(object@maskContentUnits != "userSpaceOnUse")
-              attr <- c(attr,maskContentUnits=object@maskContentUnits)
-            if(object@x != "-10%")
-              attr <- c(attr,x=object@x)
-            if(object@y != "-10%")
-              attr <- c(attr,y=object@y)
-            if(object@width != "120%")
-              attr <- c(attr,width=object@width)
-            if(object@height != "120%")
-              attr <- c(attr,height=object@height)
+            if(maskUnits(object) != "objectBoundingBox")
+              attr <- c(attr,maskUnits=maskUnits(object))
+            if(maskContentUnits(object) != "userSpaceOnUse")
+              attr <- c(attr,maskContentUnits=maskContentUnits(object))
+            if(x(object) != SVGCoord.factory(-10,"%"))
+              attr <- c(attr,x=as.character(x(object)))
+            if(y(object) != SVGCoord.factory(-10,"%"))
+              attr <- c(attr,y=as.character(y(object)))
+            if(width(object) != SVGLength.factory(120,"%"))
+              attr <- c(attr,width=as.character(width(object)))
+            if(height(object) != SVGLength.factory(120,"%"))
+              attr <- c(attr,height=as.character(height(object)))
             xmlAttrs(mask) <- attr
             
             ## eop
-            addChildren(mask,kids=list(object@content))
+            addChildren(mask,kids=list(maskContent(object)))
             return(mask)
           }
-          )
+)
 
 ## F A C T O R Y
 ##----------------------------------------
-Mask.factory <- function(content,maskUnits,maskContentUnits,x,y,width,height) {
+
+#' Mask Factory
+#' 
+#' This function returns a new \code{\link{Mask}} object.
+#' 
+#' \code{Mask} objects are used to specify Masks that are used to alter a shape 
+#' or a group of shapes.
+#' 
+#' @name Mask.factory
+#'   
+#' @param x the x-axis location as an \code{\link{SVGCoord}} value
+#' @param y the y-axis location as an \code{\link{SVGCoord}} value
+#' @param width the width length as an \code{\link{SVGLength}} value
+#' @param height the height length as an \code{\link{SVGLength}} value
+#' @param mask.units the mask units system. See \code{\link{maskUnits}} for 
+#'   details.
+#' @param mask.content.units the mask content units system. See 
+#'   \code{\link{maskContentUnits}} for details.
+#' @param mask.content the content, shapes, of the mask. See
+#'   \code{\link{maskContent}} for details.
+#'   
+#' @return a \code{\link{Mask}} object
+#'   
+#' @export Mask.factory
+#'   
+#' @examples
+#' ## default mask
+#' Mask.factory()
+Mask.factory <- function(x,y,width,height,mask.units,mask.content.units,mask.content) {
 
   ## init. mask
   args <- list("Mask")
-  if(!missing(maskUnits)) args <- c(args,maskUnits=maskUnits)
-  if(!missing(maskContentUnits)) args <- c(args,maskContentUnits=maskContentUnits)
   if(!missing(x)) args <- c(args,x=x)
   if(!missing(y)) args <- c(args,y=y)
   if(!missing(width)) args <- c(args,width=width)
   if(!missing(height)) args <- c(args,height=height)
+  if(!missing(mask.units)) args <- c(args,mask.units=mask.units)
+  if(!missing(mask.content.units)) args <- c(args,mask.content.units=mask.content.units)
+  if(!missing(mask.content)) args <- c(args,mask.content=mask.content)
   mask = do.call(new,args)
 
   ## eop

@@ -42,3 +42,4 @@ Collate:
     'MappingLinks.R'
     'MappingTooltips.R'
     'MappingMasks.R'
+    'Mask.R'

@@ -217,6 +217,7 @@ setMethod(f=".xml", signature="SVGRect",
           {
             ## init.
             rect <- newXMLNode("rect")
+            lzero <- SVGLength.factory()
 
             ## core attributes (SVGShape)
             attr <- callNextMethod(object)
@@ -225,8 +226,10 @@ setMethod(f=".xml", signature="SVGRect",
             attr <- c(attr,.callMethod(".xml", "Rectangle",object))
 
             ## attributes
-            if(length(roundx(object)) > 0) attr <- c(attr, rx=as.character(roundx(object)))
-            if(length(roundy(object)) > 0) attr <- c(attr, ry=as.character(roundy(object)))
+            if(roundx(object) != lzero) 
+              attr <- c(attr, rx=as.character(roundx(object)))
+            if(roundy(object) != lzero) 
+              attr <- c(attr, ry=as.character(roundy(object)))
             xmlAttrs(rect) <- attr
 
             ## eop
