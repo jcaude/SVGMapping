@@ -530,7 +530,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1333111872372" ID="ID_1561496693" MODIFIED="1354208537496">
+<node CREATED="1333111872372" FOLDED="true" ID="ID_1561496693" MODIFIED="1354531758936">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -543,7 +543,7 @@
 </html>
 </richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="button_ok"/>
 <node CREATED="1337611493965" FOLDED="true" ID="ID_1352474441" MODIFIED="1354278859506" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1337611508229" ID="ID_520109548" MODIFIED="1354278275292">
@@ -621,9 +621,6 @@
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 </node>
-</node>
-<node COLOR="#ff0000" CREATED="1354278861386" ID="ID_370527526" MODIFIED="1354278870834" TEXT="test file missing">
-<font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 <node CREATED="1331826621619" FOLDED="true" ID="ID_1139868882" MODIFIED="1354196628776">

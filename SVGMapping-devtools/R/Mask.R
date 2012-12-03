@@ -275,10 +275,11 @@ setMethod(f="maskContent", signature="Mask",
 setReplaceMethod(f="maskContent", signature="Mask",
                  definition=function(.Object,value)
                  {
-                   ## check
-                   if(!is.object(value) 
-                      && !(is(value,"XMLInternalNode") || is.null(value))) 
-                     stop("'value' must be a XMLInternalNode object or NULL")
+                   ## check: null || object
+                   if(!(is.null(value) || is.object(value))) 
+                     stop("'value' must be either a XMLInternalNode object or NULL")
+                   if(is.object(value) && !is(value,"XMLInternalNode")) 
+                     stop("'value' must be either a XMLInternalNode object or NULL")
 
                    ## assign & eop
                    .Object@mask.content <- value
@@ -294,6 +295,8 @@ setMethod(f=".xml", signature="Mask",
           {
             ## init.
             mask <- newXMLNode("mask")
+            c <- SVGCoord.factory(-10,"%")
+            l <- SVGLength.factory(120,"%")
             
             ## super
             attr <- callNextMethod(object)
@@ -303,13 +306,13 @@ setMethod(f=".xml", signature="Mask",
               attr <- c(attr,maskUnits=maskUnits(object))
             if(maskContentUnits(object) != "userSpaceOnUse")
               attr <- c(attr,maskContentUnits=maskContentUnits(object))
-            if(x(object) != SVGCoord.factory(-10,"%"))
+            if(is.na(x(object) != c) || (x(object) != c))
               attr <- c(attr,x=as.character(x(object)))
-            if(y(object) != SVGCoord.factory(-10,"%"))
+            if(is.na(y(object) != c) || (y(object) != c))
               attr <- c(attr,y=as.character(y(object)))
-            if(width(object) != SVGLength.factory(120,"%"))
+            if(is.na(width(object) != l) || (width(object) != l))
               attr <- c(attr,width=as.character(width(object)))
-            if(height(object) != SVGLength.factory(120,"%"))
+            if(is.na(height(object) != l) || (height(object) != l))
               attr <- c(attr,height=as.character(height(object)))
             xmlAttrs(mask) <- attr
             

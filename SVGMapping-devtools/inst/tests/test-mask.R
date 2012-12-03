@@ -54,6 +54,25 @@ test_that("Factory", {
   
   # default factory
   mask <- Mask.factory()
+  
   expect_output(print(.xml(mask)),"<mask/>")
+  
+  # full factory
+  x <- SVGCoord.factory(-4.3,"mm")
+  y <- SVGCoord.factory(2.1,"cm")
+  w <- SVGLength.factory(43,"in")
+  h <- SVGLength.factory(135,"%")
+  r <- SVGRect.factory("1cm","1cm","100px","150px")
+  mask <- Mask.factory(x,y,w,h,"userSpaceOnUse","objectBoundingBox",.xml(r))
+  
+  expect_equal(x(mask),x)
+  expect_equal(y(mask),y)
+  expect_equal(width(mask),w)
+  expect_equal(height(mask),h)
+  expect_equal(maskUnits(mask),"userSpaceOnUse")
+  expect_equal(maskContentUnits(mask),"objectBoundingBox")
+  expect_output(print(maskContent(mask)), "<rect x=\"1cm\" y=\"1cm\" width=\"100px\" height=\"150px\"/>")
+    
+  expect_output(print(.xml(mask)),"<mask maskUnits=\"userSpaceOnUse\" maskContentUnits=\"objectBoundingBox\" x=\"-4.3mm\" y=\"2.1cm\" width=\"43in\" height=\"135%\">[ \t\n]*<rect x=\"1cm\" y=\"1cm\" width=\"100px\" height=\"150px\"/>[ \t\n]*</mask>")
   
 })
