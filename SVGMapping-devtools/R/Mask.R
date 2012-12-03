@@ -352,6 +352,15 @@ setMethod(f=".xml", signature="Mask",
 #' @examples
 #' ## default mask
 #' Mask.factory()
+#' ## more complex mask
+#' x <- SVGCoord.factory(-4.3,"mm")
+#' y <- SVGCoord.factory(2.1,"cm")
+#' w <- SVGLength.factory(43,"in")
+#' h <- SVGLength.factory(135,"%")
+#' r <- SVGRect.factory("1cm","1cm","100px","150px")
+#' mask <- Mask.factory(x,y,w,h,"userSpaceOnUse","objectBoundingBox",.xml(r))
+#' ## to see XML output
+#' print(.xml(mask))
 Mask.factory <- function(x,y,width,height,mask.units,mask.content.units,mask.content) {
 
   ## init. mask
