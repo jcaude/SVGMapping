@@ -9,7 +9,7 @@
 <node COLOR="#006600" CREATED="1345463437390" ID="ID_444175273" MODIFIED="1354186554915" TEXT="CORE">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="smiley-angry"/>
-<node COLOR="#006600" CREATED="1345463498383" FOLDED="true" ID="ID_1152172337" MODIFIED="1354200155350" TEXT="Shapes">
+<node COLOR="#006600" CREATED="1345463498383" FOLDED="true" ID="ID_1152172337" MODIFIED="1354537912881" TEXT="Shapes">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="smiley-angry"/>
@@ -64,7 +64,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1345463517264" ID="ID_1605952696" MODIFIED="1354200149279" TEXT="Ellipse*">
+<node CREATED="1345463517264" ID="ID_1605952696" MODIFIED="1354537910882" TEXT="Ellipse*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="smiley-angry"/>
@@ -74,7 +74,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1345465061162" FOLDED="true" ID="ID_611871021" MODIFIED="1354197384420" TEXT="methods">
+<node CREATED="1345465061162" FOLDED="true" ID="ID_611871021" MODIFIED="1354537906864" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1345465399243" ID="ID_1831689294" MODIFIED="1345465449954" TEXT="GS:cx,cy,rx,ry">
 <icon BUILTIN="button_ok"/>
@@ -687,7 +687,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1338554117569" FOLDED="true" ID="ID_232627151" MODIFIED="1354203198412" TEXT="SVGShape*">
+<node CREATED="1338554117569" ID="ID_232627151" MODIFIED="1354537215032" TEXT="SVGShape*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <icon BUILTIN="stop-sign"/>
@@ -720,7 +720,7 @@
 </node>
 <node CREATED="1338554149178" ID="ID_1335778980" MODIFIED="1354186799500" TEXT="class">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1338554231518" FOLDED="true" ID="ID_727611974" MODIFIED="1354186818565">
+<node CREATED="1338554231518" FOLDED="true" ID="ID_727611974" MODIFIED="1354538369431">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -760,12 +760,12 @@
 </node>
 </node>
 </node>
-<node CREATED="1338558904039" FOLDED="true" ID="ID_1320376542" MODIFIED="1354025351700" TEXT="SVGCircle">
+<node CREATED="1338558904039" FOLDED="true" ID="ID_1320376542" MODIFIED="1354537273051" TEXT="SVGCircle">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="stop-sign"/>
 <node CREATED="1338558933296" ID="ID_852904661" MODIFIED="1338558942489" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1338797882823" ID="ID_1184279472" MODIFIED="1338797889972" TEXT="cx,cy,r"/>
 </node>
 <node CREATED="1338558935464" ID="ID_1610216307" MODIFIED="1338558942489" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
@@ -774,19 +774,50 @@
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node CREATED="1338558912087" FOLDED="true" ID="ID_1676395489" MODIFIED="1354025352133" TEXT="SVGEllipse">
+<node CREATED="1338558912087" ID="ID_1676395489" MODIFIED="1354537288552">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      SVGEllipse (Ellipse)
+    </p>
+  </body>
+</html>
+</richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <node CREATED="1338558933296" ID="ID_654979492" MODIFIED="1354025087716" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1338797894000" ID="ID_1256984704" MODIFIED="1338797903188" TEXT="cx,cy,rx,ry"/>
 </node>
-<node CREATED="1338558935464" ID="ID_599860508" MODIFIED="1338558942489" TEXT="methods">
+<node CREATED="1338558935464" FOLDED="true" ID="ID_599860508" MODIFIED="1354538352013" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1338565516286" ID="ID_137326093" MODIFIED="1338565535247" TEXT="print">
+<icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1338558937432" ID="ID_202932944" MODIFIED="1338558942489" TEXT="factory">
+<node CREATED="1338558884718" ID="ID_145214708" MODIFIED="1338565535247" TEXT=".xml">
+<icon BUILTIN="button_ok"/>
+</node>
+</node>
+<node CREATED="1338558937432" FOLDED="true" ID="ID_202932944" MODIFIED="1354538351518" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1354538346992" ID="ID_1082842445" MODIFIED="1354538350346">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <i><span style="font-family: SansSerif, sans-serif; font-style: italic"><font face="SansSerif, sans-serif">all fields...</font></span></i>
+    </p>
+  </body>
+</html>
+</richcontent>
+<icon BUILTIN="button_ok"/>
 </node>
+</node>
+<node COLOR="#ff0000" CREATED="1354538357814" ID="ID_1728951362" MODIFIED="1354538362542" TEXT="test file"/>
 </node>
 <node CREATED="1338558916887" FOLDED="true" ID="ID_484583540" MODIFIED="1354186820511">
 <richcontent TYPE="NODE"><html>
@@ -822,9 +853,9 @@
 </node>
 </node>
 </node>
-<node CREATED="1338558919312" FOLDED="true" ID="ID_131818472" MODIFIED="1354025339052" TEXT="SVGPolyline">
+<node CREATED="1338558919312" FOLDED="true" ID="ID_131818472" MODIFIED="1354538451428" TEXT="SVGPolyline">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="hourglass"/>
 <node CREATED="1338558933296" ID="ID_367579378" MODIFIED="1354025096076" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1338797914665" ID="ID_835665944" MODIFIED="1338797919893" TEXT="list(points)"/>
@@ -836,9 +867,9 @@
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node CREATED="1338558926023" FOLDED="true" ID="ID_1097446037" MODIFIED="1354025338420" TEXT="SVGPolygon">
+<node CREATED="1338558926023" FOLDED="true" ID="ID_1097446037" MODIFIED="1354538451427" TEXT="SVGPolygon">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="hourglass"/>
 <node CREATED="1338558933296" ID="ID_463509484" MODIFIED="1354025099004" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1338797924418" ID="ID_526181033" MODIFIED="1338797927883" TEXT="list(points)"/>
