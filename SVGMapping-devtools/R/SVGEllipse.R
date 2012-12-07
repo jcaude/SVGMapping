@@ -111,9 +111,9 @@ setMethod(f=".xml", signature="SVGEllipse",
 #' 
 #' @name SVGEllipse.factory
 #' 
-#' @param bbox a list of coordinates \code{(x,y,rx,ry)}
-#' @param x the X-axis coordinate of the center
-#' @param y the Y-axis coordinate of the center
+#' @param bbox a list of coordinates \code{(cx,cy,rx,ry)}
+#' @param cx the X-axis coordinate of the center
+#' @param cy the Y-axis coordinate of the center
 #' @param rx the X-axis radius length of the ellipse
 #' @param ry the Y-axis radius length of the ellipse
 #' @param class the CSS class name
@@ -126,23 +126,27 @@ setMethod(f=".xml", signature="SVGEllipse",
 #' 
 #' @examples
 #' ## Simple ellipse
-#' ellipse <- SVGEllipse.factory(x="3cm",y="2cm",rx="15cm",ry="10cm")
+#' ellipse <- SVGEllipse.factory(cx="3cm",cy="2cm",rx="15cm",ry="10cm")
 #' ## Create an ellipse using bounding-box list
-#' el.bbox <- list(x="30px",y="25px",rx="250px",ry="135px")
+#' el.bbox <- list(cx="30px",cy="25px",rx="250px",ry="135px")
 #' ellipse <- SVGEllipse.factory(bbox=el.bbox)
 #' ## An ellipse with some inline CSS decorations
 #' ellipse <- SVGEllipse.factory(bbox=el.bbox,class="mylines",style="stroke-width:10cm")
 #' ## An ellipse (0,0) translated of 20 to the right and 10 below, 
 #' ## new coordinates are (20,10)
-#' ellipse <- SVGEllipse.factory(x=0,y=0,width=60,height=30,transform="translate(20,10)")
-SVGEllipse.factory <- function(x,y,width,height,bbox,class,style,transform) {
+#' ellipse <- SVGEllipse.factory(cx=0,cy=0,rx=60,ry=30,transform="translate(20,10)")
+SVGEllipse.factory <- function(cx,cy,rx,ry,bbox,class,style,transform) {
   
   ## init.
   args <- list("SVGEllipse")
-  if(!missing(x)) args <- c(args,x=x)
-  if(!missing(y)) args <- c(args,y=y)
-  if(!missing(rx)) args <- c(args,rx=rx)
-  if(!missing(ry)) args <- c(args,ry=ry)
+  if(!missing(bbox))
+    args <- c(args,bbox=list(bbox))
+  else {
+    if(!missing(cx)) args <- c(args,cx=cx)
+    if(!missing(cy)) args <- c(args,cy=cy)
+    if(!missing(rx)) args <- c(args,rx=rx)
+    if(!missing(ry)) args <- c(args,ry=ry)
+  }
   if(!missing(class)) args <- c(args,class=class)
   if(!missing(style)) args <- c(args,style=style)
   if(!missing(transform)) args <- c(args,transform=transform)

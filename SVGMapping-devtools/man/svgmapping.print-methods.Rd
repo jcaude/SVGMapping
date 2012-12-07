@@ -1,5 +1,7 @@
 \docType{methods}
 \name{print.SVGLine}
+\alias{print.SVGEllipse}
+\alias{print.SVGEllipse,SVGEllipse-method}
 \alias{print.SVGLine}
 \alias{print.SVGLine,SVGLine-method}
 \alias{print.SVGRect}

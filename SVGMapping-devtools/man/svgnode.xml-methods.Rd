@@ -11,6 +11,7 @@
 \alias{.xml,Mask-method}
 \alias{.xml,RadialGradient-method}
 \alias{.xml,Rectangle-method}
+\alias{.xml,SVGEllipse-method}
 \alias{.xml,SVGLine-method}
 \alias{.xml,SVGNode-method}
 \alias{.xml,SVGRect-method}
