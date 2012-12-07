@@ -23,8 +23,13 @@ test_that("Accessors", {
   expect_is(node,"SVGNode")
   
   cssClass(node) <- "my.Class"
-  cssStyle(node) <- "my.Style"
+  cssStyle(node) <- "foo:bar"
   
   expect_identical(cssClass(node), "my.Class")
-  expect_identical(cssStyle(node), "my.Style")
+  expect_identical(cssStyle(node), "foo:bar")
+  expect_equal(node["foo"],"bar")
+  
+  node["john"] <- "doe"
+  expect_equal(cssStyle(node),"foo:bar; john:doe")
+  expect_equal(node["john"],"doe")
 })

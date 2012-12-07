@@ -23,10 +23,10 @@ test_that("get/set CORE attributes", {
   expect_is(shape,"CSS")
   
   cssClass(shape) <- "my.Class"
-  cssStyle(shape) <- "my.Style"
+  cssStyle(shape) <- "foo:bar"
   
   expect_identical(cssClass(shape), "my.Class")
-  expect_identical(cssStyle(shape), "my.Style")
-  expect_equal(.xml(shape), list(class="my.Class", style="my.Style"))
+  expect_identical(cssStyle(shape), "foo:bar")
+  expect_equal(.xml(shape), list(class="my.Class", style="foo:bar"))
 
 })

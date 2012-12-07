@@ -1,5 +1,9 @@
 \docType{methods}
 \name{cssClass}
+\alias{[}
+\alias{[,CSS-method}
+\alias{[<-}
+\alias{[<-,CSS-method}
 \alias{cssClass}
 \alias{cssClass,CSS-method}
 \alias{cssClass<-}
@@ -33,5 +37,13 @@
 
   The \code{cssStyle(object) <- value} method sets the CSS
   \emph{style} attributes of an object.
+
+  The \code{object[i]} method allows to get the CSS
+  \emph{value} of the style attribute \emph{i} of
+  \emph{object}.
+
+  The \code{object[i] <- value} method allows to set the
+  style attribute \emph{i} of the CSS \emph{object} to
+  \emph{value}.
 }
 

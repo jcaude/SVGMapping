@@ -41,7 +41,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' @aliases CSS-class
 setClass("CSS",
          representation(css.class="character",
-                        css.style="character",
+                        css.style="list",
                         "VIRTUAL"),
          prototype=c(character(0),character(0))
          )
@@ -58,7 +58,7 @@ setClass("CSS",
 #' 
 #' @param object is an object that inherits from the CSS class
 #'
-#'  @return a core attribute as a string
+#' @return a core attribute as a string
 #' 
 #' @rdname css.core-methods
 #' @exportMethod cssClass
@@ -106,6 +106,22 @@ setGeneric(name="cssStyle", function(object) { standardGeneric("cssStyle") })
 #' @exportMethod cssStyle<-
 #' @docType methods
 setGeneric(name="cssStyle<-", function(.Object,value) { standardGeneric("cssStyle<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{object[i]} method allows to get the CSS \emph{value} of the style 
+#' attribute \emph{i} of \emph{object}.
+#' 
+#' The \code{object[i] <- value} method allows to set the style attribute
+#' \emph{i} of the CSS \emph{object} to \emph{value}.
+#' 
+#' @name [
+#' @rdname css.core-methods
+#' @docType methods
+NULL
+
 
 setMethod(f="initialize", signature="CSS",
           definition=function(.Object,...)
@@ -165,7 +181,11 @@ setReplaceMethod(f="cssClass", signature="CSS",
 setMethod(f="cssStyle", signature="CSS",
           definition=function(object)
           {
-            return(object@css.style)
+            css <- object@css.style
+            if(length(css) > 0)
+              return(paste(names(css),css,sep=":",collapse="; "))
+            else
+              return(character(0))
           }
 )
 
@@ -179,9 +199,56 @@ setReplaceMethod(f="cssStyle", signature="CSS",
                    if(!(is.atomic(value) && is.character(value)))
                      stop("'value' must be an atomic string")
                    
+                   ## check for empty list
+                   if(length(value) == 0) {
+                     .Object@css.style <- list()
+                     return(.Object)
+                   }                     
+                   
+                   ## build key/value list
+                   split.values <- strsplit(strsplit(value,split=";[ ]*")[[1]],":")
+                   list.value <- sapply(split.values,
+                                        function(x) { 
+                                          h=list()
+                                          h[x[1]] <- x[2]
+                                          return(h)
+                                        })
+                   
                    ## assign & eop
-                   .Object@css.style <- value
+                   .Object@css.style <- list.value
                    return(.Object)                   
+                 }
+)
+
+#' @rdname css.core-methods
+#' @aliases [,CSS-method
+setMethod(f="[", signature="CSS",
+          definition=function(x,i,j,drop)
+          {
+            # init.
+            style.names <- names(x@css.style)
+            
+            # eop
+            if(i %in% style.names)
+              return(as.character(x@css.style[i,drop=drop]))
+            else
+              return(character(0))
+          }
+)
+
+#' @name [<- 
+#' @rdname css.core-methods
+#' @aliases [<-,CSS-method
+setReplaceMethod(f="[", signature="CSS",
+                 definition=function(x,i,j,value)
+                 {
+                   # check
+                   if(!(is.atomic(value) && is.character(value)))
+                     stop("'value' must be an atomic string")
+                   
+                   # eop
+                   x@css.style[i] <- value
+                   return(x)
                  }
 )
 
