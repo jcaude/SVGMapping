@@ -344,7 +344,7 @@
 </node>
 </node>
 </node>
-<node CREATED="1337611266161" ID="ID_351501646" MODIFIED="1354873108222" TEXT="SVGNode">
+<node CREATED="1337611266161" FOLDED="true" ID="ID_351501646" MODIFIED="1354885043687" TEXT="SVGNode">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="hourglass"/>
 <node CREATED="1337611288971" FOLDED="true" ID="ID_1880179866" MODIFIED="1354871911745" TEXT="fields">
@@ -1257,11 +1257,10 @@
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <icon BUILTIN="stop-sign"/>
-<node CREATED="1332425138336" FOLDED="true" ID="ID_1143480637" MODIFIED="1354871911737" TEXT="MappingColors">
+<node CREATED="1332425138336" ID="ID_1143480637" MODIFIED="1354886307754" TEXT="MappingColors">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
-<icon BUILTIN="stop-sign"/>
-<node CREATED="1332516951319" FOLDED="true" ID="ID_1312959183" MODIFIED="1354871911736" TEXT="fields">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1332516951319" FOLDED="true" ID="ID_1312959183" MODIFIED="1354885145149" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1333447334550" ID="ID_200950479" MODIFIED="1333458514785" TEXT="target.attribute">
 <icon BUILTIN="button_ok"/>
@@ -1279,7 +1278,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1332516957319" FOLDED="true" ID="ID_1188280724" MODIFIED="1354871911736" TEXT="methods">
+<node CREATED="1332516957319" FOLDED="true" ID="ID_1188280724" MODIFIED="1354885146637" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1333447424985" ID="ID_369527418" MODIFIED="1333447452372" TEXT="GS:targetAttribute">
 <icon BUILTIN="button_ok"/>
@@ -1300,9 +1299,8 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1339426597810" ID="ID_1876751584" MODIFIED="1347639580667" TEXT="factory">
+<node CREATED="1339426597810" FOLDED="true" ID="ID_1876751584" MODIFIED="1354886303650" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
 <node CREATED="1339426602898" ID="ID_273981368" MODIFIED="1339426625247" TEXT="MappingColors">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -1312,22 +1310,8 @@
 <node CREATED="1339426614730" ID="ID_507627150" MODIFIED="1347033117031" TEXT="MappingStrokeColors">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1347639581724" TEXT="MappingBioArraysColors">
-<icon BUILTIN="messagebox_warning"/>
-<node COLOR="#ff0000" CREATED="1347033265655" ID="ID_1779626549" MODIFIED="1354197110910">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      miss example &amp; test class file
-    </p>
-  </body>
-</html></richcontent>
-<font NAME="SansSerif" SIZE="10"/>
-<icon BUILTIN="messagebox_warning"/>
-</node>
+<node CREATED="1347033153523" ID="ID_1058411253" MODIFIED="1354886302636" TEXT="MappingBioArraysColors">
+<icon BUILTIN="button_ok"/>
 </node>
 </node>
 </node>
@@ -1448,17 +1432,16 @@
 </node>
 </node>
 </node>
-<node CREATED="1337611839908" FOLDED="true" ID="ID_1703353275" MODIFIED="1354871911735" TEXT="MappingMasks">
+<node CREATED="1337611839908" FOLDED="true" ID="ID_1703353275" MODIFIED="1354885066913" TEXT="MappingMasks">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="messagebox_warning"/>
-<icon BUILTIN="stop-sign"/>
-<node CREATED="1337611913344" FOLDED="true" ID="ID_784071815" MODIFIED="1354871911734" TEXT="fields">
+<icon BUILTIN="button_ok"/>
+<node CREATED="1337611913344" FOLDED="true" ID="ID_784071815" MODIFIED="1354885059273" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1337611948530" ID="ID_1648623206" MODIFIED="1348580235749" TEXT="fillAngle">
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1337611915728" FOLDED="true" ID="ID_427252569" MODIFIED="1354871911734" TEXT="methods">
+<node CREATED="1337611915728" FOLDED="true" ID="ID_427252569" MODIFIED="1354885058712" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1337611952866" ID="ID_1231384630" MODIFIED="1348580235750" TEXT="GS:fillAngle">
 <icon BUILTIN="button_ok"/>
@@ -1467,15 +1450,15 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1348232731860" FOLDED="true" ID="ID_1001310944" MODIFIED="1354871911734" TEXT="factory">
+<node CREATED="1348232731860" FOLDED="true" ID="ID_1001310944" MODIFIED="1354885058129" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1348570201394" ID="ID_1266034018" MODIFIED="1348580235750" TEXT="MappingMask.factory">
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node COLOR="#ff0000" CREATED="1354196868146" ID="ID_1647935466" MODIFIED="1354196905307" TEXT="Mask class not yet implemented..">
-<font NAME="SansSerif" SIZE="10"/>
 </node>
+<node COLOR="#ff0000" CREATED="1354885070017" ID="ID_1536584553" MODIFIED="1354885128982" TEXT="mapping class can&apos;t be tested w/o the SVG class">
+<icon BUILTIN="clanbomber"/>
 </node>
 <node CREATED="1332425165842" ID="ID_1274504389" MODIFIED="1347367275643" TEXT="Mapping.Transformation">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>

@@ -70,7 +70,7 @@
 circles <- paste("circle.",LETTERS[1:6],sep="")
 
 ## Then, we will use the following dummy dataset. This data.frame contains
-## three columns named x,y and z. Row names are the circles identifiers.
+## one column named x. Row names are the circles identifiers.
 dummy <- data.frame(x=c(0,0.2,0.4,0.6,0.8,1.0),
                    row.names=circles)
 
