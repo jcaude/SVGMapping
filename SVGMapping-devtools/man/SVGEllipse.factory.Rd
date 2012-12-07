@@ -32,8 +32,8 @@
   and a geometric transformation.
 }
 \details{
-  The usage of \code{bbox} and \code{(x,y,width,height)}
-  are mutually exclusive.
+  The usage of \code{bbox} and \code{(cx,cy,rx,ry)} are
+  mutually exclusive.
 
   If calls with no arguments, this function returns an
   \emph{empty} line (\emph{i.e.} all coordinates are set to

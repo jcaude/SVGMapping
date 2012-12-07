@@ -36,6 +36,7 @@ Collate:
     'SVGLine.R'
     'SVGRect.R'
     'SVGEllipse.R'
+    'SVGCircle.R'
     'LinearGradient.R'
     'RadialGradient.R'
     'MappingColors.R'
