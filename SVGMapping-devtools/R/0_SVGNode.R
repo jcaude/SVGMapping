@@ -37,7 +37,8 @@
 setClass("SVGNode",
          representation(id="character",
                         svg.transform="character",
-                        "VIRTUAL")
+                        "VIRTUAL"),
+         contains=c("CSS")
          )
 
 #' XML ID accessors of an SVG node
@@ -102,25 +103,6 @@ setGeneric(name="svgTransform", function(object) { standardGeneric("svgTransform
 #' @docType methods
 setGeneric(name="svgTransform<-", function(.Object,value) { standardGeneric("svgTransform<-") })
 
-#' SVG Node to XML Internal Representation Conversion
-#' 
-#' This is the based method used by derived classes to transform a node
-#' into an XML internal description (aka XMLInternalNode).
-#' 
-#' In most virtual classes the method does not return the XML representation, 
-#' but a list of attributes. This list can be subsequently used by 
-#' \emph{sub-classes} to generate valid XML internal representation. In the latter
-#' we usually expect a \code{XMLInternalNode} to be returned.
-#' 
-#' @param object the SVG node
-#'
-#' @return an XMLInternal Node or a list of attributes (virtual classes)
-#' 
-#' @rdname svgnode.xml-methods
-#' @exportMethod .xml
-#' @docType methods
-setGeneric(name=".xml", function(object) { standardGeneric(".xml") })
-
 setMethod(f="initialize", signature="SVGNode",
           definition=function(.Object,...)
           {
@@ -134,6 +116,9 @@ setMethod(f="initialize", signature="SVGNode",
                 return(default.value)
               }
             }
+            
+            ## super 
+            .Object <- callNextMethod(.Object,...)            
 
             ## get args
             args = list(...)
@@ -199,7 +184,7 @@ setReplaceMethod(f="svgTransform", signature="SVGNode",
                  }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGNode-method
 setMethod(f=".xml", signature="SVGNode",
           definition=function(object)
@@ -207,10 +192,17 @@ setMethod(f=".xml", signature="SVGNode",
             ## init.
             attr <- list()
             
+            ## super
+            super.attr <- callNextMethod(object)
+            
             ## return an attributes list
-            if(length(id(object)) > 0) attr <- list(id=id(object))
+            if(length(id(object)) > 0) 
+              attr <- list(id=id(object))
             if(length(svgTransform(object)) >0) 
               attr <- c(attr,transform=svgTransform(object))
+            
+            ## eop
+            attr <- c(attr,super.attr)
             return(attr)
           }
-          )
+)

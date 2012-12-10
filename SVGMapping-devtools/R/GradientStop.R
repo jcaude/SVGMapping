@@ -240,7 +240,7 @@ setReplaceMethod(f="opacity", signature="GradientStop",
                  }
                  )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,GradientStop-method
 setMethod(f=".xml", signature="GradientStop",
           definition=function(object)

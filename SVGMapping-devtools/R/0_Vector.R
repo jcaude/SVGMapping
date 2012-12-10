@@ -376,7 +376,7 @@ setReplaceMethod(f="y2", signature="Vector",
                  }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Vector-method
 setMethod(f=".xml", signature="Vector",
           definition=function(object)

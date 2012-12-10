@@ -122,6 +122,25 @@ setGeneric(name="cssStyle<-", function(.Object,value) { standardGeneric("cssStyl
 #' @docType methods
 NULL
 
+#' XML Internal Representation Conversion
+#' 
+#' This is the based method used by derived classes to transform a node
+#' into an XML internal description (aka XMLInternalNode).
+#' 
+#' In most virtual classes the method does not return the XML representation, 
+#' but a list of attributes. This list can be subsequently used by 
+#' \emph{sub-classes} to generate valid XML internal representation. In the latter
+#' we usually expect a \code{XMLInternalNode} to be returned.
+#' 
+#' @param object a SVG class instance 
+#'
+#' @return an XMLInternal Node or a list of attributes (virtual classes)
+#' 
+#' @rdname svgcore.xml-methods
+#' @exportMethod .xml
+#' @docType methods
+setGeneric(name=".xml", function(object) { standardGeneric(".xml") })
+
 
 setMethod(f="initialize", signature="CSS",
           definition=function(.Object,...)
@@ -252,7 +271,7 @@ setReplaceMethod(f="[", signature="CSS",
                  }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,CSS-method
 setMethod(f=".xml", signature="CSS",
           definition=function(object)

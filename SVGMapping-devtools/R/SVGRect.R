@@ -108,7 +108,6 @@ setGeneric(name="roundy", function(object) { standardGeneric("roundy") })
 #' @docType methods
 setGeneric(name="roundy<-", function(.Object,value) { standardGeneric("roundy<-") })
 
-setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
 
 setMethod(f="initialize", signature="SVGRect",
           definition=function(.Object,...)
@@ -210,7 +209,7 @@ setReplaceMethod(f="roundy", signature="SVGRect",
                  }
                  )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGRect-method
 setMethod(f=".xml", signature="SVGRect",
           definition=function(object)

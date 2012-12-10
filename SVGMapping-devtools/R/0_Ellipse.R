@@ -369,7 +369,7 @@ setReplaceMethod(f="ry", signature="Ellipse",
                  }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Ellipse-method
 setMethod(f=".xml", signature="Ellipse",
           definition=function(object)

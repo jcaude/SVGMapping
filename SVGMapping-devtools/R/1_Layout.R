@@ -138,7 +138,7 @@ setReplaceMethod(f="opacity", signature="Layout",
                  }
                  )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Layout-method
 setMethod(f=".xml", signature="Layout",
           definition=function(object)

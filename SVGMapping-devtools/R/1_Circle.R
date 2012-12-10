@@ -208,7 +208,7 @@ setReplaceMethod(f="r", signature="Circle",
                  }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Circle-method
 setMethod(f=".xml", signature="Circle",
           definition=function(object)

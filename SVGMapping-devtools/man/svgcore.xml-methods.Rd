@@ -18,9 +18,9 @@
 \alias{.xml,SVGRect-method}
 \alias{.xml,SVGShape-method}
 \alias{.xml,Vector-method}
-\title{SVG Node to XML Internal Representation Conversion}
+\title{XML Internal Representation Conversion}
 \arguments{
-  \item{object}{the SVG node}
+  \item{object}{a SVG class instance}
 }
 \value{
   an XMLInternal Node or a list of attributes (virtual

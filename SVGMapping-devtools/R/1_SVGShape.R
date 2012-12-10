@@ -38,7 +38,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' @aliases SVGShape-class
 setClass("SVGShape",
          representation("VIRTUAL"),
-         contains=c("SVGNode","CSS")
+         contains=c("SVGNode")
          )
 
 setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
@@ -60,15 +60,12 @@ setMethod(f="initialize", signature="SVGShape",
             ## super
             .Object <- callNextMethod(.Object,...)
 
-            ## super (CSS)
-            .Object <- .callMethod("initialize","CSS",.Object,...)
-            
             ## eop
             return(.Object)
           }
           )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGShape-method
 setMethod(f=".xml", signature="SVGShape",
           definition=function(object)
@@ -76,9 +73,6 @@ setMethod(f=".xml", signature="SVGShape",
             ## super (SVGNode)
             attr <- callNextMethod(object)
             
-            ## super (CSS)
-            attr <- c(attr,.callMethod(".xml","CSS",object))
-
             ## eop
             return(attr)            
           }

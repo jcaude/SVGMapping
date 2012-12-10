@@ -357,7 +357,7 @@ setReplaceMethod(f="stops", signature="Gradient",
                  }
                  )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Gradient-method
 setMethod(f=".xml", signature="Gradient",
           definition=function(object)

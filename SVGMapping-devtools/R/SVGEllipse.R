@@ -71,7 +71,7 @@ setMethod(f="print.SVGEllipse", signature="SVGEllipse",
           }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGEllipse-method
 setMethod(f=".xml", signature="SVGEllipse",
           definition=function(object)

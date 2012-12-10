@@ -363,7 +363,7 @@ setReplaceMethod(f="height", signature="Rectangle",
                  }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Rectangle-method
 setMethod(f=".xml", signature="Rectangle",
           definition=function(object)

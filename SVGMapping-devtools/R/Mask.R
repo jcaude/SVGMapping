@@ -288,7 +288,7 @@ setReplaceMethod(f="maskContent", signature="Mask",
 )
 
 #' @name .xml,Mask-method
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,Mask-method
 setMethod(f=".xml", signature="Mask",
           definition=function(object)

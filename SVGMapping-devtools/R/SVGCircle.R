@@ -71,7 +71,7 @@ setMethod(f="print.SVGCircle", signature="SVGCircle",
           }
 )
 
-#' @rdname svgnode.xml-methods
+#' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGCircle-method
 setMethod(f=".xml", signature="SVGCircle",
           definition=function(object)
