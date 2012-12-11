@@ -44,6 +44,6 @@ test_that("Factory", {
                               transform="translate(5,6)")
   id(circle) <- "circle1"
   
-  expect_output(print(.xml(circle)),"<circle id=\"circle1\" transform=\"translate\\(5,6\\)\" class=\"circle.style\" style=\"stroke:blue; stroke-width:2pt\" cx=\"10px\" cy=\"20px\" r=\"100px\"/>.*")
+  expect_output(print(.xml(circle)),"<circle id=\"circle1\" class=\"circle.style\" style=\"stroke:blue; stroke-width:2pt\" transform=\"translate\\(5,6\\)\" cx=\"10px\" cy=\"20px\" r=\"100px\"/>.*")
   
 })

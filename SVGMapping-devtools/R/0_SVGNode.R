@@ -36,7 +36,6 @@
 #' @aliases SVGNode-class
 setClass("SVGNode",
          representation(id="character",
-                        svg.transform="character",
                         "VIRTUAL"),
          contains=c("CSS")
          )
@@ -70,39 +69,6 @@ setGeneric(name="id", function(object) { standardGeneric("id") })
 #' @docType methods
 setGeneric(name="id<-", function(.Object, value) { standardGeneric("id<-") })
 
-#' Node Core Attributes Accessors
-#'
-#' These methods are accessors to the \emph{core} attributes of an SVG node. These
-#' attributes are the one defined in the SVG 1.1 specifications.
-#'
-#' The \code{svgTransform(object)} method returns the SVG \emph{transform} attributes of 
-#' an SVG node
-#' 
-#' @name svgTransform
-#' 
-#' @param object an SVG Node
-#' 
-#' @return a character string containing the attribute value
-#' 
-#' @rdname svgnode.core-methods
-#' @exportMethod svgTransform
-#' @docType methods
-setGeneric(name="svgTransform", function(object) { standardGeneric("svgTransform") })
-
-#' <title already defined>
-#' 
-#' 
-#' 
-#' The \code{svgTransform(object) <- value} method sets the SVG \emph{transform} attributes of 
-#' an SVG node
-#' 
-#' @name svgTransform<-
-#' 
-#' @rdname svgnode.core-methods
-#' @exportMethod svgTransform<-
-#' @docType methods
-setGeneric(name="svgTransform<-", function(.Object,value) { standardGeneric("svgTransform<-") })
-
 setMethod(f="initialize", signature="SVGNode",
           definition=function(.Object,...)
           {
@@ -127,7 +93,6 @@ setMethod(f="initialize", signature="SVGNode",
 
             ## default init.
             id(.Object) <- .arg("id",character(0))
-            svgTransform(.Object) <- .arg("transform",character(0))
             
             ## eop
             return(.Object)
@@ -159,50 +124,19 @@ setReplaceMethod(f="id", signature="SVGNode",
                  }
                  )
 
-#' @rdname svgnode.core-methods
-#' @aliases svgTransform,SVGNode-method
-setMethod(f="svgTransform", signature="SVGNode",
-          definition=function(object)
-          {
-            return(object@svg.transform)
-          }
-)
-
-#' @name svgTransform<- 
-#' @rdname svgnode.core-methods
-#' @aliases svgTransform<-,SVGNode-method
-setReplaceMethod(f="svgTransform", signature="SVGNode",
-                 definition=function(.Object,value)
-                 {
-                   ## check
-                   if(!is.atomic(value) && !is.character(value))
-                     stop("'value' must be atomic and a string")
-                   
-                   ## assign & eop
-                   .Object@svg.transform <- value
-                   return(.Object)
-                 }
-)
-
 #' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGNode-method
 setMethod(f=".xml", signature="SVGNode",
           definition=function(object)
           {
-            ## init.
-            attr <- list()
-            
             ## super
-            super.attr <- callNextMethod(object)
+            attr <- callNextMethod(object)
             
             ## return an attributes list
             if(length(id(object)) > 0) 
-              attr <- list(id=id(object))
-            if(length(svgTransform(object)) >0) 
-              attr <- c(attr,transform=svgTransform(object))
+              attr <- c(id=id(object),attr)
             
             ## eop
-            attr <- c(attr,super.attr)
             return(attr)
           }
 )

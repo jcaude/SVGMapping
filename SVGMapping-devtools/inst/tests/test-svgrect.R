@@ -53,6 +53,6 @@ test_that("Rendering", {
                                transform="translate(5,6)")
   id(rectangle) <- "rectangle1"
   
-  expect_output(.xml(rectangle),"<rect id=\"rectangle1\" transform=\"translate\\(5,6\\)\" class=\"rectangle.style\" style=\"stroke:blue; stroke-width:2pt\" x=\"10px\" y=\"20px\" width=\"100px\" height=\"70px\" rx=\"2px\" ry=\"3px\"/>.*")
+  expect_output(.xml(rectangle),"<rect id=\"rectangle1\" class=\"rectangle.style\" style=\"stroke:blue; stroke-width:2pt\" transform=\"translate\\(5,6\\)\" x=\"10px\" y=\"20px\" width=\"100px\" height=\"70px\" rx=\"2px\" ry=\"3px\"/>.*")
   
 })

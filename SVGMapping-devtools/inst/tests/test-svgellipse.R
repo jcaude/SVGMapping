@@ -46,6 +46,6 @@ test_that("Factory", {
                                 transform="translate(5,6)")
   id(ellipse) <- "ellipse1"
   
-  expect_output(print(.xml(ellipse)),"<ellipse id=\"ellipse1\" transform=\"translate\\(5,6\\)\" class=\"ellipse.style\" style=\"stroke:blue; stroke-width:2pt\" cx=\"10px\" cy=\"20px\" rx=\"100px\" ry=\"70px\"/>.*")
+  expect_output(print(.xml(ellipse)),"<ellipse id=\"ellipse1\" class=\"ellipse.style\" style=\"stroke:blue; stroke-width:2pt\" transform=\"translate\\(5,6\\)\" cx=\"10px\" cy=\"20px\" rx=\"100px\" ry=\"70px\"/>.*")
   
 })

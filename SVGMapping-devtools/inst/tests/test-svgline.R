@@ -44,6 +44,6 @@ test_that("Rendering", {
                           style="stroke:blue; stroke-width:2pt",
                           transform="translate(5,6)")
   id(line) <- "line1"
-  expect_output(.xml(line),"<line id=\"line1\" transform=\"translate\\(5,6\\)\" class=\"line.style\" style=\"stroke:blue; stroke-width:2pt\" x1=\"10px\" y1=\"20px\" x2=\"100px\" y2=\"70px\"/>.*")
+  expect_output(.xml(line),"<line id=\"line1\" class=\"line.style\" style=\"stroke:blue; stroke-width:2pt\" transform=\"translate\\(5,6\\)\" x1=\"10px\" y1=\"20px\" x2=\"100px\" y2=\"70px\"/>.*")
   
 })

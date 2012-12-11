@@ -37,11 +37,44 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' @exportClass "SVGShape"
 #' @aliases SVGShape-class
 setClass("SVGShape",
-         representation("VIRTUAL"),
+         representation(svg.transform="character",
+                        "VIRTUAL"),
          contains=c("SVGNode")
          )
 
-setGenericVerif(name=".xml", function(object) { standardGeneric(".xml") })
+#' Shape Core Attributes Accessors
+#' 
+#' These methods are accessors to the \emph{core} attributes of an SVG shape.
+#' These attributes are the one defined in the SVG 1.1 specifications.
+#' 
+#' The \code{svgTransform(object)} method returns the SVG \emph{transform}
+#' attributes of an SVG shape
+#' 
+#' @name svgTransform
+#'   
+#' @param object an SVG shape
+#'   
+#' @return a character string containing the attribute value
+#'   
+#' @rdname svgshape.core-methods
+#' @exportMethod svgTransform
+#' @docType methods
+setGeneric(name="svgTransform", function(object) { standardGeneric("svgTransform") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{svgTransform(object) <- value} method sets the SVG \emph{transform}
+#' attributes of an SVG shape.
+#' 
+#' @name svgTransform<-
+#'   
+#' @rdname svgshape.core-methods
+#' @exportMethod svgTransform<-
+#' @docType methods
+setGeneric(name="svgTransform<-", function(.Object,value) { standardGeneric("svgTransform<-") })
+
 
 setMethod(f="initialize", signature="SVGShape",
           definition=function(.Object,...)
@@ -60,10 +93,43 @@ setMethod(f="initialize", signature="SVGShape",
             ## super
             .Object <- callNextMethod(.Object,...)
 
+            ## get args
+            args = list(...)
+            args.names = names(args)
+            if(is.null(args.names)) args.names <- list()
+            
+            ## default init.
+            svgTransform(.Object) <- .arg("transform",character(0))
+            
             ## eop
             return(.Object)
           }
           )
+
+#' @rdname svgshape.core-methods
+#' @aliases svgTransform,SVGShape-method
+setMethod(f="svgTransform", signature="SVGShape",
+          definition=function(object)
+          {
+            return(object@svg.transform)
+          }
+)
+
+#' @name svgTransform<- 
+#' @rdname svgshape.core-methods
+#' @aliases svgTransform<-,SVGShape-method
+setReplaceMethod(f="svgTransform", signature="SVGShape",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is.atomic(value) && !is.character(value))
+                     stop("'value' must be atomic and a string")
+                   
+                   ## assign & eop
+                   .Object@svg.transform <- value
+                   return(.Object)
+                 }
+)
 
 #' @rdname svgcore.xml-methods
 #' @aliases .xml,SVGShape-method
@@ -72,6 +138,10 @@ setMethod(f=".xml", signature="SVGShape",
           {
             ## super (SVGNode)
             attr <- callNextMethod(object)
+            
+            ## return an attributes list
+            if(length(svgTransform(object)) >0) 
+              attr <- c(attr,transform=svgTransform(object))
             
             ## eop
             return(attr)            
