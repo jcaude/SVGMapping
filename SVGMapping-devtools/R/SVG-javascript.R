@@ -64,31 +64,31 @@ setGeneric(name="jsAnimation<-", function(.Object,value) {standardGeneric("jsAni
 #' 
 #' 
 #' 
-#' The \code{jsHRef(object)} method returns the list of Javascript HREF that 
+#' The \code{jsHRefs(object)} method returns the list of Javascript HREF that 
 #' are associated with the SVG documemnt.
 #' 
-#' @name jsHRef
+#' @name jsHRefs
 #' 
-#' @return \code{jsHRef} and \code{jsInlines} return lists
+#' @return \code{jsHRefs} and \code{jsInlines} return lists
 #'   
 #' @rdname svg.js-methods
-#' @exportMethod jsHRef
+#' @exportMethod jsHRefs
 #' @docType methods
-setGeneric(name="jsHRef", function(object) {standardGeneric("jsHRef")})
+setGeneric(name="jsHRefs", function(object) {standardGeneric("jsHRefs")})
 
 #' <title already defined>
 #' 
 #' 
 #' 
-#' The \code{jsHRef(object) <- value} method associates a named list of 
+#' The \code{jsHRefs(object) <- value} method associates a named list of 
 #' Javascript HREF with the SVG documemnt. List names are used as identifiers
 #' and must be unique across the whole SVG document. One can use the \code{uid}
 #' method to automatically forge new IDs.
 #' 
-#' @name jsHRef<-
+#' @name jsHRefs<-
 #'   
 #' @rdname svg.js-methods
-#' @exportMethod jsHRef<-
+#' @exportMethod jsHRefs<-
 #' @docType methods
 NULL
 
@@ -120,12 +120,26 @@ setGeneric(name="jsInlines", function(object) {standardGeneric("jsInlines")})
 #' @docType methods
 NULL
 
-#' <title already defined>
+#' SVG Script Processing
 #' 
+#' The \code{addScript(object)} method allows to insert script (either as 
+#' inline text or href references) within the SVG document.
 #' 
+#' First script must be added to the SVG object using the 
+#' \code{\link{jsHRefs()}} or \code{\link{jsInlines()}} method. If an \code{ID}
+#' is set as argument only the related script will be updated. Otherwise, all
+#' referenced scripts are be updated.
 #' 
-#' The \code{addScript(object)} method 
-setGenericVerif(name="addScript", function(object,script,id) {standardGeneric("addScript")})
+#' @name addScript
+#' 
+#' @param object is the SVG document object
+#' @param id (optional) the script to add or update 
+#' @return the list of nodes that have been added to the SVG document.
+#' 
+#' @rdname svg.jsproc-methods
+#' @exportMethod addScript
+#' @docType methods
+setGeneric(name="addScript", function(object,id) {standardGeneric("addScript")})
 
 #' @rdname svg.js-methods
 #' @aliases jsAnimation,SVG-method
@@ -153,18 +167,18 @@ setReplaceMethod(f="jsAnimation", signature="SVG",
 )
 
 #' @rdname svg.js-methods
-#' @aliases jsHRef,SVG-method
-setMethod(f="jsHRef", signature="SVG",
+#' @aliases jsHRefs,SVG-method
+setMethod(f="jsHRefs", signature="SVG",
           definition=function(object)
           {
             return(object@js.hrefs)
           }
 )
 
-#' @name jsHRef<-,SVG-method
+#' @name jsHRefs<-,SVG-method
 #' @rdname svg.js-methods
-#' @aliases jsHRef<-,SVG-method
-setReplaceMethod(f="jsHRef", signature="SVG",
+#' @aliases jsHRefs<-,SVG-method
+setReplaceMethod(f="jsHRefs", signature="SVG",
                  definition=function(.Object,value)
                  {
                    # check
@@ -232,20 +246,36 @@ setReplaceMethod(f="jsInlines", signature="SVG",
                  }
 )
 
-setMethod(f=".xml_scripts", signature="SVG",
+#' @rdname svg.jcproc-methods
+#' @aliases addScript,SVG-method
+setMethod(f="addScript", signature="SVG",
           definition=function(object,id)
           {
+            ## -- insert node
+            .insert_node <- function(object,id,script.node) {
+              updated <- FALSE
+              search.node <- object[paste("id::",id,sep="")]
+              if(length(search.node) > 0) {
+                replaceNodes(search.node[[1]], script.node)
+                updated <- TRUE
+              }
+              if(!updated)
+                addChildren(xmlRoot(object@svg), kids=list(script.node))              
+            }
             
             ## -- process href scripts
             .proc_js_href <- function(object, id) {
               
               # check
-              if( !(id %in% names(jsHRef(object))) )
+              if( !(id %in% names(jsHRefs(object))) )
                 stop("Can't find script among inlines/files script definitions")
               
               # init
-              js_attrs <- list(id=id, 'xlink:href'=jsHRef(object)[[id]])
+              js_attrs <- list(id=id, 
+                               type="text/ecmascript",
+                               'xlink:href'=jsHRefs(object)[[id]])
               js_node <- newXMLNode("script", attrs=js_attrs)
+              .insert_node(object,id,js_node)
               
               # eop
               return(js_node)
@@ -263,25 +293,43 @@ setMethod(f=".xml_scripts", signature="SVG",
               
               # build script nodes
               cdata <- newXMLCDataNode(paste("\n", script, "\n", sep=""))
-              js_attrs <- list(type="text/ecmascript", id=id)
+              js_attrs <- list(id=id, type="text/ecmascript")
               js_node <- newXMLNode("script", attrs=js_attrs, .children=list(cdata))
+              .insert_node(object,id,js_node)
               
               # eop
               return(js_node)
               
             }
             
-            ## HERE -------
-            ## ------------ Missing ID .. process all scripts href/inlines and             
-            
-            ## Update/Insert script
-            updated <- FALSE
-            search.node <- object[paste("id::",id,sep="")]
-            if(length(search.node) > 0) {
-              replaceNodes(search.node[[1]], scriptnode)
-              updated <- TRUE
+            ## -- All scripts
+            nodes <- list()
+            if(missing(id)) {
+              # hrefs
+              hrefs <- names(jsHRefs(object))
+              if(length(hrefs) > 0) {
+                for(i in 1:length(hrefs))
+                  nodes <- c(nodes,.proc_js_href(object,hrefs[[i]]))
+              }
+              # inlines
+              inlines <- names(jsInlines(object))
+              if(length(inlines) > 0) {
+                for(i in 1:length(inlines))
+                  nodes <- c(nodes,.proc_js_inline(object,inlines[[i]]))
+              }
             }
-            if(!updated)
-              addChildren(xmlRoot(object@svg), kids=list(scriptnode))            
+            
+            ## -- Specific Script
+            else {
+              if(id %in% names(jsHRefs(object)))
+                nodes <- c(nodes,.proc_js_href(object,id))
+              else if(id %in% names(jsInlines(object)))
+                nodes <- c(nodes,.proc_js_inline(object,id))
+              else
+                warning(paste("Script with ID='",id,"' not found",sep=""))
+            }            
+            
+            ## eop
+            return(nodes)
           }
 )
