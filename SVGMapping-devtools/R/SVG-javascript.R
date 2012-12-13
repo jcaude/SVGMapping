@@ -25,7 +25,6 @@
 ## S V G  -- JAVASCRIPTS
 ## --------------------------------------------------
 
-#' 
 #' SVG Javascript Accessors
 #' 
 #' These methods allows to associate some javascript code to an SVG document. 
