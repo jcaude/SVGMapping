@@ -43,5 +43,10 @@ Collate:
     'MappingValues.R'
     'MappingLinks.R'
     'MappingTooltips.R'
-    'MappingMasks.R'
     'Mask.R'
+    'MappingMasks.R'
+    'SVG-defs.R'
+    'SVG-accessors.R'
+    'SVG-utils.R'
+    'SVG-javascript.R'
+
