@@ -41,7 +41,7 @@
 #' @return This function returns a list of XML Nodes.
 #' 
 #' @rdname svg.accessors-methods
-#' @docType methods
+#' @docType methods 
 NULL
 
 #' @rdname svg.accessors-methods

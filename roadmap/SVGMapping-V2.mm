@@ -127,8 +127,7 @@
       SVGUnit*
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1342212988725" FOLDED="true" ID="ID_6299497" MODIFIED="1354871911747" TEXT="fields">
@@ -347,8 +346,7 @@
       SVGNode (CSS)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="hourglass"/>
 <node CREATED="1337611288971" FOLDED="true" ID="ID_1880179866" MODIFIED="1355212863107" TEXT="fields">
@@ -424,8 +422,7 @@
       LinearGradient (Vector)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1333001371045" ID="ID_1931032413" MODIFIED="1333001380374" TEXT="fields">
@@ -482,8 +479,7 @@
       RadialGradient (Circle)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1333110137554" FOLDED="true" ID="ID_172990964" MODIFIED="1355130385164" TEXT="fields">
@@ -536,8 +532,7 @@
       Mask (Rectangle)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1337611493965" ID="ID_1352474441" MODIFIED="1355130394186" TEXT="fields">
@@ -552,8 +547,7 @@
       mask.units
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1337611512781" ID="ID_43529853" MODIFIED="1354278270372">
@@ -566,8 +560,7 @@
       mask.content.units
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1337611534078" ID="ID_1283618884" MODIFIED="1354278258401">
@@ -580,8 +573,7 @@
       mask.content
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
@@ -603,8 +595,7 @@
       GS:maskContent
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1337611590697" ID="ID_1398146754" MODIFIED="1354208556409" TEXT=".xml">
@@ -636,8 +627,7 @@
       Layout* (Rectangle)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1338538733291" FOLDED="true" ID="ID_921737064" MODIFIED="1355212831506" TEXT="fields">
@@ -720,8 +710,7 @@
       SVGRect (Rectangle)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1338554241287" FOLDED="true" ID="ID_1919697960" MODIFIED="1354871911741" TEXT="fields">
@@ -760,8 +749,7 @@
       SVGCircle (Circle)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1338558933296" ID="ID_852904661" MODIFIED="1338558942489" TEXT="fields">
@@ -803,8 +791,7 @@
       SVGEllipse (Ellipse)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1338558933296" ID="ID_654979492" MODIFIED="1354025087716" TEXT="fields">
@@ -831,8 +818,7 @@
       <i><span style="font-family: SansSerif, sans-serif; font-style: italic"><font face="SansSerif, sans-serif">all fields...</font></span></i>
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
@@ -847,8 +833,7 @@
       SVGLine (Vector)
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <node CREATED="1338558933296" ID="ID_610535266" MODIFIED="1345466305585" TEXT="fields">
@@ -936,14 +921,14 @@
 <node CREATED="1331831427508" ID="ID_411838553" MODIFIED="1355241031466" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
-<node COLOR="#333333" CREATED="1331831435925" ID="ID_552081248" MODIFIED="1355329866359" TEXT="show()">
-<icon BUILTIN="messagebox_warning"/>
+<node COLOR="#333333" CREATED="1331831435925" ID="ID_552081248" MODIFIED="1355471501881" TEXT="show()">
+<icon BUILTIN="button_ok"/>
 </node>
-<node COLOR="#333333" CREATED="1332398335732" ID="ID_584945435" MODIFIED="1355329866360" TEXT="summary()">
-<icon BUILTIN="messagebox_warning"/>
+<node COLOR="#333333" CREATED="1332398335732" ID="ID_584945435" MODIFIED="1355471501881" TEXT="summary()">
+<icon BUILTIN="button_ok"/>
 </node>
-<node COLOR="#333333" CREATED="1332404282537" ID="ID_896697264" MODIFIED="1355329866360" TEXT="print()">
-<icon BUILTIN="messagebox_warning"/>
+<node COLOR="#333333" CREATED="1332404282537" ID="ID_896697264" MODIFIED="1355471501881" TEXT="print()">
+<icon BUILTIN="button_ok"/>
 </node>
 <node COLOR="#660066" CREATED="1331887687246" ID="ID_938087100" MODIFIED="1355215075425" TEXT="SVG@svg Getter/Setter">
 <node CREATED="1331887702287" FOLDED="true" ID="ID_1476091146" MODIFIED="1355329862400" TEXT="Nodes Attributes">
@@ -1111,21 +1096,21 @@
       GS:jsAnimation,jsHRefs,jsInlines
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1337672115560" ID="ID_1262185995" MODIFIED="1355329534226" TEXT="addScript">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1337617442944" ID="ID_932405597" MODIFIED="1355328936890" TEXT="uid">
-<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1337617442944" ID="ID_932405597" MODIFIED="1355472181559" TEXT="uid">
+<icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1337617445656" ID="ID_1685442905" MODIFIED="1355215075424" TEXT="duplicate.nodes"/>
 <node COLOR="#333333" CREATED="1331831452645" ID="ID_396561508" MODIFIED="1355215075424" TEXT="read.SVG()"/>
 <node COLOR="#333333" CREATED="1331831455094" ID="ID_686792012" MODIFIED="1355215075424" TEXT="write.SVG()"/>
 <node COLOR="#660066" CREATED="1331887798372" ID="ID_634377338" MODIFIED="1355215075424" TEXT="merge() or c()">
-<node CREATED="1331887811396" ID="ID_129254836" MODIFIED="1331887980148" TEXT="refactor-ids">
+<node CREATED="1331887811396" ID="ID_129254836" MODIFIED="1355471531384" TEXT="refactor-ids">
+<arrowlink DESTINATION="ID_932405597" ENDARROW="Default" ENDINCLINATION="167;0;" ID="Arrow_ID_211762390" STARTARROW="None" STARTINCLINATION="167;0;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
@@ -1843,7 +1828,7 @@
 </node>
 <node CREATED="1354891396434" ID="ID_1977849918" MODIFIED="1354891413626" TEXT="Core">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1342213021707" FOLDED="true" ID="ID_1954957652" MODIFIED="1354891429899" TEXT="Units">
+<node CREATED="1342213021707" ID="ID_1954957652" MODIFIED="1355471483415" TEXT="Units">
 <icon BUILTIN="button_ok"/>
 <node CREATED="1342213024955" ID="ID_1053632002" MODIFIED="1342213148432">
 <richcontent TYPE="NODE"><html>
