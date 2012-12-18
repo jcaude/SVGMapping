@@ -81,8 +81,8 @@ setMethod(f="initialize", signature="SVG",
             ## init.
             defaultSearchAttr(.Object) <- "id"
             jsAnimations(.Object) <- FALSE
-            .Object@js.hrefs <- list()
-            .Object@js.inlines <- list()
+            jsHRefs(.Object) <- list()
+            jsInlines(.Object) <- list()
             
             ## eop
             return(.Object)

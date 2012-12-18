@@ -38,7 +38,7 @@
 #'   
 #' @param object is the SVG document object
 #'   
-#' @return \code{jsAnimations} returns a logical value
+#' @return \code{jsAnimations} returns a logical value, \code{jsHRefs} and \code{jsInlines} return lists
 #'   
 #' @rdname svg.js-methods
 #' @exportMethod jsAnimation
@@ -67,8 +67,6 @@ setGeneric(name="jsAnimation<-", function(.Object,value) {standardGeneric("jsAni
 #' are associated with the SVG documemnt.
 #' 
 #' @name jsHRefs
-#' 
-#' @return \code{jsHRefs} and \code{jsInlines} return lists
 #'   
 #' @rdname svg.js-methods
 #' @exportMethod jsHRefs
@@ -89,7 +87,7 @@ setGeneric(name="jsHRefs", function(object) {standardGeneric("jsHRefs")})
 #' @rdname svg.js-methods
 #' @exportMethod jsHRefs<-
 #' @docType methods
-NULL
+setGeneric(name="jsHRefs<-", function(.Object,value) {standardGeneric("jsHRefs<-")})
 
 #' <title already defined>
 #' 
@@ -117,7 +115,7 @@ setGeneric(name="jsInlines", function(object) {standardGeneric("jsInlines")})
 #' @rdname svg.js-methods
 #' @exportMethod jsInlines<-
 #' @docType methods
-NULL
+setGeneric(name="jsInlines<-", function(.Object,value) {standardGeneric("jsInlines<-")})
 
 #' SVG Script Processing
 #' 
@@ -183,10 +181,12 @@ setReplaceMethod(f="jsHRefs", signature="SVG",
                    # check
                    if(!is.list(value))
                      stop("'value' must be a list")
+                   if(length(value)==0) {
+                     .Object@js.hrefs <- value
+                     return(.Object)     
+                   }
                    if(is.null(names(value)))
                      stop("'value' must be a named (ID) list")
-                   if(length(value)==0)
-                     return(.Object)                   
                    
                    # init.
                    l.names <- names(value)
@@ -223,10 +223,12 @@ setReplaceMethod(f="jsInlines", signature="SVG",
                    # check
                    if(!is.list(value))
                      stop("'value' must be a list")
+                   if(length(value)==0) {
+                     .Object@js.inlines <- value
+                     return(.Object)
+                   }
                    if(is.null(names(value)))
                      stop("'value' must be a ID list")
-                    if(length(value)==0)
-                      return(.Object)
                    
                    # init.
                    l.names <- names(value)
@@ -245,7 +247,7 @@ setReplaceMethod(f="jsInlines", signature="SVG",
                  }
 )
 
-#' @rdname svg.jcproc-methods
+#' @rdname svg.jsproc-methods
 #' @aliases addScript,SVG-method
 setMethod(f="addScript", signature="SVG",
           definition=function(object,id)
