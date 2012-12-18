@@ -1548,7 +1548,7 @@
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 <icon BUILTIN="full-7"/>
-<node CREATED="1332345921185" ID="ID_480930658" MODIFIED="1332345955280" TEXT="same as above but for a given type">
+<node CREATED="1332345921185" ID="ID_480930658" MODIFIED="1355843624435" TEXT="same as above but for a given svg node type (eg. rect::opacity::0.9)">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="messagebox_warning"/>
 </node>

@@ -82,11 +82,32 @@
 #' 
 #' \itemize{
 #' 
-#' \item \code{value} is an atomic value. In this case the value is used..
+#' \item \code{value} is an atomic value. If the node selection contains only
+#' one node, \emph{value} will be assigned to the selected attribute. If the
+#' selection contains multiple nodes, \emph{value} will be assigned to the
+#' selected attribute of each nodes.
 #' 
-#' \item \code{value} is a list of atomic values. In this case..
+#' \item \code{value} is a list of atomic values. In this case the length of the
+#' selected nodes must match the length of the \emph{value} list. The list of
+#' values will be assign to the selected attribute of the nodes. On has to be
+#' very cautious about the nodes order (usually in the same order as they appear
+#' in the SVG document).
+#' 
+#' \item \code{value} is a list of vectors. This case is very similar to the 
+#' previous one except that the node selection contains multiple attributes. 
+#' Thus, dimensions of the \code{selected nodes x selected attributes} must 
+#' match \code{length(value) x length(vectors)}. In this case, vector values are
+#' assigned to all selected attributes of the node selection. \strong{While this
+#' syntax is allowed by this package we hardly suggest to use the array format
+#' below}.
+#' 
+#' \item \code{value} is an array. This is very similar to the previous case.
+#' The same constraints on the node selection must be complied and the same type
+#' of assignement occurs.
 #' 
 #' }
+#' 
+#' 
 #' 
 #' @examples
 #' ## load 'basic-sample.svg' a demo SVG template. 
