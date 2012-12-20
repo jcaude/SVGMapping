@@ -52,15 +52,15 @@
 #' used as getter or setter.
 #' 
 #' \emph{node selector}, in its simplest form, is provided as a single value. In
-#' this case, the default search attribute (see
-#' \code{\link{defaultSearchAttrName}}) is used to select the node with the
-#' related value (see examples). But if one wants to use a different attribute
-#' as a key for node selection then the \emph{attname::value} selector must be
-#' used. Note that in this case the \emph{::} is used as a query seperator. For
-#' more complex cases, XPath queries can be used using the \emph{xpath::query}
-#' selector, where \emph{query} contains the XPath instructions. \emph{node
-#' selector} can be either a character string or a vector of strings. If no
-#' \emph{attribute selector} is provided, depending on the node selected an
+#' this case, the default search attribute (see 
+#' \code{\link{defaultSearchAttrName}}) is used to select the node with the 
+#' related value (see examples). But if one wants to use a different attribute 
+#' as a key for node selection then the \emph{attname::value} selector must be 
+#' used. Note that in this case the \emph{::} is used as a query seperator. For 
+#' more complex cases, XPath queries can be used using the \emph{xpath::query} 
+#' selector, where \emph{query} contains the XPath instructions. \emph{node 
+#' selector} can be either a character string or a vector of strings. If no 
+#' \emph{attribute selector} is provided, depending on the node selected an 
 #' \code{\link{xmlNode}} or \code{\link{xmlNodeSet}} is returned.
 #' 
 #' \emph{attribute selector} is used to select SVG attributes of a set a nodes 
@@ -82,14 +82,14 @@
 #' 
 #' \itemize{
 #' 
-#' \item \code{value} is an atomic value. If the node selection contains only
-#' one node, \emph{value} will be assigned to the selected attribute. If the
-#' selection contains multiple nodes, \emph{value} will be assigned to the
+#' \item \code{value} is an atomic value. If the node selection contains only 
+#' one node, \emph{value} will be assigned to the selected attribute. If the 
+#' selection contains multiple nodes, \emph{value} will be assigned to the 
 #' selected attribute of each nodes.
 #' 
 #' \item \code{value} is a list of atomic values. In this case the length of the
-#' selected nodes must match the length of the \emph{value} list. The list of
-#' values will be assign to the selected attribute of the nodes. On has to be
+#' selected nodes must match the length of the \emph{value} list. The list of 
+#' values will be assign to the selected attribute of the nodes. On has to be 
 #' very cautious about the nodes order (usually in the same order as they appear
 #' in the SVG document).
 #' 
@@ -98,16 +98,17 @@
 #' Thus, dimensions of the \code{selected nodes x selected attributes} must 
 #' match \code{length(value) x length(vectors)}. In this case, vector values are
 #' assigned to all selected attributes of the node selection. \strong{While this
-#' syntax is allowed by this package we hardly suggest to use the array format
+#' syntax is allowed by this package we hardly suggest to use the array format 
 #' below}.
 #' 
-#' \item \code{value} is an array. This is very similar to the previous case.
+#' \item \code{value} is an array. This is very similar to the previous case. 
 #' The same constraints on the node selection must be complied and the same type
-#' of assignement occurs.
+#' of assignement occurs. But compare to the list of vectors syntax there
+#' couldn't be discrepencies between vectors length.
 #' 
 #' }
 #' 
-#' 
+#' \emph{text nodes} are handled using a specific \emph{attribute selector}.   
 #' 
 #' @examples
 #' ## load 'basic-sample.svg' a demo SVG template. 
