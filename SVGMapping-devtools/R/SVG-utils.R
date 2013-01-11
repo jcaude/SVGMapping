@@ -88,6 +88,39 @@ NULL
 #' @docType methods
 setGeneric(name="uid", function(object,prefix,n) {standardGeneric("uid")})
 
+#' Check is a node is part of an SVG object
+#' 
+#' This method check if a given node (as an \code{XMLInternalNode}) is part 
+#' (\emph{i.e.} a children) of an SVG document.
+#' 
+#' @name isChildren
+#'   
+#' @param object is the SVG instance
+#' @param node is an \code{XMLInternalNode}
+#'   
+#' @return \code{TRUE} if \emph{node} is part of the SVG object and \code{FALSE}
+#'   otherwise
+#'   
+#' @rdname svg.children-methods
+#' @exportMethod isChildren
+#' @docType methods   
+setGeneric(name="isChildren", function(object,node) {setGenericVerif("isChildren")})
+
+#' Duplicate part of a SVG document
+#' 
+#' This method duplicates a part of an SVG object (given its \emph{root} node).
+#' 
+#' @name duplicateNode
+#' 
+#' @param object is the SVG instance
+#' @param node is the root of the sub-tree to duplicate
+#' @param prefix is a string used to re-factor elements \emph{ID}
+#' 
+#' @rdname svg.duplicate-methods
+#' @exportMethod duplicateNode
+#' @docType methods
+setGeneric(name="duplicateNode", function(object,node,prefix) {standardGeneric("duplicateNode")})
+
 #' @rdname svg.summary-methods
 #' @aliases summary.SVG,SVG-method
 setMethod(f="summary.SVG", signature="SVG",
@@ -169,5 +202,70 @@ setMethod(f="uid", signature="SVG",
             ## eop
             if(n==1) ids <- ids[[1]]
             return(ids)
+          }
+)
+
+#' @rdname svg.children-methods
+#' @aliases isChildren,SVG-method
+setMethod(f="isChildren", signature="SVG",
+          definition=function(object,node)
+          {
+            ## verify if 'node' is a children of
+            ##  the current svg document
+            
+            ## check
+            if(!is(node,"XMLInternalNode"))
+              return(FALSE)
+            
+            ## test
+            return(identical(xmlRoot(SVG(object)),xmlRoot(node)))
+          }
+)
+
+#' @rdname svg.duplicate-methods
+#' @aliases duplicateNode,SVG-method
+setMethod(f="duplicateNode", signature="SVG",
+          definition=function(object,node,prefix)
+          {
+            ## init.
+            if(missing(prefix)) prefix <- ""
+            
+            ## check node type (character)
+            if(is.character(node)) {
+              chk_id <- svg[node]
+              if(length(chk_id) == 0)
+                stop("'node' search attribute value not found in the current document")
+              node <- chk_id[[1]]
+            }
+            
+            ## check node type (XMLNode)
+            if(!is(node,"XMLInternalNode"))
+              stop("'node' must be either an XMLInternalNode object or a search attribute (default:ID) value")
+            
+            ## check
+            attrs <- xmlAttrs(node)
+            if(!("id" %in% names(attrs)))
+              stop("You can't duplicate node that don't have an ID")
+            node.id <- attrs[["id"]]
+            
+            ## clone node (saved copy)
+            node.copy <- xmlClone(node)
+            
+            ## get all node descendant & update node ids
+            xpath <- paste("//*[@id='",node.id,"']/descendant-or-self::node()[@id]",sep="")
+            xpathApply(object@svg,xpath,
+                       function(node) {
+                         node.attr <- xmlAttrs(node)
+                         new.id <- uid(object,prefix)
+                         node.attr["id"] <- new.id
+                         xmlAttrs(node) <- node.attr
+                       }
+            )
+            
+            ## swap 're-id node' and the saved copy
+            replaceNodes(node,node.copy)
+            
+            ## eop return duplicated node
+            return(node)
           }
 )

@@ -103,12 +103,18 @@
 #' 
 #' \item \code{value} is an array. This is very similar to the previous case. 
 #' The same constraints on the node selection must be complied and the same type
-#' of assignement occurs. But compare to the list of vectors syntax there
+#' of assignement occurs. But compare to the list of vectors syntax there 
 #' couldn't be discrepencies between vectors length.
 #' 
 #' }
 #' 
-#' \emph{text nodes} are handled using a specific \emph{attribute selector}.   
+#' \emph{Text nodes} are handled using \code{SVG.VALUE}, a specific 
+#' \emph{attribute selector}. \code{SVG.VALUE} is a factor defined in the 
+#' package that is used instead of an \emph{attribute selector}. Thus, commands 
+#' like \code{SVG[node-selector,SVG.VALUE]} will retrieve the content of any 
+#' text node encapsulated within the \emph{node-selector}. In this particular 
+#' implementation we only considered nodes where the text content is 
+#' encapsulated within a \code{TSPAN} element.
 #' 
 #' @examples
 #' ## load 'basic-sample.svg' a demo SVG template. 
@@ -152,6 +158,37 @@ setGeneric(name="defaultSearchAttrName", function(object) {standardGeneric("defa
 #' 
 setGeneric(name="defaultSearchAttrName<-", function(.Object,value) {standardGeneric("defaultSearchAttrName<-")})
 
+#' SVG XML content
+#' 
+#' This methods allows to access to the XML content (parsed using the \code{XML}
+#' package) of an SVG object.
+#' 
+#' \code{SVG(object)} returns an \code{XMLNode} 
+#' 
+#' @name SVG
+#' 
+#' @param object is an SVG class instance
+#' 
+#' @return This methods returns an \code{XMLInternalDocument} object
+#' 
+#' @rdname svg.xml-methods
+#' @exportMethod SVG
+#' @docType methods
+setGeneric(name="SVG", function(object) {standardGeneric("SVG")})
+
+#' <title already defined>
+#' 
+#' 
+#' 
+#' The \code{SVG(object) <- value} allows to change the SVG content. Value must
+#' be an \code{XMLInternalDocument} that corresponds to a valid SVG document.
+#' 
+#' @name SVG<-
+#'   
+#' @rdname svg.xml-methods
+#' @exportMethod SVG<-
+#' @docType methods
+setGeneric(name="SVG<-", function(.Object,value) {standardGeneric("SVG<-")})
 
 #' @rdname svg.accessors-methods
 #' @aliases [,SVG-method
@@ -493,6 +530,31 @@ setReplaceMethod(f="defaultSearchAttrName", signature="SVG",
                    
                    ## eop
                    .Object@default_search_attr <- value
+                   return(.Object)
+                 }
+)
+
+#' @rdname svg.xml-methods
+#' @aliases SVG,SVG-method
+setMethod(f="SVG", signature="SVG",
+          definition=function(object)
+          {
+            return(object@svg)
+          }
+)
+
+#' @name SVG<-
+#' @rdname svg.xml-methods
+#' @aliases SVG<-,SVG-method
+setReplaceMethod(f="SVG", signature="SVG",
+                 definition=function(.Object,value)
+                 {
+                   ## check
+                   if(!is(value,"XMLInternalDocument"))
+                     stop("'value' must be a valid SVG XML document (XMLInternalDocument class)")
+                   
+                   ## eop
+                   .Object@svg <- value
                    return(.Object)
                  }
 )

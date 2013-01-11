@@ -1,6 +1,7 @@
 \docType{methods}
 \name{[}
 \alias{[}
+\alias{[,SVG-method}
 \alias{[<-}
 \alias{[<-,SVG-method}
 \title{SVG Content Accessors}
@@ -97,9 +98,21 @@
   \item \code{value} is an array. This is very similar to
   the previous case. The same constraints on the node
   selection must be complied and the same type of
-  assignement occurs.
+  assignement occurs. But compare to the list of vectors
+  syntax there couldn't be discrepencies between vectors
+  length.
 
   }
+
+  \emph{Text nodes} are handled using \code{SVG.VALUE}, a
+  specific \emph{attribute selector}. \code{SVG.VALUE} is a
+  factor defined in the package that is used instead of an
+  \emph{attribute selector}. Thus, commands like
+  \code{SVG[node-selector,SVG.VALUE]} will retrieve the
+  content of any text node encapsulated within the
+  \emph{node-selector}. In this particular implementation
+  we only considered nodes where the text content is
+  encapsulated within a \code{TSPAN} element.
 }
 \examples{
 ## load 'basic-sample.svg' a demo SVG template.
