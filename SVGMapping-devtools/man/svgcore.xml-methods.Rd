@@ -1,8 +1,8 @@
 \docType{methods}
 \name{.xml}
 \alias{.xml}
-\alias{.xml,Circle-method}
 \alias{.xml,CSS-method}
+\alias{.xml,Circle-method}
 \alias{.xml,Ellipse-method}
 \alias{.xml,Gradient-method}
 \alias{.xml,GradientStop-method}

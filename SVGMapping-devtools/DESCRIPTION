@@ -22,6 +22,7 @@ Collate:
     'SVGUnit.R'
     'SVGLength.R'
     'SVGCoord.R'
+    'SVGTransform.R'
     '0_CSS.R'
     '0_SVGNode.R'
     '0_Vector.R'
