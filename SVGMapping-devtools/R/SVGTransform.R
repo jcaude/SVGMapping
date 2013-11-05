@@ -180,12 +180,23 @@ setMethod(f="transforms",signature="SVGTransform",
 setReplaceMethod(f="transforms", signature="SVGTransform",
                  definition=function(.Object,value)
                  {
+                   # locals
+                   .check <- function(t,args,nb_expected) {
+                     if(!length(args) %in% nb_expected)
+                       stop(paste("[",t,"]: invalid number of arguments (expected ",
+                                  paste(nb_expected,collapse=" or "), " arg)",sep=""))
+                     if(!all(is.numeric(args)))
+                       stop(paste("[",t,"]: all arguments must be numeric",sep=""))
+                   }
+                   
                    # check
                    if(!is.character(value) || length(value) > 1)
                      stop("transform 'value' must be a string of characters")
                      
                    # init.
+                   D2R <- pi/180
                    .Object@ctm <- matrix(numeric(0), 0,0)
+                   .Object@.tm <- diag(3)
                    value <- gsub("\\)(,|[ ])+","\\);",value)
                    value <- gsub("^[ ]*","",value)
                    value <- gsub("[ ;]*$","",value)
@@ -195,14 +206,80 @@ setReplaceMethod(f="transforms", signature="SVGTransform",
                      .Object@transforms <- character()
                      
                    # check
-                   if(length(.Object@transforms) == 0) {
-                     .Object@.tm <- diag(3)
-                   }
+                   if(length(.Object@transforms) == 0) 
+                     return(.Object)
                     
-                   # loop over transforms
+                   # loop over transforms: get args & update local tm matrix
                    for(i in 1:length(.Object@transforms)) {
-                     t <- .Object@transforms[[i]]
                      
+                     # init & parse transform
+                     m <- diag(3)
+                     t <- .Object@transforms[[i]]
+                     t.op <- tolower(gsub("\\(.*\\)","",t))
+                     t.args <- as.numeric(strsplit(gsub("(.*)\\((.*)\\)","\\2",t),"[, ]")[[1]])
+                     
+                     # convert into a transformation matrix
+                     if(t.op == "matrix") {
+                       .check(t,t.args,6)
+                       m[1,1] <- t.args[1]
+                       m[2,1] <- t.args[2]
+                       m[1,2] <- t.args[3]
+                       m[2,2] <- t.args[4]
+                       m[1,3] <- t.args[5]
+                       m[2,3] <- t.args[6]
+                     }
+                     else if(t.op == "translate") {
+                       .check(t,t.args,c(1,2))
+                       if(length(t.args)==1) t.args[2] <- 0
+                       m[1,3] <- t.args[1]
+                       m[2,3] <- t.args[2]
+                     }
+                     else if(t.op == "scale") {
+                       .check(t,t.args,c(1,2))
+                       if(length(t.args)==1) t.args[2] <- t.args[1]
+                       m[1,1] <- t.args[1]
+                       m[2,2] <- t.args[2]
+                     }
+                     else if(t.op == "rotate") {
+                       .check(t,t.args,c(1,3))
+                       if(length(t.args) == 1) {
+                         m[1,1] <- cos(t.args[1]*D2R)
+                         m[1,2] <- -sin(t.args[1]*D2R)
+                         m[2,1] <- sin(t.args[1]*D2R)
+                         m[2,2] <- cos(t.args[1]*D2R)
+                       }
+                       else if(length(t.args) == 3) {                         
+                         m1 <- diag(3)  # translate(cx,cy)
+                         m1[1,3] <- t.args[2]
+                         m1[2,3] <- t.args[3]
+                         
+                         m2 <- diag(3)  # rotate(r)
+                         m2[1,1] <- cos(t.args[1]*D2R)
+                         m2[1,2] <- -sin(t.args[1]*D2R)
+                         m2[2,1] <- sin(t.args[1]*D2R)
+                         m2[2,2] <- cos(t.args[1]*D2R)
+                      
+                         m3 <- diag(3)  # translate(-cx,-cy)
+                         m3[1,3] <- -t.args[2]
+                         m3[2,3] <- -t.args[3]
+                         
+                         m <- m1 %*% m2 %*% m3
+                       }
+                     }
+                     else if(t.op == "skewX") {
+                       .check(t,t.args,1)
+                       m[1,2] <- tan(t.args[1]*D2R)
+                     }
+                     else if(t.op == "skewY") {
+                       .check(t,t.args,1)
+                       m[2,1] <- tan(t.args[1]*D2R)
+                     }
+                     else {
+                       stop("invalid transform operation")
+                     }
+                     
+                     # update local tm
+                     .Object@.tm <- .Object@.tm %*% m
                    }
                    
                    # eop
