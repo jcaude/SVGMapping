@@ -102,19 +102,17 @@ setGeneric(name="ctm", function(object) { standardGeneric("ctm") })
 #' used to calculate the viewport coordinates after applying a hierarchical set
 #' of geometric transformations.
 #'
-#' The \code{upd ate(object)} method returns the current vector of 
-#' transformations
+#' The \code{update(object)<-} method returns nothing. If you want to retrieve
+#' the updated CTM matrix, use the \code{\link{ctm}} method. 
 #' 
-#' @name transforms
+#' @name update<-
 #'   
 #' @param object is an SVGTransformation object
 #'   
-#' @return \code{transforms} returns a vector of characters
-#'   
-#' @rdname svgtransform.transforms-methods
-#' @exportMethod transforms
+#' @rdname svgtransform.update-methods
+#' @exportMethod update
 #' @docType methods
-setGeneric(name="transforms", function(object) { standardGeneric("transforms") })
+setGeneric(name="update", function(object) { standardGeneric("update") })
 
 #' Show method for SVGTransform objects
 #' 
@@ -315,6 +313,26 @@ setMethod(f="ctm",signature="SVGTransform",
           {
             return(object@ctm)
           }
+)
+
+#' @name update<-
+#' @rdname svgtransform.update-methods
+#' @aliases update<-,SVGTransform-method
+setReplaceMethod(f="update", signature="SVGTransform",
+                 definition=function(.Object,value)
+                 {
+                   # check
+                   if(!(is.numeric(value) 
+                        && is.matrix(value) 
+                        && all(dim(value)==c(3,3))))
+                     stop("parent ctm 'value' must be numeric 3x3 matrix")
+                   
+                   # update ctm
+                   .Object@ctm  <- ctm %*% .Object@ctm
+                   
+                   # eop
+                   return(.Object)
+                 }
 )
 
 #' @rdname svgtransform.show-methods
