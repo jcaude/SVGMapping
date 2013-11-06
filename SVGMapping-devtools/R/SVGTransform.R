@@ -112,7 +112,7 @@ setGeneric(name="ctm", function(object) { standardGeneric("ctm") })
 #' @rdname svgtransform.update-methods
 #' @exportMethod update
 #' @docType methods
-setGeneric(name="update", function(object) { standardGeneric("update") })
+setGeneric(name="update<-", function(.Object,value) { standardGeneric("update<-") })
 
 #' Show method for SVGTransform objects
 #' 
@@ -234,7 +234,8 @@ setReplaceMethod(f="transforms", signature="SVGTransform",
                      m <- diag(3)
                      t <- .Object@transforms[[i]]
                      t.op <- tolower(gsub("\\(.*\\)","",t))
-                     t.args <- as.numeric(strsplit(gsub("(.*)\\((.*)\\)","\\2",t),"[, ]")[[1]])
+                     # -- @FIXME the split could be improved, here multiple comas is allowed
+                     t.args <- as.numeric(strsplit(gsub("(.*)\\((.*)\\)","\\2",t),"[, ]+")[[1]])
                      
                      # convert into a transformation matrix
                      if(t.op == "matrix") {
@@ -328,7 +329,7 @@ setReplaceMethod(f="update", signature="SVGTransform",
                      stop("parent ctm 'value' must be numeric 3x3 matrix")
                    
                    # update ctm
-                   .Object@ctm  <- ctm %*% .Object@ctm
+                   .Object@ctm  <- value %*% .Object@.tm
                    
                    # eop
                    return(.Object)
@@ -382,7 +383,7 @@ setMethod(f="as.character", signature="SVGTransform",
 #' @examples
 #' # a skew x=4.2,y=3.1 transformation given an as css instruction
 #' SVGTransform.factory("skewY(3.1) skewX(4.2)")
-SVGTransform.factory <- function(transform) {
+SVGTransform.factory <- function(transform="") {
     
   ## eop
   return(new("SVGTransform", transform=transform))  
