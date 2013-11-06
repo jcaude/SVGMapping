@@ -96,6 +96,26 @@ setGeneric(name="transforms<-", function(.Object,value) { standardGeneric("trans
 #' @docType methods
 setGeneric(name="ctm", function(object) { standardGeneric("ctm") })
 
+#' Update CTM
+#' 
+#' This method update the current transform matrix given a parent ctm. CTM are
+#' used to calculate the viewport coordinates after applying a hierarchical set
+#' of geometric transformations.
+#'
+#' The \code{upd ate(object)} method returns the current vector of 
+#' transformations
+#' 
+#' @name transforms
+#'   
+#' @param object is an SVGTransformation object
+#'   
+#' @return \code{transforms} returns a vector of characters
+#'   
+#' @rdname svgtransform.transforms-methods
+#' @exportMethod transforms
+#' @docType methods
+setGeneric(name="transforms", function(object) { standardGeneric("transforms") })
+
 #' Show method for SVGTransform objects
 #' 
 #' Various methods to show or convert SVGTransform objects
