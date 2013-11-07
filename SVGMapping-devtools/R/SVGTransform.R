@@ -110,7 +110,7 @@ setGeneric(name="ctm", function(object) { standardGeneric("ctm") })
 #' @param object is an SVGTransformation object
 #'   
 #' @rdname svgtransform.update-methods
-#' @exportMethod update
+#' @exportMethod update<-
 #' @docType methods
 setGeneric(name="update<-", function(.Object,value) { standardGeneric("update<-") })
 

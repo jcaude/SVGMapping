@@ -22,5 +22,30 @@ test_that("Accessors",{
   expect_equal(transforms(tf)[3],"translate(130 , 160 )")
   expect_equal(ctm(tf), matrix(c(0.7071068,-0.7071068,0.0000000,
                                  0.7071068,0.7071068,0.0000000,
-                                 255.0609665,111.2132034,1.0000000),nrow=3,ncol=3))
+                                 255.0609665,111.2132034,1.0000000),
+                               nrow=3,ncol=3))
+  
+  # fools setter
+  expect_error(transforms(tf) <- 2)
+  expect_error(transforms(tf) <- "foo(x)")
+  expect_error(transforms(tf) <- "svg is the future")
+  expect_error(update(tf) <- 1)
+  expect_error(update(tf) <- "2")
+  expect_error(update(tf) <- diag(4))
+  
+})
+
+test_that("Factory", {
+  
+  # default factory
+  tf <- SVGTransform.factory()
+  
+  # check
+  expect_output(print(tf),"")
+  
+  # full factory
+  tf <- SVGTransform.factory("translate(50,90), rotate(-45)  translate(130 , 160 )")
+  
+  # check
+  expect_equal(print(tf), "translate(50,90) rotate(-45) translate(130 , 160 )")
 })

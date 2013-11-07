@@ -37,7 +37,7 @@ setGenericVerif <- function(name,y){if(!isGeneric(name)){setGeneric(name,y)}else
 #' @exportClass "SVGShape"
 #' @aliases SVGShape-class
 setClass("SVGShape",
-         representation(svg.transform="character",
+         representation(svg.transform="SVGTransform",
                         "VIRTUAL"),
          contains=c("SVGNode")
          )
@@ -54,7 +54,7 @@ setClass("SVGShape",
 #'   
 #' @param object an SVG shape
 #'   
-#' @return a character string containing the attribute value
+#' @return an \link{SVGTransform} object
 #'   
 #' @rdname svgshape.core-methods
 #' @exportMethod svgTransform
@@ -66,7 +66,9 @@ setGeneric(name="svgTransform", function(object) { standardGeneric("svgTransform
 #' 
 #' 
 #' The \code{svgTransform(object) <- value} method sets the SVG \emph{transform}
-#' attributes of an SVG shape.
+#' attributes of an SVG shape. \emph{value} must be a valid \link{SVGTransform}
+#' object or a compliant definition as a character string. In the latter, it
+#' will be automatically converted into an \link{SVGTransform} object.
 #' 
 #' @name svgTransform<-
 #'   
@@ -99,7 +101,7 @@ setMethod(f="initialize", signature="SVGShape",
             if(is.null(args.names)) args.names <- list()
             
             ## default init.
-            svgTransform(.Object) <- .arg("transform",character(0))
+            svgTransform(.Object) <- .arg("transform",SVGTransform.factory())
             
             ## eop
             return(.Object)
@@ -122,11 +124,15 @@ setReplaceMethod(f="svgTransform", signature="SVGShape",
                  definition=function(.Object,value)
                  {
                    ## check
-                   if(!is.atomic(value) && !is.character(value))
-                     stop("'value' must be atomic and a string")
+                   if(!(is.atomic(value) && is.character(value)) ||
+                        !(is.object(value) && is(value,"SVGTransform")))
+                     stop("'value' must be atomic and a string or an SVGTransform object")
                    
                    ## assign & eop
-                   .Object@svg.transform <- value
+                   if(is.object(values))
+                     .Object@svg.transform <- value
+                   else
+                     .Object@svg.transform <- SVGTransform.factory(value)
                    return(.Object)
                  }
 )
@@ -141,7 +147,7 @@ setMethod(f=".xml", signature="SVGShape",
             
             ## return an attributes list
             if(length(svgTransform(object)) >0) 
-              attr <- c(attr,transform=svgTransform(object))
+              attr <- c(attr,transform=.xml(svgTransform(object)))
             
             ## eop
             return(attr)            
