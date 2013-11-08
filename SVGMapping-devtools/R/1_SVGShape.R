@@ -145,9 +145,12 @@ setMethod(f=".xml", signature="SVGShape",
             ## super (SVGNode)
             attr <- callNextMethod(object)
             
-            ## return an attributes list
-            if(length(svgTransform(object)) >0) 
-              attr <- c(attr,transform=.xml(svgTransform(object)))
+            # init.
+            tf <- .xml(svgTransform(object))
+            
+            ## return an attributes list            
+            if(length(tf) >0) 
+              attr <- c(attr,transform=tf)
             
             ## eop
             return(attr)            

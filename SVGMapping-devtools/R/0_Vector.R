@@ -42,16 +42,14 @@ setClass("Vector",
                         "VIRTUAL")
 )
 
-#' Named list of coordinates and dimensions 
+#' Bounding-Box method
 #' 
-#' \code{bbox} methods are accessors to the coordinates and dimensions of 
-#' a geometrical shape.
+#' \code{bbox} methods returns the bounding-box of a geometrical shape.
 #' 
 #' \bold{Vector:} the method \code{bbox(object)} returns 
 #' the bounding box \code{list(x1,y1,x2,y2)} of the vector object.
 #' 
-#' @note coordinates or length are given as values compliant with the SVG 1.1
-#' specifications
+#' @note coordinates or length are given as \link{SVGCoord} objects
 #' 
 #' @name bbox
 #' 
@@ -64,31 +62,31 @@ setClass("Vector",
 #' @docType methods
 setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 
-#' <title already defined>
-#' 
-#' 
-#' 
-#' \bold{Vector:} The \code{bbox{object} <- value} method sets the coordinates 
-#' and direction of a vector object. It is expected that \code{value} is a 
-#' list containing the four named values \code{list(x1,y1,x2,y2)}.
-#' 
-#' @name bbox<-
-#' 
-#'  @rdname svgmapping.bbox-methods
-#'  @exportMethod bbox<-
-#'  @docType methods  
-setGeneric(name="bbox<-", function(.Object,value) { standardGeneric("bbox<-") })
-
 #' Coordinates of the Vector object
 #' 
 #' These methods are accessors to the location and direction of a \code{Vector}
 #' object
 #' 
+#' The \code{coords{object} <- value} method sets the coordinates 
+#' and direction of a vector object. It is expected that \code{value} is a 
+#' list containing the four named \link{SVGCoord} values \code{list(x1,y1,x2,y2)}.
+#' 
+#' @name coords<-
+#' 
+#' @rdname vector.coords-methods
+#' @exportMethod coords<-
+#' @docType methods  
+setGeneric(name="coords<-", function(.Object,value) { standardGeneric("coords<-") })
+
+#' <title already defined>
+#' 
+#' 
+#' 
 #' The \code{x1(object)} method returns the X-axis coordinate of the vector.
 #' 
 #' @name x1
 #' 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @exportMethod x1
 #' @docType methods
 setGeneric(name="x1", function(object) { standardGeneric("x1") })
@@ -102,7 +100,7 @@ setGeneric(name="x1", function(object) { standardGeneric("x1") })
 #' 
 #' @name x1<-
 #' 
-#'  @rdname vector.bbox-methods
+#'  @rdname vector.coords-methods
 #'  @exportMethod x1<-
 #'  @docType methods  
 setGeneric(name="x1<-", function(.Object,value) { standardGeneric("x1<-") })
@@ -115,7 +113,7 @@ setGeneric(name="x1<-", function(.Object,value) { standardGeneric("x1<-") })
 #' 
 #' @name y1
 #' 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @exportMethod y1
 #' @docType methods
 setGeneric(name="y1", function(object) { standardGeneric("y1") })
@@ -129,7 +127,7 @@ setGeneric(name="y1", function(object) { standardGeneric("y1") })
 #' 
 #' @name y1<-
 #' 
-#'  @rdname vector.bbox-methods
+#'  @rdname vector.coords-methods
 #'  @exportMethod y1<-
 #'  @docType methods  
 setGeneric(name="y1<-", function(.Object,value) { standardGeneric("y1<-") })
@@ -142,7 +140,7 @@ setGeneric(name="y1<-", function(.Object,value) { standardGeneric("y1<-") })
 #' 
 #' @name x2
 #' 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @exportMethod x2
 #' @docType methods
 setGeneric(name="x2", function(object) { standardGeneric("x2") })
@@ -156,7 +154,7 @@ setGeneric(name="x2", function(object) { standardGeneric("x2") })
 #' 
 #' @name x2<-
 #' 
-#'  @rdname vector.bbox-methods
+#'  @rdname vector.coords-methods
 #'  @exportMethod x2<-
 #'  @docType methods  
 setGeneric(name="x2<-", function(.Object,value) { standardGeneric("x2<-") })
@@ -169,7 +167,7 @@ setGeneric(name="x2<-", function(.Object,value) { standardGeneric("x2<-") })
 #' 
 #' @name y2
 #' 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @exportMethod y2
 #' @docType methods
 setGeneric(name="y2", function(object) { standardGeneric("y2") })
@@ -183,7 +181,7 @@ setGeneric(name="y2", function(object) { standardGeneric("y2") })
 #' 
 #' @name y2<-
 #' 
-#'  @rdname vector.bbox-methods
+#'  @rdname vector.coords-methods
 #'  @exportMethod y2<-
 #'  @docType methods  
 setGeneric(name="y2<-", function(.Object,value) { standardGeneric("y2<-") })
@@ -264,7 +262,7 @@ setReplaceMethod(f="bbox", signature="Vector",
                  }
 )
 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases x1,Vector-method
 setMethod(f="x1", signature="Vector",
           definition=function(object)
@@ -274,7 +272,7 @@ setMethod(f="x1", signature="Vector",
 )
 
 #' @name x1<-
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases x1<-,Vector-method
 setReplaceMethod(f="x1", signature="Vector",
                  definition=function(.Object,value)
@@ -292,7 +290,7 @@ setReplaceMethod(f="x1", signature="Vector",
                  }
 )
 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases y1,Vector-method
 setMethod(f="y1", signature="Vector",
           definition=function(object)
@@ -302,7 +300,7 @@ setMethod(f="y1", signature="Vector",
 )
 
 #' @name y1<-
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases y1<-,Vector-method
 setReplaceMethod(f="y1", signature="Vector",
                  definition=function(.Object,value)
@@ -320,7 +318,7 @@ setReplaceMethod(f="y1", signature="Vector",
                  }
 )
 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases x2,Vector-method
 setMethod(f="x2", signature="Vector",
           definition=function(object)
@@ -330,7 +328,7 @@ setMethod(f="x2", signature="Vector",
 )
 
 #' @name x2<-
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases x2<-,Vector-method
 setReplaceMethod(f="x2", signature="Vector",
                  definition=function(.Object,value)
@@ -348,7 +346,7 @@ setReplaceMethod(f="x2", signature="Vector",
                  }
 )
 
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases y2,Vector-method
 setMethod(f="y2", signature="Vector",
           definition=function(object)
@@ -358,7 +356,7 @@ setMethod(f="y2", signature="Vector",
 )
 
 #' @name y2<-
-#' @rdname vector.bbox-methods
+#' @rdname vector.coords-methods
 #' @aliases y2<-,Vector-method
 setReplaceMethod(f="y2", signature="Vector",
                  definition=function(.Object,value)

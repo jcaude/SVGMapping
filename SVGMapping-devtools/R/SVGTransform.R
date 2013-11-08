@@ -359,7 +359,20 @@ setMethod(f="print.SVGTransform", signature="SVGTransform",
 setMethod(f="as.character", signature="SVGTransform",
           definition=function(x,...)
           {
-            return(paste(transforms(x),collapse=" "))
+            t  <- transforms(x)
+            if(length(t))
+              return(paste(t,collapse=" "))
+            else
+              return(character(0))
+          }
+)
+
+#' @rdname svgcore.xml-methods
+#' @aliases .xml,SVGTransform-method
+setMethod(f=".xml", signature="SVGTransform",
+          definition=function(object)
+          {
+            return(as.character(object))
           }
 )
 

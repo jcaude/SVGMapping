@@ -41,11 +41,13 @@ test_that("Factory", {
   tf <- SVGTransform.factory()
   
   # check
-  expect_output(print(tf),"")
+  expect_equal(as.character(tf),character(0))
   
   # full factory
-  tf <- SVGTransform.factory("translate(50,90), rotate(-45)  translate(130 , 160 )")
+  ops <- "translate(50,90), rotate(-45) , translate(130 , 160 )"
+  fix.ops <- "translate(50,90) rotate(-45) translate(130 , 160 )"
+  tf <- SVGTransform.factory(ops)
   
   # check
-  expect_equal(print(tf), "translate(50,90) rotate(-45) translate(130 , 160 )")
+  expect_equal(as.character(tf), fix.ops)
 })
