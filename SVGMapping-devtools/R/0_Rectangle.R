@@ -56,25 +56,25 @@ setClass("Rectangle",
 #' @docType methods
 NULL
 
-#' <title already defined>
+#' Coordinates of the Vector object
 #' 
+#' These methods are accessors to the location and direction of a \code{Vector}
+#' object
 #' 
+#' The \code{coords{object} <- value} method can be used to set the location and
+#' dimensions of a rectangular object. In this case the \code{value} argument is
+#' expected to be a named list (\code{list(x=,y=,width=,height=)})
 #' 
-#' \bold{Rectangle:} the \code{bbox(object)<-value} method can be used to set 
-#' the bounding-box of a rectangular object. In this case the \code{value} 
-#' argument is expected to be a named list (\code{list(x=,y=,width=,heigh=)})
+#' @name coords<-
 #' 
-#' @name bbox<-
-#' 
-#' @rdname svgmapping.bbox-methods
-#' @exportMethod bbox<-
+#' @rdname rectangle.coords-methods
+#' @exportMethod coords<-
 #' @docType methods
 NULL
 
-#' Dimensions of the Rectangular object
+#' <title already defined>
 #' 
-#' These methods are accessors to the location and dimension of a Rectangular 
-#' object.
+#' 
 #' 
 #' The method \code{x(object)} return the location on the \emph{X-axis} of the 
 #' rectangular object.
@@ -84,7 +84,7 @@ NULL
 #' @return \code{x(),y()}: an SVGCoord object for single coordinates and an
 #'   SVGLength object for \code{width(),height()} dimensions methods
 #'   
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod x
 #' @docType methods
 setGeneric(name="x", function(object) { standardGeneric("x") })
@@ -100,18 +100,20 @@ setGeneric(name="x", function(object) { standardGeneric("x") })
 #' 
 #' @return \code{x(),y(),width(),height()<-}: the rectangular object as invisible
 #' 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod x<-
 #' @docType methods
 setGeneric(name="x<-", function(.Object,value) { standardGeneric("x<-") })
 
 #' <title already defined>
 #' 
+#' 
+#' 
 #' The method \code{y(object)} return the location on the \emph{Y-axis} of 
 #' the rectangular object.
 #' 
 #' @name y
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod y
 #' @docType methods
 setGeneric(name="y", function(object) { standardGeneric("y") })
@@ -124,17 +126,19 @@ setGeneric(name="y", function(object) { standardGeneric("y") })
 #' location of a rectangular object.
 #' 
 #' @name y<-
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod y<-
 #' @docType methods
 setGeneric(name="y<-", function(.Object,value) { standardGeneric("y<-") })
 
 #' <title already defined>
 #' 
+#' 
+#' 
 #' The method \code{width(object)} return the width of the rectangular object.
 #' 
 #' @name width
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod width
 #' @docType methods
 setGeneric(name="width", function(object) { standardGeneric("width") })
@@ -147,17 +151,19 @@ setGeneric(name="width", function(object) { standardGeneric("width") })
 #' an rectangular object.
 #' 
 #' @name width<-
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod width<-
 #' @docType methods
 setGeneric(name="width<-", function(.Object,value) { standardGeneric("width<-") })
 
 #' <title already defined>
 #' 
+#' 
+#' 
 #' The method \code{height(object)} return the width of the rectangular object.
 #' 
 #' @name height
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod height
 #' @docType methods
 setGeneric(name="height", function(object) { standardGeneric("height") })
@@ -170,7 +176,7 @@ setGeneric(name="height", function(object) { standardGeneric("height") })
 #' a rectangular object.
 #' 
 #' @name height<-
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @exportMethod height<-
 #' @docType methods
 setGeneric(name="height<-", function(.Object,value) { standardGeneric("height<-") })
@@ -197,16 +203,16 @@ setMethod(f="initialize", signature="Rectangle",
             ## default init.
             flag <- FALSE
             bbox <- list()
-            if(sum(grepl("^bbox$", args.names)) > 0) {
-              bbox <- args[["bbox"]]
+            if(sum(grepl("^coords$", args.names)) > 0) {
+              bbox <- args[["coords"]]
               if( is.list(bbox) &&
                   all(list("x","y","width","height") %in% names(bbox)) )
                 flag <- TRUE
               else    
-                stop("invalid 'bbox' argument")
+                stop("invalid 'coords' argument")
             }
             if(flag) {
-              bbox(.Object) <- bbox
+              coords(.Object) <- bbox
             }
             else {
               x(.Object) <- .arg("x",SVGCoord.factory())
@@ -220,7 +226,7 @@ setMethod(f="initialize", signature="Rectangle",
           }
 )
 
-#' @rdname svgmapping.bbox-methods
+#' @rdname svgmapping.coords-methods
 #' @aliases bbox,Rectangle-method
 setMethod(f="bbox", signature="Rectangle",
           definition=function(object)
@@ -230,10 +236,10 @@ setMethod(f="bbox", signature="Rectangle",
           }
 )
 
-#' @name bbox<- 
-#' @rdname svgmapping.bbox-methods
-#' @aliases bbox<-,Rectangle-method
-setReplaceMethod(f="bbox", signature="Rectangle",
+#' @name coords<- 
+#' @rdname rectangle.coords-methods
+#' @aliases coords<-,Rectangle-method
+setReplaceMethod(f="coords", signature="Rectangle",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -251,7 +257,7 @@ setReplaceMethod(f="bbox", signature="Rectangle",
                  }
 )
 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases x,Rectangle-method
 setMethod(f="x", signature="Rectangle",
           definition=function(object)
@@ -261,7 +267,7 @@ setMethod(f="x", signature="Rectangle",
 )
 
 #' @name x<-
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases x<-,Rectangle-method
 setReplaceMethod(f="x", signature="Rectangle",
                  definition=function(.Object,value)
@@ -279,7 +285,7 @@ setReplaceMethod(f="x", signature="Rectangle",
                  }
 )
 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases y,Rectangle-method
 setMethod(f="y", signature="Rectangle",
           definition=function(object)
@@ -289,7 +295,7 @@ setMethod(f="y", signature="Rectangle",
 )
 
 #' @name y<- 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases y<-,Rectangle-method
 setReplaceMethod(f="y", signature="Rectangle",
                  definition=function(.Object,value)
@@ -307,7 +313,7 @@ setReplaceMethod(f="y", signature="Rectangle",
                  }
 )
 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases width,Rectangle-method
 setMethod(f="width", signature="Rectangle",
           definition=function(object)
@@ -317,7 +323,7 @@ setMethod(f="width", signature="Rectangle",
 )
 
 #' @name width<-
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases width<-,Rectangle-method
 setReplaceMethod(f="width", signature="Rectangle",
                  definition=function(.Object,value)
@@ -335,7 +341,7 @@ setReplaceMethod(f="width", signature="Rectangle",
                  }
 )
 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases height,Rectangle-method
 setMethod(f="height", signature="Rectangle",
           definition=function(object)
@@ -345,7 +351,7 @@ setMethod(f="height", signature="Rectangle",
 )
 
 #' @name height<- 
-#' @rdname rectangle.bbox-methods
+#' @rdname rectangle.coords-methods
 #' @aliases height<-,Rectangle-method
 setReplaceMethod(f="height", signature="Rectangle",
                  definition=function(.Object,value)

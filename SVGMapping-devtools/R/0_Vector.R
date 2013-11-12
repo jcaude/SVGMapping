@@ -69,7 +69,7 @@ setGeneric(name="bbox", function(object) { standardGeneric("bbox") })
 #' 
 #' The \code{coords{object} <- value} method sets the coordinates 
 #' and direction of a vector object. It is expected that \code{value} is a 
-#' list containing the four named \link{SVGCoord} values \code{list(x1,y1,x2,y2)}.
+#' list containing four \link{SVGCoord} values named \code{list(x1,y1,x2,y2)}.
 #' 
 #' @name coords<-
 #' 
@@ -208,17 +208,17 @@ setMethod(f="initialize", signature="Vector",
             ## default init.
             flag <- FALSE
             bbox <- list()
-            if(sum(grepl("^bbox$", args.names)) > 0) {
-              bbox <- args[["bbox"]]
-              if( is.list(bbox) &&
-                  all(list("x1","y1","x2","y2") %in% names(bbox)) )
+            if(sum(grepl("^coords$", args.names)) > 0) {
+              bbox <- args[["coords"]]
+              if( is.list(coords) &&
+                  all(list("x1","y1","x2","y2") %in% names(coords)) )
                 flag <- TRUE
               else {
-                stop("invalid 'bbox' argument")
+                stop("invalid 'coords' argument")
               }
             }
             if(flag) {
-              bbox(.Object) <- bbox
+              coords(.Object) <- bbox
             }
             else  {
               x1(.Object) <- .arg("x1",SVGCoord.factory())
@@ -241,10 +241,10 @@ setMethod(f="bbox", signature="Vector",
           }
 )
 
-#' @name bbox<- 
-#' @rdname svgmapping.bbox-methods
-#' @aliases bbox<-,Vector-method
-setReplaceMethod(f="bbox", signature="Vector",
+#' @name coords<- 
+#' @rdname vector.coords-methods
+#' @aliases coords<-,Vector-method
+setReplaceMethod(f="coords", signature="Vector",
                  definition=function(.Object,value)
                  {
                    ## check
