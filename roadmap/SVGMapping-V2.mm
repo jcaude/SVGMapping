@@ -8,14 +8,16 @@
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <node COLOR="#006600" CREATED="1345463437390" ID="ID_444175273" MODIFIED="1383918803102" TEXT="CORE">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node COLOR="#006600" CREATED="1345463498383" ID="ID_1152172337" MODIFIED="1384252257032" TEXT="Shapes">
+<node COLOR="#006600" CREATED="1345463498383" ID="ID_1152172337" MODIFIED="1384268635161" TEXT="Shapes">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="flag-orange"/>
-<node CREATED="1345463511128" FOLDED="true" HGAP="22" ID="ID_545418737" MODIFIED="1384252268235" TEXT="Vector*" VSHIFT="3">
+<icon BUILTIN="stop"/>
+<node CREATED="1345463511128" FOLDED="true" HGAP="22" ID="ID_545418737" MODIFIED="1384268640337" TEXT="Vector*" VSHIFT="3">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="flag-orange"/>
+<icon BUILTIN="stop"/>
 <node CREATED="1345465057569" FOLDED="true" ID="ID_1149595547" MODIFIED="1384017979453" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1345465143886" ID="ID_913655336" MODIFIED="1354113355632" TEXT="x1,y1,x2,y2">
@@ -38,11 +40,12 @@
 </node>
 </node>
 </node>
-<node CREATED="1345463514647" FOLDED="true" ID="ID_1680520565" MODIFIED="1384252268970" TEXT="Rectangle*">
+<node CREATED="1345463514647" FOLDED="true" ID="ID_1680520565" MODIFIED="1384268640337" TEXT="Rectangle*">
 <arrowlink DESTINATION="ID_309230457" ENDARROW="Default" ENDINCLINATION="153;0;" ID="Arrow_ID_1866078666" STARTARROW="None" STARTINCLINATION="153;0;"/>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="flag-orange"/>
+<icon BUILTIN="stop"/>
 <node CREATED="1345465057569" FOLDED="true" ID="ID_1266920787" MODIFIED="1384017979453" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1345465269572" ID="ID_910651986" MODIFIED="1354184086214" TEXT="x,y,width,height">
@@ -65,10 +68,11 @@
 </node>
 </node>
 </node>
-<node CREATED="1345463517264" ID="ID_1605952696" MODIFIED="1384252270425" TEXT="Ellipse*">
+<node CREATED="1345463517264" ID="ID_1605952696" MODIFIED="1384268640336" TEXT="Ellipse*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="flag-orange"/>
+<icon BUILTIN="stop"/>
 <node CREATED="1345465057569" FOLDED="true" ID="ID_1938591856" MODIFIED="1384017979453" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1345465392882" ID="ID_1062516731" MODIFIED="1354185219739" TEXT="cx,cy,rx,ry">
@@ -92,10 +96,11 @@
 </node>
 <node CREATED="1345465122124" ID="ID_373730862" MODIFIED="1354024981692" TEXT="class">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1345463519760" FOLDED="true" ID="ID_1519349365" MODIFIED="1384252273180" TEXT="Circle*">
+<node CREATED="1345463519760" FOLDED="true" ID="ID_1519349365" MODIFIED="1384268643383" TEXT="Circle*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="flag-orange"/>
+<icon BUILTIN="stop"/>
 <node CREATED="1345465057569" FOLDED="true" ID="ID_1494310755" MODIFIED="1384017979453" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1345465466928" ID="ID_936845212" MODIFIED="1354186217322" TEXT="cx,cy,r">
@@ -123,7 +128,7 @@
 </node>
 <node COLOR="#006600" CREATED="1345463503135" ID="ID_57077627" MODIFIED="1383767634308" TEXT="SVG">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1342212942618" FOLDED="true" ID="ID_1452419319" MODIFIED="1384017979453">
+<node CREATED="1342212942618" ID="ID_1452419319" MODIFIED="1384268605604">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -135,7 +140,8 @@
   </body>
 </html></richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="button_ok"/>
+<icon BUILTIN="messagebox_warning"/>
+<icon BUILTIN="flag-orange"/>
 <node CREATED="1342212988725" FOLDED="true" ID="ID_6299497" MODIFIED="1384017979452" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1353419300893" ID="ID_133538597" MODIFIED="1353419323007" TEXT="u.value">
@@ -148,7 +154,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1342212992068" FOLDED="true" ID="ID_866959047" MODIFIED="1384017979452" TEXT="methods">
+<node CREATED="1342212992068" FOLDED="true" ID="ID_866959047" MODIFIED="1384267271195" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1353419324630" ID="ID_225529175" MODIFIED="1353676097314">
 <richcontent TYPE="NODE"><html>
@@ -211,45 +217,17 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1353419442308" FOLDED="true" ID="ID_1084708366" MODIFIED="1384017979451">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      factory
-    </p>
-  </body>
-</html></richcontent>
-<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1353594918943" ID="ID_948719730" MODIFIED="1354007251999" TEXT="SVGUnit(value)">
-<icon BUILTIN="button_ok"/>
-</node>
-<node CREATED="1353594926568" ID="ID_295939210" MODIFIED="1354007252000" TEXT="SVGUnit(value,units)">
-<icon BUILTIN="button_ok"/>
-</node>
-<node CREATED="1353594932128" ID="ID_627699397" MODIFIED="1354007252000" TEXT="SVGUnit(value,units,dpi)">
-<icon BUILTIN="button_ok"/>
-</node>
-<node CREATED="1353594950785" ID="ID_606587587" MODIFIED="1354007252000" TEXT="SVGUnit(value_string)">
-<icon BUILTIN="button_ok"/>
-</node>
-<node CREATED="1353594990875" ID="ID_1400220286" MODIFIED="1354007252000" TEXT="SVGUnit(value_user,target_units)">
-<icon BUILTIN="button_ok"/>
-</node>
-</node>
 <node CREATED="1342212950141" ID="ID_1263564435" MODIFIED="1354198587635" TEXT="class">
-<node CREATED="1354120695913" FOLDED="true" ID="ID_146528883" MODIFIED="1384017979451" TEXT="SVGLength">
+<node CREATED="1354120695913" ID="ID_146528883" MODIFIED="1384268584374" TEXT="SVGLength">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
-<icon BUILTIN="button_ok"/>
-<node CREATED="1354120699072" ID="ID_1500572850" MODIFIED="1382545176644" TEXT="fields">
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1354120699072" FOLDED="true" ID="ID_1500572850" MODIFIED="1384267194939" TEXT="fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1354121030208" ID="ID_268166872" MODIFIED="1354122285395" TEXT="u.relative">
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1354120713425" ID="ID_487890296" MODIFIED="1382545178478" TEXT="methods">
+<node CREATED="1354120713425" ID="ID_487890296" MODIFIED="1384267245122" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1354121034152" ID="ID_1905209568" MODIFIED="1354122285395" TEXT="isRelative">
 <icon BUILTIN="button_ok"/>
@@ -257,22 +235,70 @@
 <node CREATED="1354180704329" ID="ID_492808839" MODIFIED="1354180726416" TEXT="Arith (group)">
 <icon BUILTIN="button_ok"/>
 </node>
+<node CREATED="1354012662055" ID="ID_1603947885" MODIFIED="1384268594657" TEXT="Compare (group)">
+<icon BUILTIN="messagebox_warning"/>
 </node>
-<node CREATED="1354120716450" ID="ID_555295411" MODIFIED="1382545166148" TEXT="factory">
+</node>
+<node CREATED="1354120716450" FOLDED="true" ID="ID_555295411" MODIFIED="1384268589415" TEXT="factory">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1354122287491" ID="ID_584107267" MODIFIED="1354180702598" TEXT="same as SVGUnit factory">
+<node CREATED="1353594918943" ID="ID_948719730" MODIFIED="1384267172585" TEXT="all fields">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
 <node CREATED="1354198303158" ID="ID_1710863967" MODIFIED="1354198306278" TEXT="class">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
-<node CREATED="1354198306790" ID="ID_744673313" MODIFIED="1354198562767" TEXT="SVGCoord">
+<node CREATED="1354198306790" ID="ID_744673313" MODIFIED="1384268559353" TEXT="SVGCoord">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
+<icon BUILTIN="messagebox_warning"/>
+<node CREATED="1354120699072" ID="ID_1597023155" MODIFIED="1384268520450" TEXT="fields">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+</node>
+<node CREATED="1354120713425" ID="ID_1396000707" MODIFIED="1384267245122" TEXT="methods">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1354180704329" ID="ID_883398429" MODIFIED="1354180726416" TEXT="Arith (group)">
+<icon BUILTIN="button_ok"/>
+</node>
+<node CREATED="1354012662055" ID="ID_1847436031" MODIFIED="1384268565723" TEXT="Compare (group)">
+<icon BUILTIN="messagebox_warning"/>
+</node>
+</node>
+<node CREATED="1354120716450" FOLDED="true" ID="ID_441770751" MODIFIED="1384268550691" TEXT="factory">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
+<node CREATED="1353594918943" ID="ID_1997988313" MODIFIED="1384267172585" TEXT="all fields">
+<font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
 </node>
+</node>
+</node>
+</node>
+<node COLOR="#ff0000" CREATED="1384267313997" ID="ID_509291501" MODIFIED="1384268397424">
+<richcontent TYPE="NODE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      bug: 9cm+94cm -&gt; 2.91cm ..
+    </p>
+    <p>
+      -----
+    </p>
+    <p>
+      because, if same unit ('cm') it returns the sum of uValues,
+    </p>
+    <p>
+      which is considered as a sum of user units and converted
+    </p>
+    <p>
+      back to 'cm' .. thus, 9+94user -&gt; 2.91 cm !!
+    </p>
+  </body>
+</html></richcontent>
+<icon BUILTIN="go"/>
+<icon BUILTIN="flag-orange"/>
 </node>
 </node>
 <node CREATED="1383041054392" FOLDED="true" ID="ID_554824731" MODIFIED="1384017979450" TEXT="SVGTransform">
@@ -2367,6 +2393,12 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
+<node CREATED="1384268363328" ID="ID_246072195" MODIFIED="1384268368880" TEXT="">
+<icon BUILTIN="go"/>
+<node COLOR="#666666" CREATED="1383770229752" ID="ID_333260534" MODIFIED="1384268380700" TEXT="issue/bug fixed">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
 <node CREATED="1383770293215" ID="ID_976395622" MODIFIED="1383770299871" TEXT="">
 <icon BUILTIN="smily_bad"/>
 <node COLOR="#666666" CREATED="1383770301575" ID="ID_432664013" MODIFIED="1383770972173" TEXT="blocking/serious issues">
@@ -2393,12 +2425,12 @@
 </node>
 <node CREATED="1384249322582" ID="ID_976186676" MODIFIED="1384249324544" TEXT="">
 <icon BUILTIN="clanbomber"/>
-<node COLOR="#666666" CREATED="1383770532183" ID="ID_276816624" MODIFIED="1384249338258" TEXT="package build failed">
+<node COLOR="#666666" CREATED="1383770532183" ID="ID_276816624" MODIFIED="1384266789624" TEXT="bug/package build failed">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 </node>
-<node COLOR="#006633" CREATED="1383770673747" FOLDED="true" ID="ID_1477514323" MODIFIED="1384017979420" TEXT="Class">
+<node COLOR="#006633" CREATED="1383770673747" FOLDED="true" ID="ID_1477514323" MODIFIED="1384267308614" TEXT="Class">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1383770692748" ID="ID_979961508" MODIFIED="1383770725453" TEXT="Class*">
 <font BOLD="true" NAME="SansSerif" SIZE="12"/>

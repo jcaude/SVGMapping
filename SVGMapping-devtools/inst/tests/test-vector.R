@@ -36,7 +36,7 @@ test_that("Accessors", {
   expect_identical(x2(node), SVGCoord.factory("211pt"))
   expect_identical(y2(node), SVGCoord.factory("333pt"))
   
-  bbox(node) <- list(x1="9cm",y1="341cm",x2="94cm",y2="8cm")
+  coords(node) <- list(x1="9cm",y1="341cm",x2="94cm",y2="8cm")
   
   expect_identical(x1(node), SVGCoord.factory("9cm"))
   expect_identical(y1(node), SVGCoord.factory("341cm"))
@@ -44,12 +44,12 @@ test_that("Accessors", {
   expect_identical(y2(node), SVGCoord.factory("8cm"))
   
   expect_equal(bbox(node), list(x1=SVGCoord.factory("9cm"),
-                                y1=SVGCoord.factory("341cm"),
+                                y1=SVGCoord.factory("8cm"),
                                 x2=SVGCoord.factory("94cm"),
-                                y2=SVGCoord.factory("8cm")))
+                                y2=SVGCoord.factory("341cm")))
   
   node <- new("myClass.Vector",
-              bbox=list(x1="9cm",y1="8cm",x2="341cm",y2="94cm"))
+              coords=list(x1="9cm",y1="8cm",x2="341cm",y2="94cm"))
   
   expect_identical(x1(node), SVGCoord.factory("9cm"))
   expect_identical(y1(node), SVGCoord.factory("8cm"))
@@ -57,5 +57,5 @@ test_that("Accessors", {
   expect_identical(y2(node), SVGCoord.factory("94cm"))
   
   expect_error(new("myClass.Vector",
-                   bbox=list(a="9cm",b="8cm",c="341cm",d="94cm")))
+                   coords=list(a="9cm",b="8cm",c="341cm",d="94cm")))
 })

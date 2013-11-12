@@ -128,11 +128,15 @@ setMethod(f="uUser",signature="SVGLength",
 setMethod("Arith", signature="SVGLength", 
           definition=function(e1, e2) 
           {
-            if(uUnits(e1) == uUnits(e2))
+            if((uUnits(e1) == uUnits(e2)) && (uDpi(e1) == uDpi(e2))) {
               v <- callGeneric(uValue(e1),uValue(e2))
-            else
+              sv <- SVGLength.factory(v,unit=uUnits(e1),dpi=uDpi(e1))
+            }
+            else {
               v = callGeneric(uUser(e1), uUser(e2))
-            return(SVGLength.factory(v,target.unit=uUnits(e1)))
+              sv <- SVGLength.factory(v,dpi=uDpi(e1), target.unit=uUnits(e1))
+            }
+            return(sv)
           }
 )
 
