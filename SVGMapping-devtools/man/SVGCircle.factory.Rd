@@ -2,11 +2,11 @@
 \alias{SVGCircle.factory}
 \title{SVGCircle Factory}
 \usage{
-  SVGCircle.factory(cx, cy, r, bbox, class, style,
+  SVGCircle.factory(cx, cy, r, coords, class, style,
     transform)
 }
 \arguments{
-  \item{bbox}{a list of coordinates \code{(cx,cy,r)}}
+  \item{coords}{a list of coordinates \code{(cx,cy,r)}}
 
   \item{cx}{the X-axis coordinate of the center}
 
@@ -30,7 +30,7 @@
   and a geometric transformation.
 }
 \details{
-  The usage of \code{bbox} and \code{(cx,cy,r)} are
+  The usage of \code{coords} and \code{(cx,cy,r)} are
   mutually exclusive.
 
   If calls with no arguments, this function returns an
@@ -40,11 +40,11 @@
 \examples{
 ## Simple circle
 circle <- SVGCircle.factory(cx="3cm",cy="2cm",r="15cm")
-## Create a circle using bounding-box list
-el.bbox <- list(cx="30px",cy="25px",r="135px")
-circle <- SVGCircle.factory(bbox=el.bbox)
+## Create a circle using coordinates-like list
+el.coords <- list(cx="30px",cy="25px",r="135px")
+circle <- SVGCircle.factory(coords=el.coords)
 ## A circle with some inline CSS decorations
-circle <- SVGCircle.factory(bbox=el.bbox,class="mylines",style="stroke-width:10cm")
+circle <- SVGCircle.factory(coords=el.coords,class="mylines",style="stroke-width:10cm")
 ## A circle (0,0) translated of 20 to the right and 10 below,
 ## new coordinates are (20,10)
 circle <- SVGCircle.factory(cx=0,cy=0,r=30,transform="translate(20,10)")

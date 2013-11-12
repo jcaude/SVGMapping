@@ -108,14 +108,14 @@ setMethod(f=".xml", signature="SVGLine",
 #' This function returns an SVG Line instance given its coordinates and 
 #' optionally its class (CSS), style (CSS) and a geometric transformation.
 #' 
-#' The usage of \code{bbox} and \code{(x1,y1,x2,y2)} are mutually exclusive. 
+#' The usage of \code{coords} and \code{(x1,y1,x2,y2)} are mutually exclusive. 
 #' 
 #' If calls with no arguments, this function returns an \emph{empty} line 
 #' (\emph{i.e.} all coordinates are set to zero).
 #' 
 #' @name SVGLine.factory
 #' 
-#' @param bbox a list of coordinates \code{(x1,y1,x2,y2)}
+#' @param coords a list of coordinates \code{(x1,y1,x2,y2)}
 #' @param x1 the X-axis coordinate of the first extremum point
 #' @param y1 the Y-axis coordinate of the first extremum point
 #' @param x2 the X-axis coordinate of the second extremum point
@@ -135,11 +135,11 @@ setMethod(f=".xml", signature="SVGLine",
 #' ## Create a line using a list of coordinates
 #' line.coords <- list(x1="5px",y1="10px",x2="650px",y2="315px")
 #' ## A line with some CSS
-#' line2 <- SVGLine.factory(bbox=line.coords,class="mylines",style="stroke-width:15cm")
+#' line2 <- SVGLine.factory(coords=line.coords,class="mylines",style="stroke-width:15cm")
 #' ## A line (0,0,10,10) translated of 10 to the right and 20 below, 
 #' ## new coordinates are (10,20,20,30)
 #' line3 <- SVGLine.factory(0,0,10,10,transform="translate(10,20)")
-SVGLine.factory <- function(x1,y1,x2,y2,bbox,class,style,transform) {
+SVGLine.factory <- function(x1,y1,x2,y2,coords,class,style,transform) {
 
   ## init.
   args <- list("SVGLine")
@@ -147,7 +147,7 @@ SVGLine.factory <- function(x1,y1,x2,y2,bbox,class,style,transform) {
   if(!missing(y1)) args <- c(args,y1=y1)
   if(!missing(x2)) args <- c(args,x2=x2)
   if(!missing(y2)) args <- c(args,y2=y2)
-  if(!missing(bbox)) args <- c(args,bbox=list(bbox))
+  if(!missing(coords)) args <- c(args,coords=list(coords))
   if(!missing(class)) args <- c(args,class=class)
   if(!missing(style)) args <- c(args,style=style)
   if(!missing(transform)) args <- c(args,transform=transform)

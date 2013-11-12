@@ -9,7 +9,7 @@
   \item{object}{an SVG shape}
 }
 \value{
-  a character string containing the attribute value
+  an \link{SVGTransform} object
 }
 \description{
   These methods are accessors to the \emph{core} attributes
@@ -22,5 +22,9 @@
 
   The \code{svgTransform(object) <- value} method sets the
   SVG \emph{transform} attributes of an SVG shape.
+  \emph{value} must be a valid \link{SVGTransform} object
+  or a compliant definition as a character string. In the
+  latter, it will be automatically converted into an
+  \link{SVGTransform} object.
 }
 

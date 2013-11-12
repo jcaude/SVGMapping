@@ -17,6 +17,7 @@
 \alias{.xml,SVGNode-method}
 \alias{.xml,SVGRect-method}
 \alias{.xml,SVGShape-method}
+\alias{.xml,SVGTransform-method}
 \alias{.xml,Vector-method}
 \title{XML Internal Representation Conversion}
 \arguments{

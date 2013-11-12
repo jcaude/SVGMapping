@@ -101,14 +101,14 @@ setMethod(f=".xml", signature="SVGEllipse",
 #' This function returns an SVG Ellipse instance given its coordinates and 
 #' optionally its class (CSS), style (CSS) and a geometric transformation.
 #' 
-#' The usage of \code{bbox} and \code{(cx,cy,rx,ry)} are mutually exclusive.
+#' The usage of \code{coords} and \code{(cx,cy,rx,ry)} are mutually exclusive.
 #' 
 #' If calls with no arguments, this function returns an \emph{empty} line 
 #' (\emph{i.e.} all coordinates are set to zero).
 #' 
 #' @name SVGEllipse.factory
 #'   
-#' @param bbox a list of coordinates \code{(cx,cy,rx,ry)}
+#' @param coords a list of coordinates \code{(cx,cy,rx,ry)}
 #' @param cx the X-axis coordinate of the center
 #' @param cy the Y-axis coordinate of the center
 #' @param rx the X-axis radius length of the ellipse
@@ -124,20 +124,20 @@ setMethod(f=".xml", signature="SVGEllipse",
 #' @examples
 #' ## Simple ellipse
 #' ellipse <- SVGEllipse.factory(cx="3cm",cy="2cm",rx="15cm",ry="10cm")
-#' ## Create an ellipse using bounding-box list
-#' el.bbox <- list(cx="30px",cy="25px",rx="250px",ry="135px")
-#' ellipse <- SVGEllipse.factory(bbox=el.bbox)
+#' ## Create an ellipse using coordinates like list
+#' el.coords <- list(cx="30px",cy="25px",rx="250px",ry="135px")
+#' ellipse <- SVGEllipse.factory(coords=el.coords)
 #' ## An ellipse with some inline CSS decorations
-#' ellipse <- SVGEllipse.factory(bbox=el.bbox,class="mylines",style="stroke-width:10cm")
+#' ellipse <- SVGEllipse.factory(coords=el.coords,class="mylines",style="stroke-width:10cm")
 #' ## An ellipse (0,0) translated of 20 to the right and 10 below, 
 #' ## new coordinates are (20,10)
 #' ellipse <- SVGEllipse.factory(cx=0,cy=0,rx=60,ry=30,transform="translate(20,10)")
-SVGEllipse.factory <- function(cx,cy,rx,ry,bbox,class,style,transform) {
+SVGEllipse.factory <- function(cx,cy,rx,ry,coords,class,style,transform) {
   
   ## init.
   args <- list("SVGEllipse")
-  if(!missing(bbox))
-    args <- c(args,bbox=list(bbox))
+  if(!missing(coords))
+    args <- c(args,coords=list(coords))
   else {
     if(!missing(cx)) args <- c(args,cx=cx)
     if(!missing(cy)) args <- c(args,cy=cy)
@@ -152,5 +152,3 @@ SVGEllipse.factory <- function(cx,cy,rx,ry,bbox,class,style,transform) {
   ## eop
   return(ellipse)
 }
-
-

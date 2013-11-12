@@ -46,9 +46,6 @@ setClass("Ellipse",
 #' 
 #' 
 #' 
-#' \bold{Ellipse:} the method \code{bbox(object)} return the bounding box 
-#' \code{list(cx,cy,rx,ry)} of the ellipse object.
-#' 
 #' @name bbox
 #' 
 #' @rdname svgmapping.bbox-methods
@@ -56,24 +53,25 @@ setClass("Ellipse",
 #' @docType methods
 NULL
 
-#' <title already defined>
-#'
-#'
-#'  
-#' \bold{Ellipse:} the \code{bbox{object} <- value} method sets the center and 
+#' Location and dimensions of the Ellipse object
+#' 
+#' These methods are accessors to the location and dimensions of an
+#' \code{Ellipse} object
+#' 
+#' The \code{coords{object} <- value} method sets the location of the center and
 #' radius length of an ellipse object. It is expected that \code{value} is a 
 #' list containing the four named values \code{list(cx,cy,rx,ry)}.
 #' 
-#' @name bbox<-
+#' @name coords<-
 #' 
-#' @rdname svgmapping.bbox-methods
-#' @exportMethod bbox<-
+#' @rdname ellipse.coords-methods
+#' @exportMethod coords<-
 #' @docType methods  
 NULL
 
-#' Coordinates of the Ellipse object
+#' <title already defined>
 #' 
-#' These methods are accessors to the center and radius of an Ellipse object.
+#' 
 #' 
 #' The \code{cx(object)} method returns the X-axis center of the ellipse.
 #' 
@@ -82,7 +80,7 @@ NULL
 #'   
 #' @name cx
 #'   
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @exportMethod cx
 #' @docType methods
 setGeneric(name="cx", function(object) { standardGeneric("cx") })
@@ -96,7 +94,7 @@ setGeneric(name="cx", function(object) { standardGeneric("cx") })
 #' 
 #' @name cx<-
 #' 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @exportMethod cx<-
 #' @docType methods  
 setGeneric(name="cx<-", function(.Object,value) { standardGeneric("cx<-") })
@@ -109,7 +107,7 @@ setGeneric(name="cx<-", function(.Object,value) { standardGeneric("cx<-") })
 #' 
 #' @name cy
 #' 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @exportMethod cy
 #' @docType methods
 setGeneric(name="cy", function(object) { standardGeneric("cy") })
@@ -123,7 +121,7 @@ setGeneric(name="cy", function(object) { standardGeneric("cy") })
 #' 
 #' @name cy<-
 #' 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @exportMethod cy<-
 #' @docType methods  
 setGeneric(name="cy<-", function(.Object,value) { standardGeneric("cy<-") })
@@ -136,7 +134,7 @@ setGeneric(name="cy<-", function(.Object,value) { standardGeneric("cy<-") })
 #' 
 #' @name rx
 #' 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @exportMethod rx
 #' @docType methods
 setGeneric(name="rx", function(object) { standardGeneric("rx") })
@@ -150,7 +148,7 @@ setGeneric(name="rx", function(object) { standardGeneric("rx") })
 #' 
 #' @name rx<-
 #' 
-#'  @rdname ellipse.bbox-methods
+#'  @rdname ellipse.coords-methods
 #'  @exportMethod rx<-
 #'  @docType methods  
 setGeneric(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
@@ -163,7 +161,7 @@ setGeneric(name="rx<-", function(.Object,value) { standardGeneric("rx<-") })
 #' 
 #' @name ry
 #' 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @exportMethod ry
 #' @docType methods
 setGeneric(name="ry", function(object) { standardGeneric("ry") })
@@ -177,7 +175,7 @@ setGeneric(name="ry", function(object) { standardGeneric("ry") })
 #' 
 #' @name ry<-
 #' 
-#'  @rdname ellipse.bbox-methods
+#'  @rdname ellipse.coords-methods
 #'  @exportMethod ry<-
 #'  @docType methods  
 setGeneric(name="ry<-", function(.Object,value) { standardGeneric("ry<-") })
@@ -204,16 +202,16 @@ setMethod(f="initialize", signature="Ellipse",
             ## default init.
             flag <- FALSE
             bbox <- list()
-            if(sum(grepl("^bbox$", args.names)) > 0) {
-              bbox <- args[["bbox"]]
+            if(sum(grepl("^coords$", args.names)) > 0) {
+              bbox <- args[["coords"]]
               if( is.list(bbox) &&
                 all(list("cx","cy","rx","ry") %in% names(bbox)) )
                 flag <- TRUE
               else
-                stop("invalid 'bbox' argument")
+                stop("invalid 'coords' argument")
             }
             if(flag) {
-              bbox(.Object) <- bbox
+              coords(.Object) <- bbox
             }
             else  {
               cx(.Object) <- .arg("cx",SVGCoord.factory())
@@ -232,14 +230,20 @@ setMethod(f="initialize", signature="Ellipse",
 setMethod(f="bbox", signature="Ellipse",
           definition=function(object)
           {
-            return(list(cx=cx(object),cy=cy(object),rx=rx(object),ry=ry(object)))
+            # eop
+            return(list(x1=cx(object)-rx(object),
+                        y1=cy(object)-ry(object),
+                        x2=cx(object)+rx(object),
+                        y2=cy(object)+ry(object)
+                        )
+            )
           }
 )
 
-#' @name bbox<- 
-#' @rdname svgmapping.bbox-methods
-#' @aliases bbox<-,Ellipse-method
-setReplaceMethod(f="bbox", signature="Ellipse",
+#' @name coords<- 
+#' @rdname ellipse.coords-methods
+#' @aliases coords<-,Ellipse-method
+setReplaceMethod(f="coords", signature="Ellipse",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -257,7 +261,7 @@ setReplaceMethod(f="bbox", signature="Ellipse",
                  }
 )
 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases cx,Ellipse-method
 setMethod(f="cx", signature="Ellipse",
           definition=function(object)
@@ -267,7 +271,7 @@ setMethod(f="cx", signature="Ellipse",
 )
 
 #' @name cx<-
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases cx<-,Ellipse-method
 setReplaceMethod(f="cx", signature="Ellipse",
                  definition=function(.Object,value)
@@ -285,7 +289,7 @@ setReplaceMethod(f="cx", signature="Ellipse",
                  }
 )
 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases cy,Ellipse-method
 setMethod(f="cy", signature="Ellipse",
           definition=function(object)
@@ -295,7 +299,7 @@ setMethod(f="cy", signature="Ellipse",
 )
 
 #' @name cy<-
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases cy<-,Ellipse-method
 setReplaceMethod(f="cy", signature="Ellipse",
                  definition=function(.Object,value)
@@ -313,7 +317,7 @@ setReplaceMethod(f="cy", signature="Ellipse",
                  }
 )
 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases rx,Ellipse-method
 setMethod(f="rx", signature="Ellipse",
           definition=function(object)
@@ -323,7 +327,7 @@ setMethod(f="rx", signature="Ellipse",
 )
 
 #' @name rx<-
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases rx<-,Ellipse-method
 setReplaceMethod(f="rx", signature="Ellipse",
                  definition=function(.Object,value)
@@ -341,7 +345,7 @@ setReplaceMethod(f="rx", signature="Ellipse",
                  }
 )
 
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases ry,Ellipse-method
 setMethod(f="ry", signature="Ellipse",
           definition=function(object)
@@ -351,7 +355,7 @@ setMethod(f="ry", signature="Ellipse",
 )
 
 #' @name ry<-
-#' @rdname ellipse.bbox-methods
+#' @rdname ellipse.coords-methods
 #' @aliases ry<-,Ellipse-method
 setReplaceMethod(f="ry", signature="Ellipse",
                  definition=function(.Object,value)

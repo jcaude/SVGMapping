@@ -56,31 +56,32 @@ setClass("Circle",
 #' @docType methods
 NULL
 
-#' <title already defined>
+#' Location and dimension of the Circle object
 #' 
+#' These methods are accessors to the location and dimension of a \code{Circle}
+#' object
 #' 
-#' 
-#' \bold{Circle:} the \code{bbox{object} <- value} method sets the center and 
+#' The \code{coords{object} <- value} method sets the center and 
 #' radius length of a circle object. It is expected that \code{value} is a 
 #' list containing the four named values \code{list(cx,cy,r)}.
 #' 
-#' @name bbox<-
+#' @name coords<-
 #' 
-#'  @rdname svgmapping.bbox-methods
-#'  @exportMethod bbox<-
+#'  @rdname circle.coords-methods
+#'  @exportMethod coords<-
 #'  @docType methods  
 NULL
 
-#' Coordinates of the Circle object
+#' <title already defined>
 #' 
-#' These methods are accessors to the center and radius of a Circle object.
 #' 
+#'  
 #' The \code{r(object)} method returns the radius length of the circle as an
 #' \code{\link{SVGLength}} object.
 #' 
 #' @name r
 #'   
-#' @rdname circle.bbox-methods
+#' @rdname circle.coords-methods
 #' @exportMethod r
 #' @docType methods
 setGeneric(name="r", function(object) { standardGeneric("r") })
@@ -94,7 +95,7 @@ setGeneric(name="r", function(object) { standardGeneric("r") })
 #' 
 #' @name r<-
 #' 
-#'  @rdname circle.bbox-methods
+#'  @rdname circle.coords-methods
 #'  @exportMethod r<-
 #'  @docType methods  
 setGeneric(name="r<-", function(.Object,value) { standardGeneric("r<-") })
@@ -122,24 +123,24 @@ setMethod(f="initialize", signature="Circle",
             if(length(args) == 0)
               .Object <- .callMethod("initialize","Ellipse",.Object)
             else {
-              ellipse.args <- args[!args.names %in% "bbox"]
+              ellipse.args <- args[!args.names %in% "coords"]
               .Object <- .callMethod("initialize","Ellipse",.Object,ellipse.args)
             }
             
             ## default init.
             ## -- we overide all ellipse initialization coords. methods
             flag <- FALSE
-            bbox <- list()
-            if(sum(grepl("^bbox$", args.names)) > 0) {
-              bbox <- args[["bbox"]]
-              if( is.list(bbox) &&
-                all(list("cx","cy","r") %in% names(bbox)) )
+            coords <- list()
+            if(sum(grepl("^coords$", args.names)) > 0) {
+              coords <- args[["coords"]]
+              if( is.list(coords) &&
+                all(list("cx","cy","r") %in% names(coords)) )
                 flag <- TRUE
               else
-                stop("invalid 'bbox' argument")
+                stop("invalid 'coords' argument")
             }
             if(flag) {
-              bbox(.Object) <- bbox
+              coords(.Object) <- coords
             }
             else  {
               r(.Object) <- .arg("r",SVGLength.factory())
@@ -155,14 +156,14 @@ setMethod(f="initialize", signature="Circle",
 setMethod(f="bbox", signature="Circle",
           definition=function(object)
           {
-            return(list(cx=cx(object),cy=cy(object),r=r(object)))
+            return(callNextMethod(object))
           }
 )
 
-#' @name bbox<- 
-#' @rdname svgmapping.bbox-methods
-#' @aliases bbox<-,Circle-method
-setReplaceMethod(f="bbox", signature="Circle",
+#' @name coords<- 
+#' @rdname circle.coords-methods
+#' @aliases coords<-,Circle-method
+setReplaceMethod(f="coords", signature="Circle",
                  definition=function(.Object,value)
                  {
                    ## check
@@ -179,7 +180,7 @@ setReplaceMethod(f="bbox", signature="Circle",
                  }
 )
 
-#' @rdname circle.bbox-methods
+#' @rdname circle.coords-methods
 #' @aliases r,Circle-method
 setMethod(f="r", signature="Circle",
           definition=function(object)
@@ -189,7 +190,7 @@ setMethod(f="r", signature="Circle",
 )
 
 #' @name r<-
-#' @rdname circle.bbox-methods
+#' @rdname circle.coords-methods
 #' @aliases r<-,Circle-method
 setReplaceMethod(f="r", signature="Circle",
                  definition=function(.Object,value)

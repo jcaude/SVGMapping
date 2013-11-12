@@ -46,9 +46,6 @@ setClass("Rectangle",
 #' 
 #' 
 #' 
-#' \bold{Rectangle:} the method \code{bbox(object)} return the bounding box 
-#' \code{list(x,y,width,height)} of the rectangular object.
-#' 
 #' @name bbox
 #' 
 #' @rdname svgmapping.bbox-methods
@@ -56,10 +53,10 @@ setClass("Rectangle",
 #' @docType methods
 NULL
 
-#' Coordinates of the Vector object
+#' Location and dimensions of the Rectangle object
 #' 
-#' These methods are accessors to the location and direction of a \code{Vector}
-#' object
+#' These methods are accessors to the location and dimensions of a
+#' \code{Rectangle} object
 #' 
 #' The \code{coords{object} <- value} method can be used to set the location and
 #' dimensions of a rectangular object. In this case the \code{value} argument is
@@ -226,13 +223,24 @@ setMethod(f="initialize", signature="Rectangle",
           }
 )
 
-#' @rdname svgmapping.coords-methods
+#' @rdname svgmapping.bbox-methods
 #' @aliases bbox,Rectangle-method
 setMethod(f="bbox", signature="Rectangle",
           definition=function(object)
           {
-            return(list(x=x(object),y=y(object),
-                        width=width(object),height=height(object)))
+            # init.
+            x1=x(object)
+            y1=y(object)
+            x2=x(object)+width(object)
+            y2=y(object)+height(object)
+
+            # eop -- in case of negative dimensions
+            return(list(x1=min(x1(object),x2(object)),
+                        y1=min(y1(object),y2(object)),
+                        x2=max(x1(object),x2(object)),
+                        y2=max(y1(object),y2(object))
+                        )
+                   )
           }
 )
 

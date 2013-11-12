@@ -44,12 +44,11 @@ setClass("Vector",
 
 #' Bounding-Box method
 #' 
-#' \code{bbox} methods returns the bounding-box of a geometrical shape.
+#' \code{bbox} methods returns the bounding-box (i.e location of the upper-left
+#' and bottom-right corners of the minimal rectangle that contains the geometric
+#' item(s)) of a geometrical shape.
 #' 
-#' \bold{Vector:} the method \code{bbox(object)} returns 
-#' the bounding box \code{list(x1,y1,x2,y2)} of the vector object.
-#' 
-#' @note coordinates or length are given as \link{SVGCoord} objects
+#' @note coordinates are given as \link{SVGCoord} objects
 #' 
 #' @name bbox
 #' 
@@ -237,7 +236,12 @@ setMethod(f="initialize", signature="Vector",
 setMethod(f="bbox", signature="Vector",
           definition=function(object)
           {
-            return(list(x1=x1(object),y1=y1(object),x2=x2(object),y2=y2(object)))
+            return(list(x1=min(x1(object),x2(object)),
+                        y1=min(y1(object),y2(object)),
+                        x2=max(x1(object),x2(object)),
+                        y2=max(y1(object),y2(object))
+                        )
+                   )
           }
 )
 

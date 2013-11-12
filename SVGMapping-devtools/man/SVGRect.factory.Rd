@@ -2,11 +2,11 @@
 \alias{SVGRect.factory}
 \title{SVGRect Factory}
 \usage{
-  SVGRect.factory(x, y, width, height, bbox, roundx,
+  SVGRect.factory(x, y, width, height, coords, roundx,
     roundy, class, style, transform)
 }
 \arguments{
-  \item{bbox}{a list of coordinates
+  \item{coords}{a list of coordinates
   \code{(x,y,width,height)}}
 
   \item{x}{the X-axis coordinate of the upper left corner}
@@ -37,7 +37,7 @@
   and a geometric transformation.
 }
 \details{
-  The usage of \code{bbox} and \code{(x,y,width,height)}
+  The usage of \code{coords} and \code{(x,y,width,height)}
   are mutually exclusive.
 
   If calls with no arguments, this function returns an
@@ -47,11 +47,11 @@
 \examples{
 ## Simple rectangle
 rect <- SVGRect.factory(x="5cm",y="5cm",width="60cm",height="30cm",roundx="2px", roundy="1px")
-## Create a rectangle using bounding-box list
-rect.bbox <- list(x="5px",y="5px",width="650px",height="315px")
-rect <- SVGRect.factory(bbox=rect.bbox)
+## Create a rectangle using coordinates-like list
+rect.coords <- list(x="5px",y="5px",width="650px",height="315px")
+rect <- SVGRect.factory(coords=rect.coords)
 ## A rectangle with some inline CSS decorations
-rect <- SVGRect.factory(bbox=rect.bbox,class="mylines",style="stroke-width:15cm")
+rect <- SVGRect.factory(coords=rect.coords,class="mylines",style="stroke-width:15cm")
 ## A rectangle (0,0) translated of 10 to the right and 20 below,
 ## new coordinates are (10,20)
 rect <- SVGRect.factory(x=0,y=0,width=60,height=30,transform="translate(10,20)")

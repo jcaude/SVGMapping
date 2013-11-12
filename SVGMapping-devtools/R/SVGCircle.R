@@ -101,14 +101,14 @@ setMethod(f=".xml", signature="SVGCircle",
 #' This function returns an SVG Circle instance given its coordinates and 
 #' optionally its class (CSS), style (CSS) and a geometric transformation.
 #' 
-#' The usage of \code{bbox} and \code{(cx,cy,r)} are mutually exclusive.
+#' The usage of \code{coords} and \code{(cx,cy,r)} are mutually exclusive.
 #' 
 #' If calls with no arguments, this function returns an \emph{empty} line 
 #' (\emph{i.e.} all coordinates are set to zero).
 #' 
 #' @name SVGCircle.factory
 #'   
-#' @param bbox a list of coordinates \code{(cx,cy,r)}
+#' @param coords a list of coordinates \code{(cx,cy,r)}
 #' @param cx the X-axis coordinate of the center
 #' @param cy the Y-axis coordinate of the center
 #' @param r the radius length of the circle
@@ -123,20 +123,20 @@ setMethod(f=".xml", signature="SVGCircle",
 #' @examples
 #' ## Simple circle
 #' circle <- SVGCircle.factory(cx="3cm",cy="2cm",r="15cm")
-#' ## Create a circle using bounding-box list
-#' el.bbox <- list(cx="30px",cy="25px",r="135px")
-#' circle <- SVGCircle.factory(bbox=el.bbox)
+#' ## Create a circle using coordinates-like list
+#' el.coords <- list(cx="30px",cy="25px",r="135px")
+#' circle <- SVGCircle.factory(coords=el.coords)
 #' ## A circle with some inline CSS decorations
-#' circle <- SVGCircle.factory(bbox=el.bbox,class="mylines",style="stroke-width:10cm")
+#' circle <- SVGCircle.factory(coords=el.coords,class="mylines",style="stroke-width:10cm")
 #' ## A circle (0,0) translated of 20 to the right and 10 below, 
 #' ## new coordinates are (20,10)
 #' circle <- SVGCircle.factory(cx=0,cy=0,r=30,transform="translate(20,10)")
-SVGCircle.factory <- function(cx,cy,r,bbox,class,style,transform) {
+SVGCircle.factory <- function(cx,cy,r,coords,class,style,transform) {
   
   ## init.
   args <- list("SVGCircle")
-  if(!missing(bbox))
-    args <- c(args,bbox=list(bbox))
+  if(!missing(coords))
+    args <- c(args,coords=list(coords))
   else {
     if(!missing(cx)) args <- c(args,cx=cx)
     if(!missing(cy)) args <- c(args,cy=cy)
