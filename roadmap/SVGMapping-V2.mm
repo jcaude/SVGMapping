@@ -79,7 +79,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1345465061162" FOLDED="true" ID="ID_611871021" MODIFIED="1384252272068" TEXT="methods">
+<node CREATED="1345465061162" FOLDED="true" ID="ID_611871021" MODIFIED="1384279502879" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1345465399243" ID="ID_1831689294" MODIFIED="1345465449954" TEXT="GS:cx,cy,rx,ry">
 <icon BUILTIN="button_ok"/>
@@ -154,7 +154,7 @@
 <icon BUILTIN="button_ok"/>
 </node>
 </node>
-<node CREATED="1342212992068" FOLDED="true" ID="ID_866959047" MODIFIED="1384267271195" TEXT="methods">
+<node CREATED="1342212992068" ID="ID_866959047" MODIFIED="1384279049803" TEXT="methods">
 <font ITALIC="true" NAME="SansSerif" SIZE="12"/>
 <node CREATED="1353419324630" ID="ID_225529175" MODIFIED="1353676097314">
 <richcontent TYPE="NODE"><html>
@@ -173,19 +173,6 @@
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1353594900311" ID="ID_1697377259" MODIFIED="1353664285407" TEXT="uUser">
-<icon BUILTIN="button_ok"/>
-</node>
-<node CREATED="1353419517983" ID="ID_1672506305" LINK="http://stackoverflow.com/questions/8937719/sum-of-s4-objects-in-r" MODIFIED="1354180720256">
-<richcontent TYPE="NODE"><html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Arith&#xa0;(group)
-    </p>
-  </body>
-</html></richcontent>
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1354012662055" ID="ID_1358435041" MODIFIED="1354024786891" TEXT="Compare (group)">
@@ -232,7 +219,7 @@
 <node CREATED="1354121034152" ID="ID_1905209568" MODIFIED="1354122285395" TEXT="isRelative">
 <icon BUILTIN="button_ok"/>
 </node>
-<node CREATED="1354180704329" ID="ID_492808839" MODIFIED="1354180726416" TEXT="Arith (group)">
+<node CREATED="1354180704329" ID="ID_492808839" LINK="http://stackoverflow.com/questions/8937719/sum-of-s4-objects-in-r" MODIFIED="1384279260979" TEXT="Arith (group)">
 <icon BUILTIN="button_ok"/>
 </node>
 <node CREATED="1354012662055" ID="ID_1603947885" MODIFIED="1384268594657" TEXT="Compare (group)">
