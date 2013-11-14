@@ -130,7 +130,8 @@ setMethod("Arith", signature="SVGLength",
           {
             if((uUnits(e1) == uUnits(e2)) && (uDpi(e1) == uDpi(e2))) {
               v <- callGeneric(uValue(e1),uValue(e2))
-              sv <- SVGLength.factory(v,unit=uUnits(e1),dpi=uDpi(e1))
+              sv <- new(getClass(Class=class(x))@className[1],
+                        value=v,unit=uUnits(e1),dpi=uDpi(e1))
             }
             else {
               v = callGeneric(uUser(e1), uUser(e2))

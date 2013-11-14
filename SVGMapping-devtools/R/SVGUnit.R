@@ -216,7 +216,7 @@ setMethod(f="initialize", signature="SVGUnit",
               args.names <- c("value","unit")
             }
             
-            ## check: missing args names
+            ## fix missing args names
             if(!"value" %in% args.names) {
               args.names[1] <- "value"
               names(args) <- args.names
@@ -398,3 +398,4 @@ setMethod("Ops", signature="SVGUnit",
             return(v)
           }
 )
+
