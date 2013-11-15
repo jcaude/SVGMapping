@@ -20,6 +20,7 @@ mysvg <- loadSVG(system.file("extdata/example.svg", package="SVGMapping"))
 # We add a link on the title (TCA cycle).
 addLinkByLabelSVG(mysvg, "text3091", "http://en.wikipedia.org/wiki/TCA_cycle", searchAttribute="id")
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \seealso{
   \itemize{

@@ -16,6 +16,7 @@ An \code{XMLInternalDocument}.
 }
 \examples{
 mysvg <- loadSVG(system.file("extdata/example.svg", package="SVGMapping"))
+free(mysvg)
 }
 \keyword{misc}
 \seealso{

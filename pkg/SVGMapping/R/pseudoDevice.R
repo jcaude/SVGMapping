@@ -184,10 +184,11 @@ includeSVG <- function(template, file,
                          )
 
   ## add Rplot nodes to the layer & replace template rectangle
-  tmp <- addChildren(target.g, rplot.nodes)
   tmp <- replaceNodes(target.node, target.g)
+  tmp <- addChildren(target.g, rplot.nodes)
 
   ## free
+  removeChildren(s)
   free(rplot.svg)
 }
 

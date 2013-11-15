@@ -127,18 +127,21 @@ logratios <- yeastExprData[,1]
 # Here log-ratios are used for colors but fold-changes are displayed
 mapDataSVG(mysvg, logratios, tooltipData=ifelse(logratios>=0, 2^(logratios), -2^-logratios), annotation=yeastAnnotMatrix)
 saveSVG(mysvg, file="output1.svg")
+free(mysvg)
 
 # Pie charts showing several conditions (time course)
 mysvg <- loadSVG(system.file("extdata/example.svg", package="SVGMapping"))
 logratios <- yeastExprData
 mapDataSVG(mysvg, logratios, tooltipData=ifelse(logratios>=0, 2^(logratios), -2^-logratios), mode="pie", annotation=yeastAnnotMatrix)
 saveSVG(mysvg, file="output2.svg")
+free(mysvg)
 
 # Instead of drawing pies like clocks (start at 12 o'clock and go clockwise),
 # draw them using the trigonometry convention (start on the right and anticlockwise).
 mysvg <- loadSVG(system.file("extdata/example.svg", package="SVGMapping"))
 mapDataSVG(mysvg, yeastExprData, mode="pie", annotation=yeastAnnotMatrix, pieStartAngle=0, pieClockwise=FALSE)
 saveSVG(mysvg, file="output2b.svg")
+free(mysvg)
 
 # Filling erlemeyers
 mysvg <- loadSVG(system.file("extdata/example2.svg", package="SVGMapping"))
@@ -146,6 +149,7 @@ mydata <- c(0.1, 0.3, 0.5)
 names(mydata) <- c("citrate", "cis-aconitate", "isocitrate")
 mapDataSVG(mysvg, mydata, mode="partial-fill")
 saveSVG(mysvg, file="output4.svg")
+free(mysvg)
 }
 \seealso{
   \itemize{

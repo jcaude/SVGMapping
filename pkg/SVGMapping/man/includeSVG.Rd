@@ -24,6 +24,7 @@ mysvg <- loadSVG(system.file("extdata/device-example.svg", package="SVGMapping")
 includeSVG(mysvg, system.file("extdata/gnokii-Apple2.svg", package="SVGMapping"), "@inkscape:label", "Rplot1")
 
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \seealso{
 Consider \code{\link{devSVGMapping}} for direct drawing using standard R graphics commands.

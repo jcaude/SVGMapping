@@ -21,5 +21,6 @@ mysvg <- loadSVG(system.file("extdata/example.svg", package="SVGMapping"))
 # We change the title of the figure to "Krebs cycle" instead of the original "TCA Cycle".
 setTextSVG(mysvg, "text3091", "Krebs cycle", searchAttribute="id")
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \keyword{misc}

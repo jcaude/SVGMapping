@@ -24,6 +24,7 @@ mynode <- getNodeSet(mysvg, "//svg:text[@id=\"text3091\"]")[[1]]
 getStyleSVG(mynode, "fill")
 setStyleSVG(mynode, "fill", "red")
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \seealso{
   \itemize{

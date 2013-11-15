@@ -39,6 +39,7 @@ plot(density(x=rnorm(100)))
 dev.off()
 
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \keyword{graphics device}
 \seealso{

@@ -25,6 +25,7 @@ root <- getNodeSet(mysvg, "//svg:svg")[[1]]
 getAttributeSVG(root, "width")
 setAttributeSVG(root, "width", 400)
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \seealso{
   \itemize{

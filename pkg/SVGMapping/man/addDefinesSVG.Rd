@@ -25,5 +25,6 @@ gradient <- newXMLNode("linearGradient", attrs=list(id="linearGradient3887"), .c
 # And add it to the "defs" section
 addDefinesSVG(mysvg, gradient)
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \keyword{misc}

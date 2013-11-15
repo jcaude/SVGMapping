@@ -20,6 +20,7 @@
 \author{Rapha\"{e}l Champeimont and Jean-Christophe Aude\\[1em]CEA, iBiTecS, Integrative Biology Laboratory,\\ F-91191 Gif Sur Yvette, France.\\[1em]\texttt{jean-christophe.aude@cea.fr}}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \setkeys{Gin}{width=0.5\textwidth}
 
 \maketitle
@@ -110,6 +111,12 @@ cursor is over the circles (\texttt{MDH1} on this figure) that depict genes.
 
 <<keep.source=TRUE>>=
 saveSVG(mysvg, file="output1.svg")
+@
+
+Don't forget to free the allocated XML resource otherwise your memory consumption could be (very) large and your script may crashed.
+
+<<keep.source=TRUE>>=
+free(mysvg)
 @
 
  Alternatively, one can call \Rfunc{showSVG(mysvg)} to
@@ -236,10 +243,11 @@ mapDataSVG(mysvg,
 @ 
 
 Finally we save the modified SVG file in the current directory under the name
-\textit{'output3.svg'} (see figure~\ref{fig:screenshot3}).
+\textit{'output3.svg'} (see figure~\ref{fig:screenshot3}) and free the memory.
 
 <<eval=FALSE,keep.source=TRUE>>=
 saveSVG(mysvg, file="output3.svg")
+free(mysvg)
 @ 
 
 \begin{figure}[ht]\begin{center}
@@ -293,6 +301,7 @@ directory under the name \textit{'output4.svg'} (see figure
 mapDataSVG(mysvg, 
            numData=mydata/100, mode="partial-fill")
 saveSVG(mysvg, file="output4.svg")
+free(mysvg)
 @
 
 \begin{figure}[ht]\begin{center}
@@ -355,6 +364,7 @@ mapDataSVG(mysvg,
            tooltipData=foldchange,
            annotation=yeastAnnotMatrix)
 saveSVG(mysvg, file="output2.svg")
+free(mysvg)
 @
 
 \begin{figure}[ht]\begin{center}
@@ -380,6 +390,7 @@ mydata <- matrix(c(-2, -1.5, -1, -0.5, 2, 1.5, 1, 0.5), ncol=4, byrow=TRUE)
 rownames(mydata) <- c("malate", "fumarate")
 mapDataSVG(mysvg, mydata, mode="fill")
 saveSVG(mysvg, file="output5.svg")
+free(mysvg)
 @
 
 \begin{figure}[ht]\begin{center}
@@ -441,6 +452,7 @@ in a web browser (using \texttt{showSVG}).
 
 <<eval=FALSE,source=TRUE>>=
 saveSVG(mysvg, "pdev-output1.svg")
+free(mysvg)
 @ 
 
 \begin{figure}[ht]\begin{center}
@@ -470,6 +482,7 @@ mysvg <- loadSVG(system.file("extdata/device-example.svg", package="SVGMapping")
 includeSVG(template=mysvg, file=dna_svg, 
            attribute.name="@inkscape:label", attribute.value="Rplot1")
 saveSVG(mysvg, "pdev-output2.svg")
+free(mysvg)
 @ 
 
 \begin{figure}[ht]\begin{center}
@@ -508,6 +521,7 @@ logratios <- yeastExprData
 mapDataSVG(mysvg, logratios, tooltipData=ifelse(logratios>=0, 2^(logratios), -2^-logratios), mode="pie", annotation=yeastAnnotMatrix)
 
 showSVG(mysvg)
+free(mysvg)
 @
 \begin{figure}[ht]\begin{center}
 \includegraphics[width=8cm]{multiplots.png}
@@ -539,6 +553,7 @@ with a gradient containing all possible colors in your range. The default gradie
 mysvg <- loadSVG(TCAtemplate2)
 mapDataSVG(mysvg, matrix(seq(-2,2,by=0.5), nrow=1, dimnames=list("malate", NULL)))
 showSVG(mysvg)
+free(mysvg)
 @
 \[ \includegraphics[width=4cm]{colors1.png} \]
 
@@ -558,6 +573,7 @@ mysvg <- loadSVG(TCAtemplate2)
 mapDataSVG(mysvg, matrix(seq(-2,2,by=0.5), nrow=1, dimnames=list("malate", NULL)),
            col=substring(rainbow(1000), 0, 7))
 showSVG(mysvg)
+free(mysvg)
 @
 \[ \includegraphics[width=4cm]{colors2.png} \]
 
@@ -574,6 +590,7 @@ mysvg <- loadSVG(TCAtemplate2)
 mapDataSVG(mysvg, matrix(c(1,2,3,2,3,1,2), nrow=1, dimnames=list("malate", NULL)),
            col=c("#CC0000", "#00CC00", "#0000CC"), colrange=c(1,3))
 showSVG(mysvg)
+free(mysvg)
 @
 \[ \includegraphics[width=4cm]{colors3.png} \]
 
@@ -603,6 +620,7 @@ mapDataSVG(mysvg, logratios, tooltipData=ifelse(logratios>=0, 2^(logratios), -2^
            annotation=yeastAnnotMatrix, col=c("url(#greenGradient)", "url(#redGradient)"))
 
 showSVG(mysvg)
+free(mysvg)
 @
 \[ \includegraphics[width=10cm]{colors4.png} \]
 
@@ -617,6 +635,7 @@ setTextSVG(mysvg, "text3091", "Krebs cycle", searchAttribute="id")
 addLinkByLabelSVG(mysvg, "text3091", "http://en.wikipedia.org/wiki/TCA_cycle",
                   searchAttribute="id")
 showSVG(mysvg)
+free(mysvg)
 @
 \[ \includegraphics[width=8cm]{text.png} \]
 

@@ -10,19 +10,14 @@
     gr.cap <- capabilities()
     if(gr.cap["cairo"])
       return("builtin")
-    
-    ## 1 - Find CairoDevice in the search-path
-    loaded = search()
-    if(length(grep("package:cairoDevice", loaded)) == 1)
-      return("cairoDevice")
   
     ## eop
     return(NULL)
   }
 
   ## init. java env.
-  options("java.parameters" = c("-Djava.awt.headless=true", getOption("java.parameters")))
-   .jpackage(pkgname, lib.loc=libname)
+##  options("java.parameters" = c("-Djava.awt.headless=true", getOption("java.parameters")))
+##   .jpackage(pkgname, lib.loc=libname)
   
   ## init. package env.
   .set("Templates.MetaData", list())

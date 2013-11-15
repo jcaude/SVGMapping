@@ -17,5 +17,6 @@ showSVG(svg, browser=getOption("browser"), add.script=TRUE)
 \examples{
 mysvg <- loadSVG(system.file("extdata/example2.svg", package="SVGMapping"))
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \keyword{misc}

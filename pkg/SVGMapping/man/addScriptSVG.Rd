@@ -17,6 +17,7 @@ If a script with this id already exists it will be replaced.}
 mysvg <- loadSVG(system.file("extdata/example.svg", package="SVGMapping"))
 addScriptSVG(mysvg, "window.alert(\"Hello World\")")
 \donttest{showSVG(mysvg)}
+free(mysvg)
 }
 \keyword{misc}
 \seealso{
